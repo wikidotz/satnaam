@@ -1,0 +1,28 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- CSS (load bootstrap) -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <style>
+    .s-login-form > div {
+        padding-top: 10px;
+    }
+    </style>
+    <!-- JS (load angular, ui-router, and our custom js file) -->
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="js/app.js"></script>
+</head>
+<!-- apply our angular app to our site -->
+
+<body ng-app="hotelApp">
+    <!-- MAIN CONTENT -->
+    <div class="container">
+        <!-- THIS IS WHERE WE WILL INJECT OUR CONTENT ============================== -->
+        <div ui-view></div>
+    </div>
+</body>
+
+</html>
