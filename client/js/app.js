@@ -7,9 +7,7 @@ angular.module('hotelApp', ['ui.router'])
         .state('home', {
         url: '/home',
         templateUrl: 'templates/partial-home.html',
-        resolve: {
-            
-        }
+        
     })
 
     .state('login', {
