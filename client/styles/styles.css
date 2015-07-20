@@ -1,0 +1,124 @@
+.s-layout {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+header.s-header {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 50px;
+}
+
+footer.s-footer {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: 50px;
+    overflow: hidden;
+}
+
+.sf-left-arrow,  .sf-right-arrow{
+    position: absolute;
+    left: 0px;
+    width: 10%;
+    top: 0;
+    text-align: center;
+    padding: 15px 0;
+}
+
+.sf-right-arrow {
+    right: 0px;
+    left: auto;
+
+}
+
+.sf-cat-list{
+    position: absolute;
+	
+    overflow: auto;
+    margin: 0 10%;
+    padding: 0;
+    left: 0;
+    width: auto;
+    right: 0px;
+}
+
+.sf-cat-item{
+    display: inline-block;
+    width: 17%;
+    padding: 10px;
+}
+
+.sf-cat-item a{
+	color: #fff;
+}
+
+
+.s-strip {
+    background-color: #f00;
+    /* width: 53%; */
+}
+
+.sh-buttons {
+    color: #fff !important;
+    font-size: 2em;
+    display: inline-block;
+    margin: 0;
+    padding: 5px 15px;
+}
+
+.sh-parcel {
+    background-color: #A0C349;
+    /* border: 1px solid #00f; */
+    margin-right: -4px;
+}
+
+.sh-count {
+    background-color: #F7C812;
+    /* font-size: 1em; */
+}
+
+.s-content {
+  position: absolute;
+  top: 60px;
+  bottom: 60px;
+  right: 0;
+  left: 0;
+  overflow-y: auto;
+}
+ul.s-product-list {
+  margin: 0 auto;
+  padding: 0;
+  width: 95%;
+}
+li.sp-item {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  float: left;
+  width: 25%;
+  border: 1px solid #A7C73B;
+  position: relative;
+}
+li.sp-item .spl-name {
+  color: #1D298B;
+}
+li.sp-item .spl-price {
+  color: #EC004E;
+}
+
+.spl-button {
+  background-color: #A7C73B;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10%;
+  font-size: 15px;
+  text-align: center;
+}

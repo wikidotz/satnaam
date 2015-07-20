@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 })); // for parsing application/x-www-form-urlencoded
 
-app.use(express.static(__dirname + '/client'));
+app.use(express.static(__dirname + '../../client'));
 
 
 function checkAuth(req, res, next) {
