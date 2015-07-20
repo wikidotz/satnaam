@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var expressSession = require('express-session');
-
+var productsRoutes = require('./routes/products')
 var app = express();
 
 app.use(expressSession({
@@ -41,6 +41,8 @@ app.post('/login', function(req, res) {
         res.send({success:false});
     }
 });
+
+app.use('/product', productsRoutes)
 
 app.get('/logout', function(req, res) {
     delete req.session.user_id;

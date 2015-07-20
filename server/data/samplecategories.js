@@ -1,0 +1,22 @@
+[
+	{
+		"cat_id":1,
+		"cat_name":'chaat',
+		"cat_desc":"sevpuri"
+	},
+	{
+		"cat_id":2,
+		"cat_name":'sandwitches',
+		"cat_desc":"sandwitches"
+	},
+	{
+		"cat_id":3,
+		"cat_name":'pizza',
+		"cat_desc":"pizza"
+	},
+	{
+		"cat_id":4,
+		"cat_name":'panini',
+		"cat_desc":"panini"
+	}
+]
