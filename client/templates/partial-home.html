@@ -5,18 +5,31 @@
         <a class="sh-buttons" href=""><i class="fa fa-cutlery"></i></a>
         <div class="pull-right">
         	<a class="sh-buttons sh-parcel" href=""><i class="fa fa-gift"></i></a>
-        	<span class="sh-buttons sh-count">3</span>
+        	<span class="sh-buttons sh-count">{{ordersArray.length}}</span>
         </div>
     </header>
 
     <div class="s-content">
     	<ul class="s-product-list">
-    		<li class="sp-item">
-    			<div class="spl-name">Paneer Tikka Supreme Sandwich</div>
-    			<div class="spl-price">Rs. 25/-</div>
-    			<div class="spl-button"> + </div>
+    		<li ng-swipe-left="leftSwipe(product)" ng-swipe-right="rightSwipe(product)" class="sp-item" ng-repeat="product in products track by $index">
+    			<div class="spl-text-container s-animate" ng-class="namePriceClass(product)">
+    				<div class="spl-name">{{product.prod_name}}</div>
+    				<div class="spl-price pull-right">Rs. {{product.prod_rate}}/-</div>	
+    			</div>
+    			
+    			<div class="spl-buttons-container s-animate" ng-show="product.selected">
+    				<div class="spl-button instruction" ><i class="fa fa-info-circle"></i></div>
+    				<div class="spl-button less" ng-disabled="product.count==0" ng-click="lessItem(product)" >-</div>
+    				<div class="spl-button add"  ng-click="addItem(product)" >+</div>	
+    				<div class="spl-button pull-right" >{{getProductCount(product)}}</div>	
+    			</div>
+    			
     		</li>
     	</ul>
+
+    	<div class="s-sidebar" ng-style="drawerStyle">
+    		<div class="s-hook" ng-click="toggleDrawer()"></div>
+    	</div>
     </div>
 
     <footer class="s-footer s-strip">
