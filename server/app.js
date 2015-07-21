@@ -42,7 +42,7 @@ app.post('/login', function(req, res) {
     }
 });
 
-app.use('/product', productsRoutes)
+app.use('/products', productsRoutes)
 
 app.get('/logout', function(req, res) {
     delete req.session.user_id;
