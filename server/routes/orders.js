@@ -1,15 +1,15 @@
 var express = require('express');
 var router = express.Router();
-
+var dbConnection = require('../dbconnection');
 //COMMENTED AS OF NOW
-var mysql = require('mysql');
+/*var mysql = require('mysql');
 var connection = mysql.createConnection({
 	host:'localhost',
 	user:'root',
 	password:'root',
 	database:'chatnaka_hoteldb'
 });
-var app = express();
+
 
 connection.connect();
 connection.query('select * from customer',function(err,rows,fields){
@@ -20,7 +20,8 @@ connection.query('select * from customer',function(err,rows,fields){
 	console.log("customers in database["+rows+"]");
 })
 connection.end();
-
+*/
+var app = express();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
