@@ -1,4 +1,4 @@
-angular.module('hotelApp', ['ui.router'])
+angular.module('hotelApp', ['ui.router', 'ngTouch'])
 
 .config(function($stateProvider, $urlRouterProvider, $httpProvider  ) {
 
@@ -7,7 +7,7 @@ angular.module('hotelApp', ['ui.router'])
         .state('home', {
         url: '/home',
         templateUrl: 'templates/partial-home.html',
-        
+        controller: 'HomeCtrl'
     })
 
     .state('login', {
@@ -22,7 +22,6 @@ angular.module('hotelApp', ['ui.router'])
     $httpProvider.interceptors.push(function($q, $location) {
         return {
             response: function(response) {
-                console.log(response.headers())
                 return response;
             },
             responseError: function(response) {

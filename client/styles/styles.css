@@ -1,0 +1,224 @@
+.s-layout {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+header.s-header {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 50px;
+}
+
+footer.s-footer {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: 50px;
+    overflow: hidden;
+}
+
+.sf-left-arrow,
+.sf-right-arrow {
+    position: absolute;
+    left: 0px;
+    width: 10%;
+    top: 0;
+    text-align: center;
+    padding: 15px 0;
+}
+
+.sf-right-arrow {
+    right: 0px;
+    left: auto;
+}
+
+.sf-cat-list {
+    position: absolute;
+    overflow: auto;
+    margin: 0 10%;
+    padding: 0;
+    left: 0;
+    width: auto;
+    right: 0px;
+}
+
+.sf-cat-item {
+    display: inline-block;
+    width: 17%;
+    padding: 10px;
+}
+
+.sf-cat-item a {
+    color: #fff;
+}
+
+.s-strip {
+    background-color: #f00;
+    /* width: 53%; */
+}
+
+.sh-buttons {
+    color: #fff !important;
+    font-size: 2em;
+    display: inline-block;
+    margin: 0;
+    padding: 5px 15px;
+}
+
+.sh-parcel {
+    background-color: #A0C349;
+    margin-right: -4px;
+}
+
+.sh-count {
+    background-color: #F7C812;
+    /* font-size: 1em; */
+}
+
+.s-content {
+    position: absolute;
+    top: 60px;
+    bottom: 60px;
+    right: 0;
+    left: 0;
+    overflow-y: auto;
+}
+
+ul.s-product-list {
+    margin: 0 auto;
+    padding: 0;
+    width: 95%;
+}
+
+li.sp-item {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid #A7C73B;
+    position: relative;
+    margin: 10px;
+    padding: 0px;
+    overflow: hidden;
+    height: 60px;
+    box-sizing: border-box;
+}
+
+li.sp-item .spl-name {
+    color: #1D298B;
+    float: left;
+}
+
+li.sp-item .spl-price {
+    color: #EC004E;
+    float: right;
+}
+
+.spl-button {
+    float: right;
+    font-size: 30px;
+    background-color: red;
+    height: 100%;
+    line-height: 57px;
+    text-align: center;
+    color: white;
+    /* border-radius: 23px; */
+    width: 25%;
+}
+
+.spl-button.add{
+	background-color: #A0C349;
+}
+
+.spl-button.less{
+	
+}
+
+.spl-button.instruction{
+	background-color: #F7C812
+}
+
+.s-animate {
+  -webkit-transition:all ease-out 0.2s;
+  transition:all ease-out 0.2s;
+}
+
+
+
+.s-sidebar {
+    position: fixed;
+    border: 1px solid #ff0;
+    background-color: #f0f;
+    top: 50px;
+    bottom: 0;
+    z-index: 1;
+    right: 0;
+    /* right: -430px; */
+    left: 0px;
+}
+
+
+
+.s-sidebar .s-hook {
+    margin-left: -10px;
+    width: 20px;
+    height: 50px;
+    background-color: blue;
+    border-radius: 10px;
+    top: 50%;
+    position: absolute;
+    margin-top: -25px;
+}
+
+.spl-text-container{
+	float: left;
+	width: 100%;
+	height: 100%;
+	padding: 5px;
+	margin-left: 0;
+	background-color: rgba(0,0,0,0);
+}
+
+.spl-text-container.selected{
+	margin-left: -65%;
+	background-color: rgba(0,0,0,.5);
+}
+
+.spl-buttons-container{
+    float: right;
+    width: 65%;
+    height: 100%;
+    text-align: right;
+}
+
+
+
+
+
+.spl-calc-btn{
+	/* background-color: transparent; */
+	
+	/* color: #000; */
+	/* border: 1px solid; */
+}
+
+@media (min-width: 500px) {
+    .spl-button {
+        top: auto;
+        /* width: 35px; */
+        font-size: 18px;
+        /* height: 30px; */
+    
+        right: auto;
+        /* padding-bottom: 34px; */
+}
+    li.sp-item {
+        float: left;
+        width: 30%;
+    }
+}
