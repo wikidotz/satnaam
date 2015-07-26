@@ -23,10 +23,10 @@ DROP TABLE IF EXISTS `category`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `category` (
-  `CAT_ID` int(3) NOT NULL AUTO_INCREMENT,
-  `CAT_NAME` varchar(50) NOT NULL,
-  `CAT_DESC` varchar(300) DEFAULT NULL,
-  PRIMARY KEY (`CAT_ID`)
+  `cat_id` int(3) NOT NULL AUTO_INCREMENT,
+  `cat_name` varchar(50) NOT NULL,
+  `cat_desc` varchar(300) DEFAULT NULL,
+  PRIMARY KEY (`cat_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -48,24 +48,24 @@ DROP TABLE IF EXISTS `customer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `customer` (
-  `CUST_ID` int(10) NOT NULL AUTO_INCREMENT,
-  `CUST_FIRST_NAME` varchar(100) NOT NULL,
-  `CUST_LAST_NAME` varchar(100) NOT NULL,
-  `CUST_NICK_NAME` varchar(100) DEFAULT NULL,
-  `CUST_MOBILE` int(10) NOT NULL,
-  `CUST_EMAIL` varchar(100) DEFAULT NULL,
-  `CUST_DESC` varchar(300) DEFAULT NULL,
-  `CUST_ADDRESS1` varchar(500) NOT NULL,
-  `CUST_CITY1` varchar(30) NOT NULL,
-  `CUST_STATE1` varchar(30) NOT NULL,
-  `CUST_ADDRESS2` varchar(500) DEFAULT NULL,
-  `CUST_CITY2` varchar(30) DEFAULT NULL,
-  `CUST_STATE2` varchar(30) DEFAULT NULL,
-  `CUST_CREATED_BY` varchar(100) DEFAULT NULL,
-  `CUST_CREATED_DATE` datetime DEFAULT NULL,
-  `CUST_MODIFIED_BY` varchar(100) DEFAULT NULL,
-  `CUST_MODIFIED_DATE` datetime DEFAULT NULL,
-  PRIMARY KEY (`CUST_ID`)
+  `cust_id` int(10) NOT NULL AUTO_INCREMENT,
+  `cust_first_name` varchar(100) NOT NULL,
+  `cust_last_name` varchar(100) NOT NULL,
+  `cust_nick_name` varchar(100) DEFAULT NULL,
+  `cust_mobile` int(10) NOT NULL,
+  `cust_email` varchar(100) DEFAULT NULL,
+  `cust_desc` varchar(300) DEFAULT NULL,
+  `cust_address1` varchar(500) NOT NULL,
+  `cust_city1` varchar(30) NOT NULL,
+  `cust_state1` varchar(30) NOT NULL,
+  `cust_address2` varchar(500) DEFAULT NULL,
+  `cust_city2` varchar(30) DEFAULT NULL,
+  `cust_state2` varchar(30) DEFAULT NULL,
+  `cust_created_by` varchar(100) DEFAULT NULL,
+  `cust_created_date` datetime DEFAULT NULL,
+  `cust_modified_by` varchar(100) DEFAULT NULL,
+  `cust_modified_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`cust_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -102,7 +102,7 @@ CREATE TABLE `order_product` (
   KEY `ORDER_PRODUCT_FK_3` (`OP_CATEGORY_ID`),
   CONSTRAINT `ORDER_PRODUCT_FK_1` FOREIGN KEY (`OP_ORDER_ID`) REFERENCES `orders` (`ORDER_ID`),
   CONSTRAINT `ORDER_PRODUCT_FK_2` FOREIGN KEY (`OP_PROD_ID`) REFERENCES `product` (`PROD_ID`),
-  CONSTRAINT `ORDER_PRODUCT_FK_3` FOREIGN KEY (`OP_CATEGORY_ID`) REFERENCES `category` (`CAT_ID`)
+  CONSTRAINT `ORDER_PRODUCT_FK_3` FOREIGN KEY (`OP_CATEGORY_ID`) REFERENCES `category` (`cat_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -123,20 +123,20 @@ DROP TABLE IF EXISTS `orders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `orders` (
-  `ORDER_ID` int(10) NOT NULL AUTO_INCREMENT,
-  `CUST_ID` int(10) NOT NULL,
-  `ORDER_TOKEN_NO` varchar(50) DEFAULT NULL,
-  `ORDER_TABLE_NO` int(2) DEFAULT NULL,
-  `ORDER_TOTAL_AMT` double DEFAULT NULL,
-  `ORDER_TOTAL_QTY` int(3) DEFAULT NULL,
-  `ORDER_EXPCT_TIME` int(3) NOT NULL,
-  `ORDER_DATE` datetime DEFAULT NULL,
-  `ORDER_STATUS` int(1) NOT NULL COMMENT '1=ORDERD 0=NOT ORDERED',
-  `ORDER_PAY_STATUS` varchar(20) DEFAULT 'NONE' COMMENT 'FULL, PARTIAL, NONE',
-  `ORDER_MNG_EMP_ID` varchar(30) DEFAULT NULL,
-  PRIMARY KEY (`ORDER_ID`),
-  KEY `ORDERS_FK_1` (`CUST_ID`),
-  CONSTRAINT `ORDERS_FK_1` FOREIGN KEY (`CUST_ID`) REFERENCES `customer` (`CUST_ID`)
+  `order_id` int(10) NOT NULL AUTO_INCREMENT,
+  `cust_id` int(10) NOT NULL,
+  `order_token_no` varchar(50) DEFAULT NULL,
+  `order_table_no` int(2) DEFAULT NULL,
+  `order_total_amt` double DEFAULT NULL,
+  `order_total_qty` int(3) DEFAULT NULL,
+  `order_expct_time` int(3) NOT NULL,
+  `order_date` datetime DEFAULT NULL,
+  `order_status` int(1) NOT NULL COMMENT '1=orderd 0=not ordered',
+  `order_pay_status` varchar(20) DEFAULT 'none' COMMENT 'full, partial, none',
+  `order_mng_emp_id` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`order_id`),
+  KEY `orders_fk_1` (`cust_id`),
+  CONSTRAINT `orders_fk_1` FOREIGN KEY (`cust_id`) REFERENCES `customer` (`cust_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -157,25 +157,25 @@ DROP TABLE IF EXISTS `product`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `product` (
-  `PROD_ID` int(10) NOT NULL AUTO_INCREMENT,
-  `PROD_CATEGORY_ID` int(10) NOT NULL,
-  `PROD_NAME` varchar(200) NOT NULL,
-  `PROD_DISPNAME` varchar(50) NOT NULL,
-  `PROD_DESC` varchar(500) NOT NULL,
-  `PROD_INGREDIENTS` varchar(500) NOT NULL,
-  `PROD_RATE` double NOT NULL,
-  `PROD_AVAILABLE` int(1) DEFAULT NULL COMMENT '1=AVAILABLE 0=NOTAVAILABLE',
-  `PROD_SIZE` varchar(10) DEFAULT NULL,
-  `PROD_WEIGHT` varchar(10) DEFAULT NULL,
-  `PROD_VEG_NONVEG` int(1) NOT NULL COMMENT '1=VEG 0=NONVEG',
-  `PROD_PRE_TIME` int(3) NOT NULL,
-  `PROD_CREATED_BY` varchar(100) DEFAULT NULL,
-  `PROD_CREATED_DATE` datetime DEFAULT NULL,
-  `PROD_MODIFIED_BY` varchar(100) DEFAULT NULL,
-  `PROD_MODIFIED_DATE` datetime DEFAULT NULL,
-  PRIMARY KEY (`PROD_ID`),
-  KEY `PRODUCT_FK_1` (`PROD_CATEGORY_ID`),
-  CONSTRAINT `PRODUCT_FK_1` FOREIGN KEY (`PROD_CATEGORY_ID`) REFERENCES `category` (`CAT_ID`)
+  `prod_id` int(10) NOT NULL AUTO_INCREMENT,
+  `prod_category_id` int(10) NOT NULL,
+  `prod_name` varchar(200) NOT NULL,
+  `prod_dispname` varchar(50) NOT NULL,
+  `prod_desc` varchar(500) NOT NULL,
+  `prod_ingredients` varchar(500) NOT NULL,
+  `prod_rate` double NOT NULL,
+  `prod_available` int(1) DEFAULT NULL COMMENT '1=available 0=notavailable',
+  `prod_size` varchar(10) DEFAULT NULL,
+  `prod_weight` varchar(10) DEFAULT NULL,
+  `prod_veg_nonveg` int(1) NOT NULL COMMENT '1=veg 0=nonveg',
+  `prod_pre_time` int(3) NOT NULL,
+  `prod_created_by` varchar(100) DEFAULT NULL,
+  `prod_created_date` datetime DEFAULT NULL,
+  `prod_modified_by` varchar(100) DEFAULT NULL,
+  `prod_modified_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`prod_id`),
+  KEY `product_fk_1` (`prod_category_id`),
+  CONSTRAINT `product_fk_1` FOREIGN KEY (`prod_category_id`) REFERENCES `category` (`cat_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -198,4 +198,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-07-26  9:57:46
+-- Dump completed on 2015-07-26 13:26:18

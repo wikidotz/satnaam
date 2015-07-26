@@ -7,7 +7,8 @@ angular.module('hotelApp')
     function init() {
 
         Product.getProducts().then(function(data) {
-            //console.log(data);
+            console.log("products data");
+            console.log(data);
             $scope.products = data;
         })
     }
