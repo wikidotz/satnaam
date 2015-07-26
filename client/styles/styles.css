@@ -129,6 +129,9 @@ li.sp-item .spl-price {
     color: white;
     /* border-radius: 23px; */
     width: 25%;
+    opacity:1;
+    -webkit-transition:all ease-out 2s;
+  	transition:all ease-out 2s;
 }
 
 .spl-button.add{
@@ -146,6 +149,10 @@ li.sp-item .spl-price {
 .s-animate {
   -webkit-transition:all ease-out 0.2s;
   transition:all ease-out 0.2s;
+}
+
+.spl-buttons-container.ng-hide {
+  opacity:0;
 }
 
 
