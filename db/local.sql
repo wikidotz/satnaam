@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.42, for osx10.6 (i386)
+-- MySQL dump 10.13  Distrib 5.5.9, for Win32 (x86)
 --
 -- Host: localhost    Database: chatnaka_hoteldb
 -- ------------------------------------------------------
--- Server version	5.5.42
+-- Server version	5.5.9
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -100,8 +100,8 @@ CREATE TABLE `order_product` (
   KEY `ORDER_PRODUCT_FK_1` (`OP_ORDER_ID`),
   KEY `ORDER_PRODUCT_FK_2` (`OP_PROD_ID`),
   KEY `ORDER_PRODUCT_FK_3` (`OP_CATEGORY_ID`),
-  CONSTRAINT `ORDER_PRODUCT_FK_1` FOREIGN KEY (`OP_ORDER_ID`) REFERENCES `orders` (`order_id`),
-  CONSTRAINT `ORDER_PRODUCT_FK_2` FOREIGN KEY (`OP_PROD_ID`) REFERENCES `product` (`prod_id`),
+  CONSTRAINT `ORDER_PRODUCT_FK_1` FOREIGN KEY (`OP_ORDER_ID`) REFERENCES `orders` (`ORDER_ID`),
+  CONSTRAINT `ORDER_PRODUCT_FK_2` FOREIGN KEY (`OP_PROD_ID`) REFERENCES `product` (`PROD_ID`),
   CONSTRAINT `ORDER_PRODUCT_FK_3` FOREIGN KEY (`OP_CATEGORY_ID`) REFERENCES `category` (`cat_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -198,4 +198,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-07-28 15:31:21
+-- Dump completed on 2015-07-28 16:40:21

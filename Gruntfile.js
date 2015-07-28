@@ -64,7 +64,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-mysql-dump-import');
 
     // Load the plugin that provides the "uglify" task.
-    grunt.loadNpmTasks('grunt-contrib-uglify');
+    //grunt.loadNpmTasks('grunt-contrib-uglify');
 
     // Default task(s).
     grunt.registerTask('default');
