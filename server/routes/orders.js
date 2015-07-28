@@ -30,15 +30,31 @@ router.get('/', function(req, res, next) {
 });
 
 router.put('/', function(req, res, next) {
-	res.send('order created');
+	console.log('saving order details');
+	var query = dbConnection.query('insert into orders values ?',post,function(err,result){
+		if(err)
+		{
+			console.log(err);
+			res.send('order failed');
+		}
+
+		if(result)
+		{
+			console.log(result);
+			res.send('order created');
+		}
+	})
+
+	console.log(query);
+	
 });
 
 router.get('/:id', function(req, res, next) {
-	res.send('get order details by id '+ req.params. id);
+	res.send('get order details by id '+ req.params.id);
 });
 
 router.delete('/:id', function(req, res, next) {
-	res.send('delete order by id '+ req.params. id);
+	res.send('delete order by id '+ req.params.id);
 });
 
 app.get("/products",function(req,res){
