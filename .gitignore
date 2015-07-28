@@ -2,9 +2,6 @@
 logs
 *.log
 
-# All Configs
-db.json
-
 # Runtime data
 pids
 *.pid

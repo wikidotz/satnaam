@@ -1,0 +1,8 @@
+{
+    "local": {
+        "db_name": "chatnaka_hoteldb",
+        "username": "root",
+        "password": "root",
+        "host": "localhost"
+    }
+}
