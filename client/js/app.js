@@ -7,7 +7,7 @@ angular.module('hotelApp', ['ui.router', 'ngTouch'])
         .state('home', {
         url: '/home',
         templateUrl: 'templates/partial-home.html',
-        controller: 'HomeCtrl'
+        controller: 'OrderCtrl'
     })
 
     .state('login', {

@@ -229,3 +229,39 @@ li.sp-item .spl-price {
         width: 30%;
     }
 }
+
+
+.orderDetail{
+    background-color: white;
+    padding: 8px;
+    border: solid 1px black;
+    height: 100%;
+
+}
+
+.orderDetail.customerTokenNum
+{
+    border: 1px solid #3f50b4;
+    padding: 5px; 
+    background: #3f50b4;
+    width: 40px;
+    border-radius: 0px;
+    border-top-left-radius:2em;
+    border-bottom-left-radius:2em;
+}
+
+.itemsOrderedCount{
+    width:50%;
+    float:left;
+}
+
+.orderDateTimeContainer
+{
+    width:50%;
+    float:left;
+}
+
+.orderBtnContainer
+{
+    
+}    

@@ -1,6 +1,7 @@
-<div>
+<div style="orderDetail" ng-controller="OrderCtrl">
+
 <label class="customerName">Mr.Lorem Ipsum</label>
-<div class="itemsOrderedCount">5</div>
+<div class="customerTokenNum">5</div>
 <div>
 	<div style="float:left;"><i class="fa fa-mobile"></i></div>
 	<div style="margin-left:4px;">9699674969</div>
@@ -9,8 +10,23 @@
 	<div style="margin-left:4px;">Room No.21, Bldg i-20, Mahavir nagar, Kandivali west, Mumbai 400067</div>
 
 	<div style="margin-top:10px;">
-		
+		<div class="itemsOrderedCount">
+			<i class="fa fa-mobile"></i>
+			<label>12</label>
+		</div>
+
+		<div class="orderDateTimeContainer">
+			<input type='text' class="form-control" id='orderDateTime' />	
+		</div>
+
+		<div id="orderBtnContainer">
+		  <div class="inner"><button class="fa fa-mobile allItemDiningBtn">A</button></div><!--onClick="return false;"-->
+		  <div class="inner"><button class="fa fa-mobile allItemParcelBtn">B</button></div>
+		  <div class="inner"><button class="fa fa-mobile scheduleOrderBtn">C</button></div>
+		</div>
 	</div>
+
+
 </div>
 
 </div>
