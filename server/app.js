@@ -2,6 +2,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var expressSession = require('express-session');
 var productsRoutes = require('./routes/products')
+var categoriesRoutes = require('./routes/categories');
+var orderRoutes = require('./routes/orders');
 var app = express();
 
 app.use(expressSession({
@@ -42,7 +44,9 @@ app.post('/login', function(req, res) {
     }
 });
 
-app.use('/products', productsRoutes)
+app.use('/products', productsRoutes);
+app.use('/categories',categoriesRoutes);
+app.use('/order',orderRoutes);
 
 app.get('/logout', function(req, res) {
     delete req.session.user_id;
