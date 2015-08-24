@@ -159,14 +159,15 @@ li.sp-item .spl-price {
 
 .s-sidebar {
     position: fixed;
-    border: 1px solid #ff0;
-    background-color: #f0f;
+    border: 1px solid #000000;
+    background-color: #ffffff;
     top: 50px;
     bottom: 0;
     z-index: 1;
     right: 0;
     /* right: -430px; */
     left: 0px;
+    padding:6px;
 }
 
 
@@ -261,7 +262,92 @@ li.sp-item .spl-price {
     float:left;
 }
 
-.orderBtnContainer
+#orderBtnsContainer
+{
+    width:100%;
+    text-align: center;
+}    
+
+.orderBtn
+{
+    display: inline-block;
+}
+
+.orderBtnsContainer2
+{
+    text-align: center;
+    bottom: 0px;
+    position: absolute;
+    width: 100%
+}
+
+.F
+{
+    table-layout: fixed;
+    width: 100%;
+    border-spacing: 0;
+    padding: 0;
+}
+
+.cf {
+    border-collapse: collapse;
+}
+
+table {
+    display: table;
+    border-collapse: separate;
+    border-spacing: 2px;
+    border-color: grey;
+    margin: 8px;
+}
+
+.x7 {
+    color: #000000;
+    background: #ffffff;
+}
+
+.yO {
+    background: #ffffff;
+    color: #000000;
+}
+
+.zA {
+    color: #000000;
+    cursor: pointer;
+    padding: 4 1ex;
+}
+
+tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+}
+
+td.yX {
+    padding-right: 6px;
+    padding-left: 10px;
+    color:#ff0000;
+}
+
+td.xw{
+    padding-right: :20px;
+}
+
+td.xz{
+
+}
+
+tr.summary 
+{
+    color:#ff0000;
+    font-size: :14px;
+    border: solid 1px #999999;
+    height: 30px;
+    vertical-align: bottom;
+
+}
+
+input.customerName
 {
     
-}    
+}

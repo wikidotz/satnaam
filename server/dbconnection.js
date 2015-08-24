@@ -6,7 +6,7 @@ var connection = mysql.createConnection({
 	user:'root',
 	password:'root',
 	database:'chatnaka_hoteldb'
-
+	
 });
 
 var DB_CONNECTED = false;

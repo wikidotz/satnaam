@@ -5,16 +5,18 @@
         <a class="sh-buttons" href=""><i class="fa fa-cutlery"></i></a>
         <div class="pull-right">
         	<a class="sh-buttons sh-parcel" href=""><i class="fa fa-gift"></i></a>
-        	<span class="sh-buttons sh-count">{{ordersArray.length}}</span>
+        	<span class="sh-buttons sh-count">{{itemsInOrder.length}}</span>
         </div>
     </header>
 
     <div class="s-content">
     	<ul class="s-product-list">
     		<li ng-swipe-left="leftSwipe(product)" ng-swipe-right="rightSwipe(product)" class="sp-item" ng-repeat="product in products track by $index">
-    			<div class="spl-text-container s-animate" ng-class="namePriceClass(product)">
+    			<div class="spl-text-container s-animate" ng-class="namePriceClass(product)"  ng-click="addItem(product)">
     				<div class="spl-name">{{product.prod_name}}</div>
-    				<div class="spl-price pull-right">Rs. {{product.prod_rate}}/-</div>	
+    				<div class="spl-price">Rs. {{product.prod_rate}}/-</div>	
+                    <div class="spl-button pull-right" >{{getProductCount(product)}}</div>  
+
     			</div>
     			
     			<div class="spl-buttons-container s-animate" ng-show="product.selected">

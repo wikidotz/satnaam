@@ -3,6 +3,12 @@ angular.module('hotelApp')
 .controller('OrderCtrl', function($scope, Product) {
 
     $scope.products = [];
+    $scope.customer = {id:0,name:''};
+    $scope.currentOrder= {};
+    $scope.itemsInOrder=[{productname:'sevpuri',qty:2,rate:30.00,amount:60.00,isparcel:0},
+                        {productname:'sp.veg cheese grill',qty:2,rate:90.00,amount:180.00,isparcel:1}];
+    $scope.totalQty = 0;
+    $scope.totalAmt = 0.00;
 
     function init() {
 
@@ -41,11 +47,12 @@ angular.module('hotelApp')
             };
         }
         $scope.isDrawerOpen = !$scope.isDrawerOpen;
+        $scope.$digest();
         //while opening order details section show current date and time
         showCurrentDateTime();
     }
 
-    $scope.ordersArray = [];
+    $scope.itemsInOrder = [];
 
     $scope.leftSwipe = function(product) {
     	product.selected = true;
@@ -61,15 +68,15 @@ angular.module('hotelApp')
 
     $scope.lessItem = function(product){
 //    	product.count--;
-		console.log($scope.ordersArray)
-    	for (var i = 0; i < $scope.ordersArray.length; i++) {
-    		if($scope.ordersArray[i].prod_id == product.prod_id){
-    			$scope.ordersArray.splice(i,1);
+		console.log($scope.itemsInOrder)
+    	for (var i = 0; i < $scope.itemsInOrder.length; i++) {
+    		if($scope.itemsInOrder[i].prod_id == product.prod_id){
+    			$scope.itemsInOrder.splice(i,1);
     			break;
     		}
     	};
 
-    	console.log($scope.ordersArray)
+    	console.log($scope.itemsInOrder)
 
     	product.count--;
     }
@@ -84,7 +91,7 @@ angular.module('hotelApp')
 
             product.count++;
 
-        $scope.ordersArray.push(product);
+        $scope.itemsInOrder.push(product);
     }
 
     $scope.getProductCount = function(product) {
@@ -96,9 +103,28 @@ angular.module('hotelApp')
 
     }
 
+    $scope.createNewOrderScreen = function(){
+        $scope.itemsInOrder = [];
+    }
 
-    $scope.currentOrder= {};
+    /**
+        use safrApply instead of apply to prevent error 
+    */
+    $scope.safeApply = function(fn){
+        var phase  = this.$root.$$phase;
+        if(phase == '$apply' || phase=='$digest')
+        {
+            if(fn && typeof(fn) === 'function')
+            {
+                fn();
+            }
+        }else
+        {
+            this.$apply(fn);
+        }
+    }
 
+    
     function calcCurrentDateTime(){
     	var d = new Date();
 		var month = d.getMonth()+1;
