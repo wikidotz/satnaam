@@ -1,10 +1,14 @@
 var express = require('express');
+
 var bodyParser = require('body-parser');
 var expressSession = require('express-session');
 var productsRoutes = require('./routes/products')
 var categoriesRoutes = require('./routes/categories');
+var customersRoutes = require('./routes/customers');
 var orderRoutes = require('./routes/orders');
-var app = express();
+var bookshelf = require('bookshelf');
+//var dbConnection = require('./dbconnection');
+var app = express(); 
 
 app.use(expressSession({
     secret: 'mySecretKey'
@@ -44,14 +48,19 @@ app.post('/login', function(req, res) {
     }
 });
 
+//app.set('dbConnection',dbConnection);
+//console.log(dbConnection);
+//console.log(dbConnection.bookshelf);
+
 app.use('/products', productsRoutes);
 app.use('/categories',categoriesRoutes);
+app.use('/customers',customersRoutes);
 app.use('/order',orderRoutes);
+
 
 app.get('/logout', function(req, res) {
     delete req.session.user_id;
     res.redirect('/login');
 });
-
 
 module.exports = app;

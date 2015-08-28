@@ -5,13 +5,26 @@ var fs= require('fs');
 var Util = require('../util');
 var dbConnection = require('../dbconnection');
 var ACTIVE_PRODS_GET = 'select * from product';
+var logger = require('../logger');
 /* GET home page. */
 router.get('/', function(req, res, next) {
-	console.log('loading active prods');
+	logger.log('info','Loading active products');
+
+	dbConnection.Product.collection().fetch().then(function(collection){
+		res.setHeader('Content-Type', 'application/json');
+		res.send(JSON.stringify(collection));	
+	},function(err){
+		if(err)
+		{
+			logger.log('error',err);
+		}
+
+	})
+	/*
 	dbConnection.query(ACTIVE_PRODS_GET,function(err,rows,fields){
 		if(err)
 		{
-			console.log(err);
+			logger.log('error',err);
 			return ;
 		}
 		//console.log(rows);
@@ -19,8 +32,12 @@ router.get('/', function(req, res, next) {
 		
 		res.setHeader('Content-Type', 'application/json');
 		res.send(JSON.stringify(rows));	
-	});	
-		
+	});*/
+
+	/*console.log(dbConnection.Product);
+	dbConnection.Product.fetch().then(function(collection){
+		console.log(collection.toJSON());
+	})*/
 	
 });
 

@@ -1,22 +1,52 @@
-angular.module('hotelApp')
+angular.module('hotelApp',[])
+.factory('castToOrderedProductFactory',function(){
+    var service = {};
+    service.castToOrderedProduct = function(productObj){
+        if(productObj==null || productObj ==undefined)
+        {
+            return null;
+        }
+        
+        var orderedProd = angular.copy(productObj);
+        orderedProd.OP_PROD_ID = orderedProd.prod_id ;
+        orderedProd.OP_CATEGORY_ID = orderedProd.prod_category_id;
+        orderedProd.OP_RATE = orderedProd.prod_rate;
+        orderedProd.OP_WEIGHT = orderedProd.prod_weight;
+        orderedProd.OP_SIZE = orderedProd.prod_size;
+        
+        return orderedProd ;
+    }
+    return service;
+})
+.controller('OrderCtrl', function($scope, Product,Order,castToOrderedProductFactory) {
 
-.controller('OrderCtrl', function($scope, Product) {
-
+    console.log('order controller');
     $scope.products = [];
-    $scope.customer = {id:0,name:''};
-    $scope.currentOrder= {};
-    $scope.itemsInOrder=[{productname:'sevpuri',qty:2,rate:30.00,amount:60.00,isparcel:0},
-                        {productname:'sp.veg cheese grill',qty:2,rate:90.00,amount:180.00,isparcel:1}];
-    $scope.totalQty = 0;
-    $scope.totalAmt = 0.00;
+    $scope.order = {};
+    $scope.customers = [];
+    $scope.order.customer = {cust_id:0,cust_first_name:'',cust_last_name:'',cust_nick_name:'',cust_mobile:'',
+    cust_email:'',cust_desc:'',cust_address1:'',cust_city1:'',cust_state1:'',cust_address2:'',cust_city2:'',
+    cust_state2:''};
 
+    $scope.order.itemsInOrder=[];
+    //$scope.order.totalQty = 0;
+    $scope.order.order_total_amt = 0.00;
+    $scope.order.order_token_no = 0;
+    MAX_TOKEN_NUM = 100;
+    START_TOKEN_NUM = 1;
     function init() {
 
         Product.getProducts().then(function(data) {
-            console.log("products data");
-            console.log(data);
+            logger().log("info","loading products data");
             $scope.products = data;
         })
+
+        /*Customer.getAllCustomers().then(function(data){
+            logger().log("info","loading all customers data");
+            $scope.customers = data;  
+        },function(err){
+
+        })*/
 
 
         //initialise bootstrap date time picker in order detail page
@@ -47,13 +77,12 @@ angular.module('hotelApp')
             };
         }
         $scope.isDrawerOpen = !$scope.isDrawerOpen;
-        $scope.$digest();
+        //$scope.$digest();
         //while opening order details section show current date and time
         showCurrentDateTime();
     }
 
-    $scope.itemsInOrder = [];
-
+   
     $scope.leftSwipe = function(product) {
     	product.selected = true;
     }
@@ -68,43 +97,66 @@ angular.module('hotelApp')
 
     $scope.lessItem = function(product){
 //    	product.count--;
-		console.log($scope.itemsInOrder)
-    	for (var i = 0; i < $scope.itemsInOrder.length; i++) {
-    		if($scope.itemsInOrder[i].prod_id == product.prod_id){
-    			$scope.itemsInOrder.splice(i,1);
+		console.log($scope.order.itemsInOrder)
+    	for (var i = 0; i < $scope.order.itemsInOrder.length; i++) {
+    		if($scope.order.itemsInOrder[i].OP_PROD_ID == product.prod_id){
+    			$scope.order.itemsInOrder.splice(i,1);
     			break;
     		}
     	};
 
-    	console.log($scope.itemsInOrder)
+    	console.log($scope.order.itemsInOrder);
 
-    	product.count--;
+    	product.OP_QUANTITY--;
+        $scope.calTotalAmt();
     }
-
-    
 
     $scope.addItem = function(product){
 
-        if (!product.hasOwnProperty('count')) {
-            product.count = 0;
-        } else
+        if(product!=undefined)
+        {
+            if (!product.hasOwnProperty('OP_QUANTITY')) {
+            product.OP_QUANTITY = 0;
+            } else{
+                product.OP_QUANTITY++;
+            }
 
-            product.count++;
-
-        $scope.itemsInOrder.push(product);
+            //$scope.order.itemsInOrder.push(castToOrderedProductFactory.castToOrderedProduct(product));
+            $scope.order.itemsInOrder.push(product);
+            $scope.calTotalAmt();    
+        }
+        
     }
 
     $scope.getProductCount = function(product) {
-        if (!product.hasOwnProperty('count')) {
-            product.count = 0;
+        if (!product.hasOwnProperty('OP_QUANTITY')) {
+            product.OP_QUANTITY = 0;
         }
 
-        return product.count;
+        return product.OP_QUANTITY;
 
     }
 
+    $scope.calTotalAmt = function(){
+        var tempTotalAmt = 0.00;
+        for(var i=0;i<$scope.order.itemsInOrder.length;i++)
+        {
+            tempTotalAmt += ($scope.order.itemsInOrder[i].OP_QUANTITY * $scope.order.itemsInOrder[i].prod_rate);
+        }
+        $scope.order.order_total_amt = tempTotalAmt;
+        
+    }
+
     $scope.createNewOrderScreen = function(){
-        $scope.itemsInOrder = [];
+        if($scope.order.order_token_no==MAX_TOKEN_NUM)
+        {
+            $scope.order.order_token_no = START_TOKEN_NUM;
+        }else
+        {
+            $scope.order.order_token_no++;    
+        }    
+        
+        $scope.order.itemsInOrder = [];
     }
 
     /**
@@ -124,6 +176,40 @@ angular.module('hotelApp')
         }
     }
 
+    $scope.payOrder = function(){
+
+    }
+
+
+
+    $scope.submitOrder = function(){
+
+        //logger().log('info',{$scope.order});
+         Order.createNewOrder($scope.order).then(function(response) {
+            if(response==undefined)
+            {
+                onOrderSubmitError();
+            }else if(response.data!=undefined && response.data.code!=undefined && response.data.code.toUpperCase()=="ORDER_SUBMIT_SUCCESS")
+            {
+                alert("order submit successfully");    
+                $scope.$emit('ORDER_SUBMIT_SUCCESS');
+            }else
+            {
+               onOrderSubmitError();
+            }
+            
+           // $scope.products = data;
+        },
+        function(err){
+            onOrderSubmitError();
+
+        })
+    }
+
+    function onOrderSubmitError(){
+         alert("Error in order submit");
+         logger().log("info","Error in order submit");
+    }
     
     function calcCurrentDateTime(){
     	var d = new Date();

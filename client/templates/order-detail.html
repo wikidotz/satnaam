@@ -1,72 +1,69 @@
-<div style="orderDetail" ng-controller="OrderCtrl">
+<div style="orderDetail" ><!--ng-controller="OrderCtrl"-->
 	<form id="orderForm" role="form">
+		 <div class="form-group">
+				<input type="text" class="customerName span3" data-provide="typeahead" autocomplete="off"
+			data-source="customers"
+			 id="custNameAutoComplete" placeholder="Customer Name" ng-model="order.customer.name"></label> 	
+		 </div>
 		
-		<input type="text" class="customerName form-control" ng-autocomplete="customer.name"
-		details="details1" options="options1" id="custNameAutoComplete" placeholder="Customer Name">Mr.Lorem Ipsum</label>
-		<div class="customerTokenNum">5</div>
-		<div>
-			<div style="float:left;"><i class="fa fa-mobile"></i></div>
-			<div style="margin-left:4px;">9699674969</div>
+		<div ng-show="false">{{order.customer.cust_id}}</div>
+		<div class="customerTokenNum">{{order.order_token_no}}</div>
+		
+		<div style="float:left;"><i class="fa fa-mobile"></i></div>
+		<div style="margin-left:4px;">{{order.customer.contact1}}</div>
 
-			<div style="float:left;"><i class="fa fa-mobile"></i></div>
-			<div style="margin-left:4px;">Room No.21, Bldg i-20, Mahavir nagar, Kandivali west, Mumbai 400067</div>
+		<div style="float:left;"><i class="fa fa-mobile"></i></div>
+		<div style="margin-left:4px;">{{order.customer.address}}</div>
 
-			<div style="margin-top:10px;">
-				<div class="itemsOrderedCount">
-					<i class="fa fa-mobile"></i>
-					<label>12</label>
-				</div>
-
-				<div class="orderDateTimeContainer">
-					<input type='text' class="form-control" id='orderDateTime' />	
-				</div>
-
-				<div id="orderBtnsContainer">
-				  <div class="orderBtn"><button class="fa fa-mobile allItemDiningBtn">A</button></div><!--onClick="return false;"-->
-				  <div class="orderBtn"><button class="fa fa-mobile allItemParcelBtn">B</button></div>
-				  <div class="orderBtn"><button class="fa fa-mobile scheduleOrderBtn">C</button></div>
-				</div>
-
-				<div>
-					<table class="F cf zt">
-						<thead>
-							<tr>
-								<th>Item</th>
-						      	<th>Qty</th>
-						      	<th>Amount</th>
-						    </tr>
-						</thead>
-						<tbody>
-							<tr ng-repeat="x in itemsInOrder" class="zA yO x7" tabIndex="-1">
-							    <td class="yx">{{ x.prod_name }}</td>
-							    <td class="xz">{{ x.count }}</td>
-							    <td class="xw">{{ x.count*x.prod_rate }}</td>
-							  </tr>
-						</tbody>	
-					  	<tfoot>
-					  		<tr class="summary">
-							  	<td class="total">Total</td>
-							  	<td class="xz totalQty">{{itemsInOrder.length}}</td>
-							  	<td class="xw totalAmt">totalAmt</td>
-							 </tr>		
-					  	</tfoot>
-					</table>			
-
-				</div>
-
-				<div class="orderBtnsContainer2">
-					<a href="#/payOrder" class="btn btn-danger btn-lg btn-block">Pay Now <span class="glyphicon glyphicons-money" 
-				 		aria-hidden="true"></span>	
-
-				 	<a href="#/submitOrder" class="btn btn-success btn-md btn-block disabled">Order <span class="glyphicon glyphicons-money" 
-				 		aria-hidden="true"></span>	
-				</div>
-				 
-		    </a>
+		<div style="margin-top:10px;">
+			<div class="itemsOrderedCount">
+				<i class="fa fa-mobile"></i>
+				<label>{{order.itemsInOrder.length}}</label>
 			</div>
 
+			<div class="orderDateTimeContainer">
+				<input type='text' class="form-control" id='orderDateTime' />	
+			</div>
+		</div>
+				
+		<div id="orderBtnsContainer">
+		  <div class="orderBtn"><button class="fa fa-mobile allItemDiningBtn">A</button></div><!--onClick="return false;"-->
+		  <div class="orderBtn"><button class="fa fa-mobile allItemParcelBtn">B</button></div>
+		  <div class="orderBtn"><button class="fa fa-mobile scheduleOrderBtn">C</button></div>
+		</div>
+
+		<div>
+			<table class="F cf zt">
+				<thead>
+					<tr>
+						<th>Item</th>
+				      	<th>Qty</th>
+				      	<th>Amount</th>
+				    </tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="x in order.itemsInOrder track by $index" class="zA yO x7" tabIndex="-1">
+					    <td class="yx">{{ x.prod_name }}</td>
+					    <td class="xz">{{ x.OP_QUANTITY }}</td>
+					    <td class="xw">{{ x.OP_QUANTITY*x.OP_RATE }}</td>
+					  </tr>
+				</tbody>	
+			  	<tfoot>
+			  		<tr class="summary">
+					  	<td class="total">Total</td>
+					  	<td class="xz totalQty">{{order.itemsInOrder.length}}</td>
+					  	<td class="xw totalAmt">{{order.order_total_amt}}</td>
+					 </tr>		
+			  	</tfoot>
+			</table>			
 
 		</div>
-	</form>
 
+		<div class="orderBtnsContainer2">
+			<a ng-click="payOrder()" href="#/payOrder" class="btn btn-danger btn-lg btn-block">Pay Now <span class="glyphicon glyphicons-money" aria-hidden="true"></span>	
+
+		 	<a ng-click="submitOrder()" class="btn btn-success btn-md btn-block ">Order <span 
+		 	class="glyphicon glyphicons-money" aria-hidden="true"></span>	<!--disabled-->
+		</div>
+	</form>
 </div>
