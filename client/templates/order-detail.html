@@ -1,9 +1,8 @@
 <div style="orderDetail" ><!--ng-controller="OrderCtrl"-->
 	<form id="orderForm" role="form">
 		 <div class="form-group">
-				<input type="text" class="customerName span3" data-provide="typeahead" autocomplete="off"
-			data-source="customers"
-			 id="custNameAutoComplete" placeholder="Customer Name" ng-model="order.customer.name"></label> 	
+				<input type="text" class="customerName" 
+			 id="custNameAutoComplete" placeholder="Customer Name"></label> 	
 		 </div>
 		
 		<div ng-show="false">{{order.customer.cust_id}}</div>
