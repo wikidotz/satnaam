@@ -26,6 +26,7 @@ footer.s-footer {
 .sf-left-arrow,
 .sf-right-arrow {
     position: absolute;
+    color: white;
     left: 0px;
     width: 10%;
     top: 0;
@@ -46,11 +47,11 @@ footer.s-footer {
     left: 0;
     width: auto;
     right: 0px;
+    white-space: nowrap;
 }
 
 .sf-cat-item {
     display: inline-block;
-    width: 17%;
     padding: 10px;
 }
 
@@ -112,26 +113,27 @@ li.sp-item {
 li.sp-item .spl-name {
     color: #1D298B;
     float: left;
+    width: 50%;
 }
 
 li.sp-item .spl-price {
     color: #EC004E;
     float: right;
+    width: 22%;
+    margin-left: 2%;
 }
 
 .spl-button {
-    float: right;
+    padding-top: 3px;
     font-size: 30px;
     background-color: red;
     height: 100%;
-    line-height: 57px;
     text-align: center;
     color: white;
-    /* border-radius: 23px; */
     width: 25%;
-    opacity:1;
-    -webkit-transition:all ease-out 2s;
-  	transition:all ease-out 2s;
+    opacity: 1;
+    float: right;
+    transition: all ease-out 2s;
 }
 
 .spl-button.add{
@@ -173,7 +175,7 @@ li.sp-item .spl-price {
 
 
 .s-sidebar .s-hook {
-    margin-left: -10px;
+    margin-left: -20px;
     width: 20px;
     height: 50px;
     background-color: blue;
@@ -217,17 +219,15 @@ li.sp-item .spl-price {
 
 @media (min-width: 500px) {
     .spl-button {
-        top: auto;
-        /* width: 35px; */
-        font-size: 18px;
-        /* height: 30px; */
-    
-        right: auto;
-        /* padding-bottom: 34px; */
+        font-size: 30px;
 }
     li.sp-item {
         float: left;
         width: 30%;
+    }
+
+    .spl-name{
+        font-size: 13px;
     }
 }
 

@@ -31,6 +31,8 @@ angular.module('hotelApp', ['ui.router', 'ngTouch'])
         };
     });
 
+    console.log('Hello')
+
 
 })
 

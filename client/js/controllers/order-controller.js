@@ -1,4 +1,4 @@
-angular.module('hotelApp',[])
+angular.module('hotelApp')
 .factory('castToOrderedProductFactory',function(){
     var service = {};
     service.castToOrderedProduct = function(productObj){
