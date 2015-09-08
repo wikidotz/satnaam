@@ -1,8 +1,8 @@
 <div style="orderDetail" ><!--ng-controller="OrderCtrl"-->
 	<form id="orderForm" role="form">
 		 <div class="form-group">
-				<input type="text" class="customerName" 
-			 id="custNameAutoComplete" placeholder="Customer Name"></label> 	
+			  <input class="customerName" id="custNameAutoComplete" ng-model="order.customer.cust_first_name"  typeahead-on-select="onCustomerSelect($item, $model, $label)" type="text" 
+			  placeholder="Search Customer..."><!--typeahead="customer as customer.cust_first_name for customer in customers | filter:$viewValue | limitTo:8"-->
 		 </div>
 		
 		<div ng-show="false">{{order.customer.cust_id}}</div>
