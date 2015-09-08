@@ -51,7 +51,7 @@ app.post('/login', function(req, res) {
 //app.set('dbConnection',dbConnection);
 //console.log(dbConnection);
 //console.log(dbConnection.bookshelf);
-
+ 
 app.use('/products', productsRoutes);
 app.use('/categories',categoriesRoutes);
 app.use('/customers',customersRoutes);

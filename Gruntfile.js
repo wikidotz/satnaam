@@ -68,8 +68,22 @@ module.exports = function(grunt) {
                 src: 'client/js/*.js',
                 dest: 'build/*.min.js'
             }
-        }
+        },
 
+        nodemon: {
+            dev: {
+                script: '../bin/www',
+                options: {
+                    args: ['dev'],
+                    env: {
+                        PORT: '3001'
+                    },
+                    cwd: 'server',
+                    ignore: ['node_modules/**'],
+                    ext: 'js'
+                }
+            }
+        }
 
     });
 
@@ -77,10 +91,14 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-sass');
 
+    grunt.loadNpmTasks('grunt-nodemon');
+
     // Load the plugin that provides the "uglify" task.
     //grunt.loadNpmTasks('grunt-contrib-uglify');
 
     // Default task(s).
     grunt.registerTask('default');
+
+    grunt.registerTask('serve', ['nodemon'])
 
 };
