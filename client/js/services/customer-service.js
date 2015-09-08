@@ -7,4 +7,14 @@ angular.module('hotelApp').service('Customer',function($http){
 			return err;
 		})
 	}
+
+	this.getCustomerInfoByCustomerCode = function(customerCode){
+		return $http.get('/customer').then(
+			function(response){
+
+			},
+			function(err){
+
+			})
+	}
 });

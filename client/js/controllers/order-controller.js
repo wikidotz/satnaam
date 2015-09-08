@@ -1,4 +1,4 @@
-angular.module('hotelApp')
+angular.module('hotelApp',['ui.bootstrap'])
 .factory('castToOrderedProductFactory',function(){
     var service = {};
     service.castToOrderedProduct = function(productObj){
@@ -18,7 +18,22 @@ angular.module('hotelApp')
     }
     return service;
 })
-.controller('OrderCtrl', function($scope, Product,Order,castToOrderedProductFactory) {
+.factory('dataFactory',function($http){
+    return {
+        get: function(url)
+        {
+            return $http.get(url).then(
+                function(response){
+                    return response.data;
+                },
+                function(err){
+                    logger().log("error","Customer typeahead["+err.stack+"]");
+                    return null;
+                })
+        }
+    }
+})
+.controller('OrderCtrl', function($scope, Product,Customer,Order,castToOrderedProductFactory,dataFactory) {
 
     console.log('order controller');
     $scope.products = [];
@@ -53,7 +68,10 @@ angular.module('hotelApp')
         /*$("#orderDateTime").datepicker({
         	format:'dd-mm-yyyy hh:mm'
         });*/
-
+        Customer.getAllCustomers().then(function(data){
+          logger().log("info","loading all customers");
+            $scope.customers = data;  
+        })
         showCurrentDateTime();
         
     }
@@ -204,6 +222,13 @@ angular.module('hotelApp')
             onOrderSubmitError();
 
         })
+    }
+
+    $scope.onCustomerSelect = function($item, $model, $label) {
+        Customer.getCustomerInfoByCustomerCode($item.cust_id).then(function(response) {
+            $scope.order.customer = response;
+            console.log(response);
+        });
     }
 
     function onOrderSubmitError(){
