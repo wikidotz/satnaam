@@ -4,10 +4,16 @@ angular.module('hotelApp', ['ui.router', 'ngTouch'])
 
     $stateProvider
     // HOME STATES AND NESTED VIEWS ========================================
-        .state('home', {
+    .state('home', {
         url: '/home',
         templateUrl: 'templates/partial-home.html',
         controller: 'OrderCtrl'
+    })
+
+    .state('orders', {
+        url: '/orders',
+        templateUrl: 'templates/order-list.html',
+        controller: 'OrderListCtrl'
     })
 
     .state('login', {

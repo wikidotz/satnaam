@@ -7,6 +7,18 @@ module.exports = function(grunt) {
         // Load database config from external JSON (optional) 
         db_config: grunt.file.readJSON('config/db.json'),
 
+        sass: { // Task
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: 'client/styles',
+                    src: ['*.scss'],
+                    dest: 'client/styles',
+                    ext: '.css'
+                }]
+            }
+        },
+
 
         db_import: {
             options: {
@@ -62,6 +74,8 @@ module.exports = function(grunt) {
     });
 
     grunt.loadNpmTasks('grunt-mysql-dump-import');
+
+    grunt.loadNpmTasks('grunt-contrib-sass');
 
     // Load the plugin that provides the "uglify" task.
     //grunt.loadNpmTasks('grunt-contrib-uglify');

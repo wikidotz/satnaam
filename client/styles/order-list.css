@@ -1,0 +1,44 @@
+/*
+Error: Invalid CSS after "	float": expected ";", was ": none"
+        on line 5 of client/styles/order-list.scss
+
+1: 
+2: 
+3: .ol-order-listing {
+4: 	margin: 0 auto
+5: 	float: none
+6: }
+
+Backtrace:
+client/styles/order-list.scss:5
+/Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:1165:in `expected'
+/Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:1101:in `expected'
+/Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:1096:in `tok!'
+/Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:761:in `block in try_declaration'
+/Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:1141:in `call'
+/Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:1141:in `rethrow'
+/Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:766:in `try_declaration'
+/Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:696:in `declaration_or_ruleset'
+/Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:661:in `block_child'
+/Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:650:in `block_contents'
+/Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:642:in `block'
+/Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:635:in `ruleset'
+/Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:660:in `block_child'
+/Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:650:in `block_contents'
+/Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:117:in `stylesheet'
+/Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/scss/parser.rb:42:in `parse'
+/Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/engine.rb:393:in `_to_tree'
+/Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/engine.rb:368:in `_render_with_sourcemap'
+/Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/engine.rb:285:in `render_with_sourcemap'
+/Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/exec/sass_scss.rb:407:in `run'
+/Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/exec/sass_scss.rb:63:in `process_result'
+/Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/exec/base.rb:52:in `parse'
+/Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/exec/base.rb:19:in `parse!'
+/Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/bin/sass:13:in `<top (required)>'
+/usr/bin/sass:23:in `load'
+/usr/bin/sass:23:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Error: Invalid CSS after \"	float\": expected \";\", was \": none\"\A         on line 5 of client/styles/order-list.scss\A \A 1: \A 2: \A 3: .ol-order-listing {\A 4: 	margin: 0 auto\A 5: 	float: none\A 6: }"; }
