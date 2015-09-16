@@ -170,6 +170,7 @@ li.sp-item .spl-price {
     /* right: -430px; */
     left: 0px;
     padding:6px;
+    max-height: 700px;
 }
 
 
@@ -208,27 +209,11 @@ li.sp-item .spl-price {
 
 
 
-
-
 .spl-calc-btn{
 	/* background-color: transparent; */
 	
 	/* color: #000; */
 	/* border: 1px solid; */
-}
-
-@media (min-width: 500px) {
-    .spl-button {
-        font-size: 30px;
-}
-    li.sp-item {
-        float: left;
-        width: 30%;
-    }
-
-    .spl-name{
-        font-size: 13px;
-    }
 }
 
 
@@ -347,9 +332,31 @@ tr.summary
 
 }
 
-input.customerName
-{
+.ol-main{
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+
+.ol-header, .ol-order-listing{
+    position: absolute;
     
 }
 
+.ol-order-listing{
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 90px;
+}
+
+.ol-search-order{
+    float: none;
+    margin: 0 auto;
+}
+
+.gridListdemoBasicUsage md-grid-tile {
+  transition: all 400ms ease-out 50ms; 
+}
 

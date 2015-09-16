@@ -1,0 +1,34 @@
+
+
+@media screen and (min-width: 321px) and (max-width:480px) {
+    li.sp-item{
+        width: 80%;
+        margin: 10px auto;
+    }
+
+}
+
+@media screen and (min-width: 481px) and (max-width:650px) {
+    li.sp-item{
+        width: 42%;
+        margin: 10px;
+        float: left;
+    }
+
+}
+
+@media screen and (min-width: 651px) and (max-width:991px) {
+	li.sp-item{
+        width: 30%;
+        margin: 10px;
+        float: left;
+    }
+}
+
+@media screen and (min-width: 991px){
+	li.sp-item{
+        width: 22%;
+        margin: 10px;
+        float: left;
+    }
+}
