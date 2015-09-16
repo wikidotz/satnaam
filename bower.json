@@ -8,19 +8,20 @@
   "homepage": "index.html",
   "dependencies": {
     "angular": "~1.4.1",
-    "json3": "~3.2.4",
-    "jquery": "~1.9.1",
-    "angular-route": "~1.2.0",
-    "angular-local-storage": "latest",
     "angular-bootstrap": "latest",
-    "es5-shim": "~2.0.8",
-    "angular-resource": "~1.2.0",
     "angular-cookies": "~1.2.0",
+    "angular-local-storage": "latest",
+    "angular-resource": "~1.2.0",
+    "angular-route": "~1.2.0",
     "angular-sanitize": "~1.2.0",
+    "angular-touch": "~1.4.3",
     "angular-ui-router": "~0.2.15",
-    "fontawesome": "~4.3.0",
     "bootstrap": "~3.3.5",
-    "angular-touch": "~1.4.3"
+    "eonasdan-bootstrap-datetimepicker": "~4.17.37",
+    "es5-shim": "~2.0.8",
+    "fontawesome": "~4.3.0",
+    "jquery": "~1.9.1",
+    "json3": "~3.2.4"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.0",

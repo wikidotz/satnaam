@@ -51,6 +51,8 @@ angular.module('hotelApp')
     START_TOKEN_NUM = 1;
     function init() {
 
+        $('#orderDateTime').datetimepicker();
+
         Product.getProducts().then(function(data) {
             logger().log("info","loading products data");
             $scope.products = data;
