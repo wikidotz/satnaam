@@ -12,6 +12,7 @@ header.s-header {
     left: 0px;
     right: 0px;
     height: 50px;
+    z-index: 3;
 }
 
 footer.s-footer {
@@ -21,6 +22,7 @@ footer.s-footer {
     right: 0px;
     height: 50px;
     overflow: hidden;
+    z-index: 2;
 }
 
 .sf-left-arrow,
@@ -86,9 +88,14 @@ footer.s-footer {
     position: absolute;
     top: 60px;
     bottom: 60px;
-    right: 0;
-    left: 0;
+    right: 10px;
+    left: 10px;
     overflow-y: auto;
+    z-index: 1;
+}
+
+.order-list-content{
+    top: -30px;
 }
 
 ul.s-product-list {
@@ -360,3 +367,50 @@ tr.summary
   transition: all 400ms ease-out 50ms; 
 }
 
+
+.ol-grid-tile-main{
+    position: absolute;
+    top: 3px;
+    left: 5px;
+    right: 5px;
+    bottom: 3px;
+}
+
+.ol-grid-tile-main  > header{
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 1.2em;
+    right: 0;
+}
+
+.ol-grid-tile-main  > div.ol-tile-content{
+
+position: absolute;top: 20px;bottom: 20px;overflow: auto;left: 0;right: 0;}
+
+.ol-grid-tile-main  > footer{
+    position: absolute;
+    bottom: 0;
+    height: 20px;
+    right: 0;
+    left: 0;
+}
+
+.ol-item-name{
+    color: red;
+}
+
+.ol-item-name > span{
+    color: black;
+    display: block;
+}
+
+.row.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+}
+.row.no-gutters > [class^="col-"],
+.row.no-gutters > [class*=" col-"] {
+  padding-right: 0;
+  padding-left: 0;
+}

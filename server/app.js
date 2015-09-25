@@ -7,6 +7,7 @@ var categoriesRoutes = require('./routes/categories');
 var customersRoutes = require('./routes/customers');
 var orderRoutes = require('./routes/orders');
 var bookshelf = require('bookshelf');
+var mongoose = require('mongoose');
 //var dbConnection = require('./dbconnection');
 var app = express(); 
 
@@ -19,6 +20,8 @@ app.use(bodyParser.urlencoded({
 })); // for parsing application/x-www-form-urlencoded
 
 app.use(express.static(__dirname + '../../client'));
+
+//mongoose.connect('mongodb://localhost:27017/test');
 
 
 function checkAuth(req, res, next) {

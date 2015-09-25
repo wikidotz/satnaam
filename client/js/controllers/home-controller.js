@@ -58,8 +58,6 @@ angular.module('hotelApp')
     		}
     	};
 
-    	console.log($scope.ordersArray)
-
     	product.count--;
     }
 
