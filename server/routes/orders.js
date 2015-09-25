@@ -2,7 +2,9 @@ var express = require('express');
 var router = express.Router();
 var dbConnection = require('../dbconnection');
 var logger = require('../logger');
-var bookshelf = require('bookshelf')
+var bookshelf = require('bookshelf');
+var orderJson = require('../data/orderlist.json');
+
 //COMMENTED AS OF NOW
 
 var app = express();
@@ -141,6 +143,10 @@ router.put('/createOrder1', function(req, res, next) {
 		});
 	});
 });
+
+router.get('/lastestOrders', function(req, res){
+	res.json(orderJson)
+})
 
 router.get('/:id', function(req, res, next) {
 	res.send('get order details by id '+ req.params.id);

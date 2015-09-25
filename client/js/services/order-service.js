@@ -23,4 +23,11 @@ angular.module('hotelApp').service('Order',function($http){
 			alert(err);
 		})
 	}
+
+	this.getLatestOrder = function(){
+
+		return $http.get('/order/lastestOrders').then(function(response){
+			return response.data;
+		})
+	}
 })

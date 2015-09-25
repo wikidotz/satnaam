@@ -1,32 +1,55 @@
-<div class="ol-main">
-    <header>
-        <h1 class="text-center">Current Orders</h1>
-        <div class="row">
-        	<div class="col-md-6 col-xs-8 ol-search-order">
-	            <input type="text" class="form-control">
-	        </div>
+<div class="s-layout">
+    <header class="s-header s-strip">
+        <a class="sh-buttons" href=""><i class="fa fa-bars"></i></a>
+        <a class="sh-buttons" href=""><i class="fa fa-th"></i></a>
+        <a class="sh-buttons" href=""><i class="fa fa-cutlery"></i></a>
+        <div class="pull-right">
+            <a class="sh-buttons sh-parcel" href=""><i class="fa fa-gift"></i></a>
+            <span class="sh-buttons sh-count">{{itemsInOrder.length}}</span>
         </div>
     </header>
-    <div class="ol-order-listing">
-        <div class="gridListdemoBasicUsage">
-            <md-content>
-			    <md-grid-list
-			        md-cols-gt-md="12" md-cols-sm="3" md-cols-md="8"
-			        md-row-height-gt-md="1:1" md-row-height="4:3"
-			        md-gutter-gt-md="16px" md-gutter-gt-sm="8px" md-gutter="4px">
-			      <md-grid-tile
-			          ng-repeat="tile in colorTiles"
-			          ng-style="{
-			            'background': '#F9B50A'
-			          }"
-			          class="ol-sheet"
+    <div class="s-content order-list-content">
+        <div class="ol-main">
+            <div class="ol-order-listing">
+                <div class="gridListdemoBasicUsage">
+                    <md-content>
+                        <md-grid-list md-cols-gt-md="12" md-cols-sm="1" md-cols-md="9" md-row-height-gt-md="1:1" md-row-height="4:3" md-gutter-gt-md="16px" md-gutter-gt-sm="16px" md-gutter="16px">
+                            <md-grid-tile ng-repeat="order in orderlist" ng-style="{
+			            'border': '1px solid #f00'
+			          }" class="ol-sheet" md-colspan-gt-sm="3" md-rowspan-gt-sm="3">
+                                <div class="ol-grid-tile-main">
 
-			          md-colspan-gt-sm="3"
-			          md-rowspan-gt-sm="3">
-			          	<i>Order Number {{$index}}</i>
-			      </md-grid-tile>
-			    </md-grid-list>
-			  </md-content>
+                                    <header class="row no-gutters">
+                                        <span class="col-xs-1">{{order.token}}</span>
+                                        <span class="col-xs-9">{{order.name}}</span>
+                                        
+                                        <span class="col-xs-1">6</span>
+                                        <span class="col-xs-2 pull-right">parcel</span>
+                                    </header>
+                                    <div class="ol-tile-content">
+                                        <table class="table table-condensed">
+                                            <tr ng-repeat="item in order.items">
+                                                <td>{{item.quantity}}</td>
+                                                <td class="ol-item-name">{{item.name}}
+                                                    <span>{{item.desc}}</span>
+                                                </td>
+                                                <td>{{item.amount}}/-</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <footer>
+                                        <span>time</span>
+                                        <span>20 mins ago</span>
+                                        <span class="pull-right">111</span>
+                                    </footer>
+                                </div>
+                            </md-grid-tile>
+                        </md-grid-list>
+                    </md-content>
+                </div>
+            </div>
         </div>
     </div>
+    <footer class="s-footer s-strip">
+    </footer>
 </div>
