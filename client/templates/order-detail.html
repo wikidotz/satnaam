@@ -44,7 +44,7 @@
 		</div>
 	
 		<div class="form-group">
-			<table class="F cf zt">
+			<table clasa="table table-condensed table-bordered"><!--class="F cf zt"-->
 				<thead>
 					<tr>
 						<th>Item</th>
@@ -54,16 +54,16 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="x in order.itemsInOrder track by $index" class="zA yO x7" tabIndex="-1">
-					    <td class="yx">{{ x.prod_name }}</td>
-					    <td class="xz">{{ x.OP_QUANTITY }}</td>
-					    <td class="xw">{{ x.OP_QUANTITY*x.OP_RATE }}</td>
+					    <td >{{ x.prod_name }}</td><!--class="yx"-->
+					    <td >{{ x.OP_QUANTITY }}</td><!--class="xz"-->
+					    <td >{{ x.OP_QUANTITY*x.prod_rate }}</td><!--class="xw"-->
 					  </tr>
 				</tbody>	
 			  	<tfoot>
-			  		<tr class="summary">
-					  	<td class="total">Total</td>
-					  	<td class="xz totalQty">{{order.itemsInOrder.length}}</td>
-					  	<td class="xw totalAmt">{{order.order_total_amt}}</td>
+			  		<tr ><!--class="summary"-->
+					  	<td >Total</td><!--class="total"-->
+					  	<td >{{order.itemsInOrder.length}}</td><!--class="xz totalQty"-->
+					  	<td >{{order.order_total_amt}}</td><!--class="xw totalAmt"-->
 					 </tr>		
 			  	</tfoot>
 			</table>			

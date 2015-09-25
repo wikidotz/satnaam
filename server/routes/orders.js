@@ -16,7 +16,21 @@ router.get('/', function(req, res, next) {
 router.put('/createOrder', function(req, res, next) {
 	
 	var orderObj = req.params.orderDetail;
-	 orderObj = {
+	var orderDBFields = {"cust_id":0,
+			"order_token_no":"0",
+			"order_table_no":0,
+			"order_total_amt":0.0,
+			"order_total_qty":0,
+			"order_expct_time":0,
+			"order_date":"",
+			"order_status":0,
+			"order_pay_status":"0",
+			"order_mng_emp_id":""};
+	for(var prop in orderDBFields)
+	{
+		orderDBFields[prop] = orderObj[prop] ;
+	}		
+	 /*orderObj = {
 	 		"cust_id":1,
 			"order_token_no":"1",
 			"order_table_no":1,
@@ -26,8 +40,9 @@ router.put('/createOrder', function(req, res, next) {
 			"order_date":"2015-07-20 13:16:00",
 			"order_status":1,
 			"order_pay_status":"0",
-			"order_mng_emp_id":""
-	 }
+			"order_mng_emp_id":""*/
+		logger.log('info','order detail to save['+JSON.stringify(orderDBFields)+']');
+	 
 	//console.log(dbConnection);
 
 	dbConnection.bookshelf.transaction(function(transaction){
