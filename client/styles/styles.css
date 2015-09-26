@@ -370,10 +370,10 @@ tr.summary
 
 .ol-grid-tile-main{
     position: absolute;
-    top: 3px;
-    left: 5px;
-    right: 5px;
-    bottom: 3px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 }
 
 .ol-grid-tile-main  > header{
@@ -382,11 +382,12 @@ tr.summary
     left: 0;
     font-size: 1.2em;
     right: 0;
+    background-color: #FDE;
 }
 
 .ol-grid-tile-main  > div.ol-tile-content{
 
-position: absolute;top: 20px;bottom: 20px;overflow: auto;left: 0;right: 0;}
+position: absolute;top: 20px;bottom: 20px;overflow: auto;left: 0;right: 0;overflow-x: hidden;}
 
 .ol-grid-tile-main  > footer{
     position: absolute;
@@ -394,6 +395,7 @@ position: absolute;top: 20px;bottom: 20px;overflow: auto;left: 0;right: 0;}
     height: 20px;
     right: 0;
     left: 0;
+    padding: 0 5px;
 }
 
 .ol-item-name{
@@ -403,6 +405,24 @@ position: absolute;top: 20px;bottom: 20px;overflow: auto;left: 0;right: 0;}
 .ol-item-name > span{
     color: black;
     display: block;
+}
+
+.ol-order-token{
+    background-color: #f0f;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    text-align: center;
+    margin-top: -3px;
+    padding-bottom: 3px;
+    color: #fff;
+}
+.ol-order-name
+{
+    padding: 0 5px !important;
+}
+
+.hide-bg{
+    background-color: #fff !important;
 }
 
 .row.no-gutters {

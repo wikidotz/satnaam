@@ -1,16 +1,38 @@
 angular.module('hotelApp')
-    .controller('OrderListCtrl', function($scope, Order) {
 
-        $scope.orderlist = [];
-        
-        function init(){
-            Order.getLatestOrder().then(function(response){
+.controller('OrderGridCtrl', function($scope) {
+    $scope.getRowStyle = function(item) {
+    	console.log(item.isParcel)
+        var color = (item.isParcel) ? '#FF0' : '#F0F';
 
-                $scope.orderlist = response.orderlist;
-
-            })
+        return {
+            'background-color': color
         }
+    }
 
-        init()
+    $scope.isShowingParcel = false;
 
-    })
+    $scope.showParcel = function() {
+        $scope.isShowingParcel = !$scope.isShowingParcel;
+    }
+})
+
+.controller('OrderListCtrl', function($scope, Order) {
+
+    $scope.orderlist = [];
+
+    function init() {
+        Order.getLatestOrder().then(function(response) {
+
+            $scope.orderlist = response.orderlist;
+
+        })
+    }
+
+
+
+
+
+    init()
+
+})

@@ -17,18 +17,18 @@
                             <md-grid-tile ng-repeat="order in orderlist" ng-style="{
 			            'border': '1px solid #f00'
 			          }" class="ol-sheet" md-colspan-gt-sm="3" md-rowspan-gt-sm="3">
-                                <div class="ol-grid-tile-main">
+                                <div class="ol-grid-tile-main" ng-controller="OrderGridCtrl">
 
                                     <header class="row no-gutters">
-                                        <span class="col-xs-1">{{order.token}}</span>
-                                        <span class="col-xs-9">{{order.name}}</span>
+                                        <span class="col-xs-1 ol-order-token">{{order.token}}</span>
+                                        <span class="col-xs-9 ol-order-name">{{order.name}}</span>
                                         
                                         <span class="col-xs-1">6</span>
-                                        <span class="col-xs-2 pull-right">parcel</span>
+                                        <span ng-click="showParcel()" class="col-xs-1 pull-right"><i class="fa fa-gift"></i></span>
                                     </header>
                                     <div class="ol-tile-content">
                                         <table class="table table-condensed">
-                                            <tr ng-repeat="item in order.items">
+                                            <tr ng-repeat="item in order.items" ng-class="(isShowingParcel)? '': 'hide-bg'" ng-style="getRowStyle(item)">
                                                 <td>{{item.quantity}}</td>
                                                 <td class="ol-item-name">{{item.name}}
                                                     <span>{{item.desc}}</span>
@@ -38,8 +38,8 @@
                                         </table>
                                     </div>
                                     <footer>
-                                        <span>time</span>
-                                        <span>20 mins ago</span>
+                                        <span><i class="fa fa-clock-o"></i></span>
+                                        <span am-time-ago="order.time"></span>
                                         <span class="pull-right">111</span>
                                     </footer>
                                 </div>
