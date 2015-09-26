@@ -10,7 +10,7 @@ var logger = require('../logger');
 router.get('/', function(req, res, next) {
 	logger.log('info','Loading active products');
 
-	dbConnection.Product.collection().fetch().then(function(collection){
+	/*dbConnection.Product.collection().fetch().then(function(collection){
 		res.setHeader('Content-Type', 'application/json');
 		res.send(JSON.stringify(collection));	
 	},function(err){
@@ -19,8 +19,8 @@ router.get('/', function(req, res, next) {
 			logger.log('error',err);
 		}
 
-	})
-	/*
+	})*/
+	
 	dbConnection.query(ACTIVE_PRODS_GET,function(err,rows,fields){
 		if(err)
 		{
@@ -32,7 +32,7 @@ router.get('/', function(req, res, next) {
 		
 		res.setHeader('Content-Type', 'application/json');
 		res.send(JSON.stringify(rows));	
-	});*/
+	});
 
 	/*console.log(dbConnection.Product);
 	dbConnection.Product.fetch().then(function(collection){
