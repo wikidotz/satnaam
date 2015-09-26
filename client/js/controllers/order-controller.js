@@ -75,6 +75,8 @@ angular.module('hotelApp')
             $scope.customers = data;  
         })
         showCurrentDateTime();
+        $scope.createNewOrderScreen();
+
         
     }
 
@@ -142,7 +144,9 @@ angular.module('hotelApp')
             }
 
             //$scope.order.itemsInOrder.push(castToOrderedProductFactory.castToOrderedProduct(product));
-            $scope.order.itemsInOrder.push(product);
+            //copy deep copy into itemsInOrder
+            $scope.order.itemsInOrder.push(angular.copy(product));
+            $scope.order.order_total_qty = $scope.order.itemsInOrder.length;
             $scope.calTotalAmt();    
         }
         
@@ -177,7 +181,11 @@ angular.module('hotelApp')
         }    
         
         $scope.order.itemsInOrder = [];
+        $scope.order.order_status = 1;
+        $scope.order.order_pay_status = "none";
+        $scope.order.order_mng_emp_id = 1;
     }
+
 
     /**
         use safrApply instead of apply to prevent error 
@@ -205,6 +213,10 @@ angular.module('hotelApp')
     $scope.submitOrder = function(){
 
         //logger().log('info',{$scope.order});
+        $scope.order.cust_id = 1;
+        $scope.order.order_table_no = 1;
+        $scope.order.order_expct_time = 0;
+        $scope.order.order_date = formatDateTime(calcCurrentDateTime());
          Order.createNewOrder($scope.order).then(function(response) {
             if(response==undefined)
             {
@@ -213,6 +225,7 @@ angular.module('hotelApp')
             {
                 alert("order submit successfully");    
                 $scope.$emit('ORDER_SUBMIT_SUCCESS');
+                $scope.createNewOrderScreen();
             }else
             {
                onOrderSubmitError();
@@ -245,6 +258,12 @@ angular.module('hotelApp')
 		var year = d.getFullYear();
 		console.log("day="+day+",date["+d+"]");
 		return {year:year,month:month,day:day,date:d,hr:d.getHours(),min:d.getMinutes()};
+    }
+
+    function formatDateTime(targetDateObj){
+        var formattedDate  = targetDateObj.year+'/'+targetDateObj.month+'/'+targetDateObj.day+' ';
+        formattedDate  += targetDateObj.hr+':'+targetDateObj.min+':0';
+        return formattedDate;
     }
 
     function showCurrentDateTime(){
