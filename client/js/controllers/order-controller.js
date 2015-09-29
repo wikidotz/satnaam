@@ -217,6 +217,7 @@ angular.module('hotelApp')
         $scope.order.order_table_no = 1;
         $scope.order.order_expct_time = 0;
         $scope.order.order_date = formatDateTime(calcCurrentDateTime());
+        $scope.order.mode = 'create';
          Order.createNewOrder($scope.order).then(function(response) {
             if(response==undefined)
             {
