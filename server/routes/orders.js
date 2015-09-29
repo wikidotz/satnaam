@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
 
 router.put('/saveOrder', function(req, res, next) {
 	logger.log('info','createOrder start');
-	var orderObj = req.params.orderDetail;
+	var orderObj = req.params;
 	//check for order save mode- create /update
 	var orderSaveMode =orderObj.mode ;
 	var orderDBFields = {"cust_id":0,

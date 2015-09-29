@@ -23,6 +23,8 @@ footer.s-footer {
     height: 50px;
     overflow: hidden;
     z-index: 2;
+    /*remove after coding of order details page*/
+    display:none;
 }
 
 .sf-left-arrow,
@@ -268,7 +270,7 @@ li.sp-item .spl-price {
 .orderBtnsContainer2
 {
     text-align: center;
-    bottom: 0px;
+    bottom: 10px;
     position: absolute;
     width: 100%
 }

@@ -2,7 +2,7 @@ angular.module('hotelApp').service('Order',function($http){
 	
 	this.createNewOrder = function(orderObj){
 		logger().log("Saving order details-items");
-		orderObj = {
+		/*orderObj = {
 			//"order_id":"1",
 			"cust_id":1,
 			"order_token_no":"1",
@@ -14,9 +14,9 @@ angular.module('hotelApp').service('Order',function($http){
 			"order_status":1,
 			"order_pay_status":"0",
 			"order_mng_emp_id":"",
-		};
-
-		return $http.put('/order/createOrder',orderObj).then(function(response){
+		};*/
+		
+		return $http.put('/order/saveOrder',orderObj).then(function(response){
 			alert(response);
 		},
 		function(err){
