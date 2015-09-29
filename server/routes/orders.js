@@ -15,9 +15,11 @@ router.get('/', function(req, res, next) {
 	res.send('get all orders');
 });
 
-router.put('/createOrder', function(req, res, next) {
+router.put('/saveOrder', function(req, res, next) {
 	logger.log('info','createOrder start');
 	var orderObj = req.params.orderDetail;
+	//check for order save mode- create /update
+	var orderSaveMode =orderObj.mode ;
 	var orderDBFields = {"cust_id":0,
 			"order_token_no":"0",
 			"order_table_no":0,
@@ -67,6 +69,13 @@ router.put('/createOrder', function(req, res, next) {
 		if(err){ throw err;}
 
 		logger.log('info','order detail to save['+JSON.stringify(orderDBFields)+']');
+		if(orderSaveMode.toLowerCase()=='create')
+		{
+			//create new order
+		}else
+		{
+			//update existing order
+		}
 		//insert order into table orders
 		var query = dbConnection.query('insert into orders set ?',orderDBFields,function(err,result){
 			if(err)
@@ -86,53 +95,9 @@ router.put('/createOrder', function(req, res, next) {
 				logger.log('info','createOrder end');
 
 				var orderID = result.insertId;
-				logger.log('info','insert items start');
+				//clearExistingProdsForOrder(orderID);
+				addProdsForOrder(orderID,orderedProducts,orderSaveMode);
 				
- 				//counter for all insert result 
- 				var resultCount=0;
- 					for(var i=0;i<orderedProducts.length;i++)
- 					{
- 							logger.log('debug','item insert into order_product start['+orderedProducts[i].OP_PROD_ID+']');
- 							var multiple_insert_item_query = dbConnection.query('insert into order_product set ?',orderedProducts[i],function(err,result){
-			 					console.log(multiple_insert_item_query.sql);
-			 					if(err)
-			 					{
-			 						logger.log('error',err.stack);
-									dbConnection.rollback(function(err){
-										throw err;
-									})	
-									res.send({code:'ORDER_SUBMIT_FAILED',msg:'Error in order create.Please try again!'});
-			 					}
-
-
-			 					if(result)
-			 					{
-			 						logger.log('debug','item insert into order_product end');
-			 						resultCount++;
-			 						if(resultCount == orderedProducts.length)
-			 						{
-			 							dbConnection.commit(function(err){
-											if(err)
-											{
-												logger.log('error',err.stack);
-												dbConnection.rollback(function(err){
-													throw err;
-												})	
-												res.send({code:'ORDER_SUBMIT_FAILED',msg:'Error in order create.Please try again!'});	
-											}//end of err loop
-											if(result)
-											{
-												logger.log("info","order created successfully.OrderID["+orderID+"]");
-												//dbConnection.end();
-												res.send({code:'ORDER_SUBMIT_SUCCESS',msg:'order created successfully.'});
-											}
-										})
-			 						}//end of if conditin
-			 					}//end of result loop
-									
- 							})//end of function loop
- 					
- 				}//end of for loop
 			}//end of result
 		});
 	});
@@ -153,5 +118,69 @@ router.delete('/:id', function(req, res, next) {
 app.get("/products",function(req,res){
 	console.log(""+res);
 })
+
+function addProdsForOrder(orderID,orderedProducts,mode)
+{
+	if(orderedProducts==undefined || orderedProducts == null)
+	{
+		res.send({code:'NOPRODS',msg:'No product.'});
+		return ;
+	}
+	logger.log('info','insert items start');
+				
+	//counter for all insert result 
+	var resultCount=0;
+	for(var i=0;i<orderedProducts.length;i++)
+	{//for start-1
+			logger.log('debug','item insert into order_product start['+orderedProducts[i].OP_PROD_ID+']');
+			var multiple_insert_item_query = dbConnection.query('insert into order_product set ?',
+											orderedProducts[i],function(err,result){
+			console.log(multiple_insert_item_query.sql);
+			if(err)
+			{
+				logger.log('error',err.stack);
+				dbConnection.rollback(function(err){
+					throw err;
+				})	
+
+				res.send({code:'ORDER_ITEM_INSERT_FAILED',msg:'Error in order item insert.Please try again!'});
+			}
+
+
+			if(result)
+			{
+				logger.log('debug','item insert into order_product end');
+				resultCount++;
+				if(resultCount == orderedProducts.length)
+				{
+					dbConnection.commit(function(err){
+						if(err)
+						{
+							logger.log('error',err.stack);
+							dbConnection.rollback(function(err){
+								throw err;
+							})	
+							res.send({code:'ORDER_SUBMIT_COMMIT_FAILED',msg:'Error in order create.Please try again!'});	
+						}//end of err loop
+						if(result)
+						{
+							logger.log("info","order created successfully.OrderID["+orderID+"]");
+							//dbConnection.end();
+							res.send({code:'ORDER_SUBMIT_SUCCESS',msg:'order created successfully.'});
+						}
+					})
+				}//end of if conditin
+			}//end of result loop
+				
+		})//end of function loop
+	
+	}//end of for loop
+}
+
+function clearExistingProdsForOrder(orderID)
+{
+	
+}
+
 
 module.exports = router;
