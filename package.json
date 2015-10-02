@@ -21,6 +21,7 @@
     "mongoose": "^4.0.7",
     "morgan": "~1.5.3",
     "mysql": "^2.0.0-rc2",
+    "nodemon": "^1.7.1",
     "passport": "*",
     "passport-local": "*",
     "sequelize": "^3.3.2",

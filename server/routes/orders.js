@@ -51,6 +51,7 @@ router.put('/saveOrder', function(req, res, next) {
 
 	var orderedProdObj = {};
 	var orderedProducts = [];
+	console.log('itemsInOrder['+orderObj.itemsInOrder+']');
 	for(var i=0;i<orderObj.itemsInOrder.length;i++)
 	{	
 		angular.forEach(orderedProductsDBFields, function(value, key) {
