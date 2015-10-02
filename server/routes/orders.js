@@ -17,11 +17,13 @@ router.get('/', function(req, res, next) {
 
 router.put('/saveOrder', function(req, res, next) {
 	logger.log('info','createOrder start');
-	var orderObj = req.params;
+	var orderObj = req.body.orderObj;
+
+	console.log(orderObj)
 	//check for order save mode- create /update
 	var orderSaveMode =orderObj.mode ;
 	var orderDBFields = {"cust_id":0,
-			"order_token_no":"0",
+			"orde r_token_no":"0",
 			"order_table_no":0,
 			"order_total_amt":0.0,
 			"order_total_qty":0,
@@ -51,7 +53,8 @@ router.put('/saveOrder', function(req, res, next) {
 
 	var orderedProdObj = {};
 	var orderedProducts = [];
-	console.log('itemsInOrder['+orderObj.itemsInOrder+']');
+	console.log('- - - - - - - - - - -')
+	console.log(orderObj.itemsInOrder);
 	for(var i=0;i<orderObj.itemsInOrder.length;i++)
 	{	
 		angular.forEach(orderedProductsDBFields, function(value, key) {

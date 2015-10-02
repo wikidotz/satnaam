@@ -9,8 +9,6 @@
   "dependencies": {
     "angular": "~1.4.1",
     "angular-bootstrap": "latest",
-    "angular-cookies": "~1.2.0",
-    "angular-local-storage": "latest",
     "angular-material": "~0.11.0",
     "angular-moment": "~0.10.3",
     "angular-resource": "~1.2.0",

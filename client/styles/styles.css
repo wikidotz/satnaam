@@ -1,3 +1,15 @@
+.row.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+}
+.row.no-gutters > [class^="col-"],
+.row.no-gutters > [class*=" col-"] {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+
+
 .s-layout {
     position: absolute;
     top: 0;
@@ -427,12 +439,7 @@ position: absolute;top: 20px;bottom: 20px;overflow: auto;left: 0;right: 0;overfl
     background-color: #fff !important;
 }
 
-.row.no-gutters {
-  margin-right: 0;
-  margin-left: 0;
-}
-.row.no-gutters > [class^="col-"],
-.row.no-gutters > [class*=" col-"] {
-  padding-right: 0;
-  padding-left: 0;
+.ol-table{
+    margin-left: 0;
+    margin-right: 0;
 }

@@ -1,8 +1,13 @@
 angular.module('hotelApp').service('Order',function($http){
 	
 	this.createNewOrder = function(orderObj){
-		logger().log("Saving order details-items");
-		return $http.put('/order/saveOrder',orderObj).then(function(response){
+
+		var data = {
+			//orderObj :JSON.stringify(orderObj)
+			orderObj :orderObj
+		}
+		console.log(data);
+		return $http.put('/order/saveOrder',data).then(function(response){
 			alert(response);
 		},
 		function(err){
