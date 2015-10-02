@@ -3504,9 +3504,11 @@ md-checkbox {
 
 md-content {
   display: block;
+  padding: 5px 0;
   position: relative;
   overflow: auto;
-  -webkit-overflow-scrolling: touch; }
+  -webkit-overflow-scrolling: touch;
+  }
   md-content[md-scroll-y] {
     overflow-y: auto;
     overflow-x: hidden; }

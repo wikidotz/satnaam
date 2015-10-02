@@ -46,10 +46,28 @@
                                             </tr>
                                         </table>
                                     </div>
-                                    <footer>
-                                        <span><i class="fa fa-clock-o"></i></span>
-                                        <span am-time-ago="order.time"></span>
-                                        <span class="pull-right">111</span>
+                                    <footer ng-class="isFooterExpanded()">
+
+                                        <div>
+                                            <span><i class="fa fa-clock-o"></i></span>
+                                            <span am-time-ago="order.time"></span>
+                                            <span ng-click="expandFooter()" class="sol-up-angle">
+                                                <i class="fa fa-angle-up"></i>
+                                                <i class="fa fa-angle-down"></i>
+                                            </span>
+                                            <span class="pull-right">111</span>
+                                        </div>
+
+                                        <div class="sol-additional-opts">
+                                            <ul class="col-xs-6">
+                                                <li><input type="checkbox"> Show All</li>
+                                            </ul>
+
+                                            <ul class="col-xs-6">
+                                                <li><input type="checkbox"> Show All</li>
+                                            </ul>
+                                        </div>
+                                        
                                     </footer>
                                 </div>
                             </md-grid-tile>
