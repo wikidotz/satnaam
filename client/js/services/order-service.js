@@ -15,9 +15,9 @@ angular.module('hotelApp').service('Order',function($http){
 		})
 	}
 
-	this.getLatestOrder = function(){
+	this.getLatestOrder = function(status){
 
-		return $http.get('/order/lastestOrders').then(function(response){
+		return $http.get('/order/lastestOrders/'+status).then(function(response){
 			return response.data;
 		})
 	}

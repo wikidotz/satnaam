@@ -2,7 +2,8 @@
 	"orderlist":[{
 		"name" : "Mr. Dhiraj Gupta",
 		"token": 5,
-		"time" : "1443193068594",
+		"time" : "1443773680637",
+		"status" : "completed",
 		"tableNumber": 5,
 		"orderId": 1,
 		"items": [{
@@ -88,6 +89,7 @@
 		"token": 5,
 		"time" : "1443193068594",
 		"tableNumber": 5,
+		"status" : "pending",
 		"orderId": 1,
 		"items": [{
 			"name": "Paneer tikka",
@@ -139,6 +141,7 @@
 		"token": 5,
 		"time" : "1443193068594",
 		"tableNumber": 5,
+		"status" : "pending",
 		"orderId": 1,
 		"items": [{
 			"name": "Paneer tikka",
@@ -189,6 +192,7 @@
 		"name" : "Mr. Dhiraj Gupta",
 		"token": 5,
 		"time" : "1443193068594",
+		"status" : "pending",
 		"tableNumber": 5,
 		"orderId": 1,
 		"items": [{
@@ -242,6 +246,7 @@
 		"time" : "1443193035711",
 		"tableNumber": 5,
 		"orderId": 1,
+		"status" : "pending",
 		"items": [{
 			"name": "Paneer tikka",
 			"desc": "This is the description",

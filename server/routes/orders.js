@@ -107,8 +107,26 @@ router.put('/saveOrder', function(req, res, next) {
 	});
 });
 
-router.get('/lastestOrders', function(req, res){
-	res.json(orderJson)
+router.get('/lastestOrders/:status', function(req, res){
+
+	var orders = orderJson.orderlist;
+	var response = {
+		orderlist: []
+	};
+
+	var status = req.params.status;
+
+	if(status != 'all'){
+		for (var i = 0; i < orders.length; i++) {
+			if(orders[i].status == status){
+				response.orderlist.push(orders[i]);
+			}
+		};	
+	}else{
+		response = orderJson;
+	}
+	
+	res.json(response);
 })
 
 router.get('/:id', function(req, res, next) {

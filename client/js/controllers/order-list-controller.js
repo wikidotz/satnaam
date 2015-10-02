@@ -2,7 +2,6 @@ angular.module('hotelApp')
 
 .controller('OrderGridCtrl', function($scope) {
     $scope.getRowStyle = function(item) {
-    	console.log(item.isParcel)
         var color = (item.isParcel) ? '#FF0' : '#F0F';
 
         return {
@@ -20,18 +19,25 @@ angular.module('hotelApp')
 .controller('OrderListCtrl', function($scope, Order) {
 
     $scope.orderlist = [];
+    $scope.includeCompletedOrders = false;
+    var getOrderWithStatus = 'pending';
 
     function init() {
-        Order.getLatestOrder().then(function(response) {
-
-            $scope.orderlist = response.orderlist;
-
-        })
+        
+        loadOrders();
     }
 
+    $scope.showCompletedChange = function(){
 
+        getOrderWithStatus = ($scope.includeCompletedOrders) ? 'all' : 'pending';
+        loadOrders();
+    }
 
-
+    function loadOrders(){
+        Order.getLatestOrder(getOrderWithStatus).then(function(response) {
+            $scope.orderlist = response.orderlist;
+        })
+    }
 
     init()
 

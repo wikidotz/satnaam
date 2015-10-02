@@ -1,8 +1,17 @@
 <div class="s-layout">
-    <header class="s-header s-strip">
-        <a class="sh-buttons" href=""><i class="fa fa-bars"></i></a>
-        <a class="sh-buttons" href=""><i class="fa fa-th"></i></a>
-        <a class="sh-buttons" href=""><i class="fa fa-cutlery"></i></a>
+    <header class="s-header s-strip row no-gutter">
+
+        <div class="col-md-2 col-xs-4">
+            <a class="sh-buttons" href=""><i class="fa fa-bars"></i></a>
+            <a class="sh-buttons" href=""><i class="fa fa-th"></i></a>
+            <a class="sh-buttons" href=""><i class="fa fa-cutlery"></i></a>    
+        </div>
+
+        <div class="col-md-2 col-xs-4">
+            <md-switch ng-change="showCompletedChange()" class="s-toggle-switch" ng-model="includeCompletedOrders" aria-label="Finished?">Show completed</md-switch>    
+        </div>
+        
+
         <div class="pull-right">
             <a class="sh-buttons sh-parcel" href=""><i class="fa fa-gift"></i></a>
             <span class="sh-buttons sh-count">{{itemsInOrder.length}}</span>
