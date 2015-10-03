@@ -30,14 +30,14 @@
 
                                     <header class="row no-gutters">
                                         <span class="col-xs-1 ol-order-token">{{order.token}}</span>
-                                        <span class="col-xs-9 ol-order-name">{{order.name}}</span>
+                                        <span class="col-xs-8 ol-order-name">{{order.name}}</span>
                                         
                                         <span class="col-xs-1">6</span>
                                         <span ng-click="showParcel()" class="col-xs-1 pull-right"><i class="fa fa-gift"></i></span>
                                     </header>
                                     <div class="ol-tile-content">
                                         <table class="table table-condensed ol-table">
-                                            <tr ng-repeat="item in order.items" ng-class="(isShowingParcel)? '': 'hide-bg'" ng-style="getRowStyle(item)">
+                                            <tr ng-repeat="item in order.items | itemsFilter:item:orderStatus" ng-class="(isShowingParcel)? '': 'hide-bg'" ng-style="getRowStyle(item)">
                                                 <td>{{item.quantity}}</td>
                                                 <td class="ol-item-name">{{item.name}}
                                                     <span>{{item.desc}}</span>

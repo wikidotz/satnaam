@@ -369,13 +369,14 @@ tr.summary {
     top: 0;
     left: 0;
     font-size: 1.2em;
+    height: 30px;
     right: 0;
     background-color: #FDE;
 }
 
 .ol-grid-tile-main > div.ol-tile-content {
     position: absolute;
-    top: 20px;
+    top: 30px;
     bottom: 30px;
     overflow: auto;
     left: 0;
@@ -386,7 +387,7 @@ tr.summary {
 .ol-grid-tile-main > footer {
     position: absolute;
     bottom: 0;
-    height: 30px;
+    height: 25px;
     right: 0;
     left: 0;
     padding: 0 5px;
@@ -414,13 +415,15 @@ tr.summary {
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
     text-align: center;
-    margin-top: -3px;
+    margin-top: 0px;
     padding-bottom: 3px;
     color: #fff;
+    width: 30px;
 }
 
 .ol-order-name {
-    padding: 0 5px !important;
+    overflow: hidden;
+    margin-left: 10px;
 }
 
 .hide-bg {
@@ -459,13 +462,14 @@ tr.summary {
     top: 0;
     text-align: center;
     font-size: 2em;
-    line-height: 0em;
     font-weight: bold;
+    overflow: hidden;
     color: grey;
 }
 
 .sol-up-angle .fa.fa-angle-up {
     display: block;
+    /* margin-top: -3px !important; */
 }
 
 .ol-grid-tile-main > footer .sol-up-angle .fa.fa-angle-down {

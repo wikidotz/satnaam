@@ -1,5 +1,14 @@
 angular.module('hotelApp')
 
+.filter('itemsFilter', function(){
+
+    return function(order, status){
+        //order.status = stat
+        //console.log(order);
+        return order;
+    }
+})
+
 .controller('OrderGridCtrl', function($scope) {
 
     var isFooterOpen = false;
@@ -20,6 +29,8 @@ angular.module('hotelApp')
     $scope.showParcel = function() {
         $scope.isShowingParcel = !$scope.isShowingParcel;
     }
+
+    $scope.orderStatus = 'pending';
 
     $scope.expandFooter = function (){
         isFooterOpen = !isFooterOpen;
