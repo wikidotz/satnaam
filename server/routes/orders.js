@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var dbConnection = require('../dbconnection');
+//var dbConnection = require('../dbconnection');
 var logger = require('../logger');
 //var bookshelf = require('bookshelf');
 var orderJson = require('../data/orderlist.json');
@@ -173,69 +173,6 @@ router.delete('/:id', function(req, res, next) {
 app.get("/products",function(req,res){
 	console.log(""+res);
 })
-
-function addProdsForOrder(orderID,orderedProducts,mode)
-{
-	if(orderedProducts==undefined || orderedProducts == null)
-	{
-		res.send({code:'NOPRODS',msg:'No product.'});
-		return ;
-	}
-	logger.log('info','insert items start');
-				
-	//counter for all insert result 
-	var resultCount=0;
-	for(var i=0;i<orderedProducts.length;i++)
-	{//for start-1
-			logger.log('debug','item insert into order_product start['+orderedProducts[i].OP_PROD_ID+']');
-			var multiple_insert_item_query = dbConnection.query('insert into order_product set ?',
-											orderedProducts[i],function(err,result){
-			console.log(multiple_insert_item_query.sql);
-			if(err)
-			{
-				logger.log('error',err.stack);
-				dbConnection.rollback(function(err){
-					throw err;
-				})	
-
-				res.send({code:'ORDER_ITEM_INSERT_FAILED',msg:'Error in order item insert.Please try again!'});
-			}
-
-
-			if(result)
-			{
-				logger.log('debug','item insert into order_product end');
-				resultCount++;
-				if(resultCount == orderedProducts.length)
-				{
-					dbConnection.commit(function(err){
-						if(err)
-						{
-							logger.log('error',err.stack);
-							dbConnection.rollback(function(err){
-								throw err;
-							})	
-							res.send({code:'ORDER_SUBMIT_COMMIT_FAILED',msg:'Error in order create.Please try again!'});	
-						}//end of err loop
-						if(result)
-						{
-							logger.log("info","order created successfully.OrderID["+orderID+"]");
-							//dbConnection.end();
-							res.send({code:'ORDER_SUBMIT_SUCCESS',msg:'order created successfully.'});
-						}
-					})
-				}//end of if conditin
-			}//end of result loop
-				
-		})//end of function loop
-	
-	}//end of for loop
-}
-
-function clearExistingProdsForOrder(orderID)
-{
-	
-}
 
 
 module.exports = router;

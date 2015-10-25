@@ -1,10 +1,10 @@
 angular.module('hotelApp', ['ui.router', 'ngTouch', 'ui.bootstrap', 'ngMaterial', 'angularMoment', 'anguFixedHeaderTable'])
 
-.config(function($stateProvider, $urlRouterProvider, $httpProvider  ) {
+.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
 
     $stateProvider
     // HOME STATES AND NESTED VIEWS ========================================
-    .state('home', {
+        .state('home', {
         url: '/home',
         templateUrl: 'templates/partial-home.html',
         controller: 'OrderCtrl'
@@ -25,8 +25,13 @@ angular.module('hotelApp', ['ui.router', 'ngTouch', 'ui.bootstrap', 'ngMaterial'
     $urlRouterProvider.otherwise('/login');
 
     //$httpProvider.interceptors.push('TokenInterceptor');
-    $httpProvider.interceptors.push(function($q, $location) {
+    $httpProvider.interceptors.push(function($q, $location, $window) {
         return {
+            // optional method
+            request: function(config) {
+                config.headers['x-access-token'] = $window.sessionStorage.token;
+                return config;
+            },
             response: function(response) {
                 return response;
             },
@@ -36,59 +41,23 @@ angular.module('hotelApp', ['ui.router', 'ngTouch', 'ui.bootstrap', 'ngMaterial'
             }
         };
     });
-
-    console.log('Hello')
-
-
-})
-
-.factory('AuthenticationService', function() {
-    var auth = {
-        isLogged: false
-    }
-
-    return auth;
 })
 
 
-.factory('UserService', function($http) {
-    return {
-        logIn: function(username, password) {
-            return $http.post('/login', {
-                username: username,
-                password: password
-            });
-        },
-
-        isLoggedin: function(){
-            return $http.get('/loggedIn');
-        },
-
-        logOut: function() {
-
-        }
-    }
-})
-
-
-
-.service('Login', function($location, $window, UserService, AuthenticationService) {
+.service('Login', function($location, $window, $http) {
 
 
     this.login = function(username, password) {
-        console.log(username + '\t' + password)
-        if (username !== undefined && password !== undefined) {
 
-            UserService.logIn(username, password).success(function(data) {
-                AuthenticationService.isLogged = data.success;
-                $window.sessionStorage.token = data.token;
-                $location.path("/home");
-            }).error(function(status, data) {
-                console.log(status);
-                console.log(data);
-            });
-        }
+        return $http.post('/login', {
+            username: username,
+            password: password
+        }).then(function(data) {
+            $window.sessionStorage.token = data.data.token;
+            return data.data
+        })
     }
+
 
     this.logout = function() {
         if (AuthenticationService.isLogged) {
@@ -97,16 +66,22 @@ angular.module('hotelApp', ['ui.router', 'ngTouch', 'ui.bootstrap', 'ngMaterial'
             $location.path("/");
         }
     }
+}).run(function($location, $window){
+    if($window.sessionStorage.token){
+        $location.path('/home')
+    }
 })
 
 
 
-.controller('LoginCtrl', function($scope, Login) {
-    console.log('in login controller..');
-
+.controller('LoginCtrl', function($scope, $location, Login) {
+    
     $scope.login = function(uname, pass) {
-        console.log(uname + '\t' + pass);
-        Login.login(uname, pass);
+        Login.login(uname, pass).then(function(response) {
+            $location.path("/home");
+        }, function(err){
+            $scope.errorMsg = err.data.message;    
+        });
     }
 
 

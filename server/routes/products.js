@@ -1,13 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var http = require('http');
-var fs= require('fs');
+var fs = require('fs');
 var Util = require('../util');
-var ACTIVE_PRODS_GET = 'select * from product';
+//var ACTIVE_PRODS_GET = 'select * from product';
 var logger = require('../logger');
 var mongoose = require('mongoose');
-
-mongoose.connect('mongodb://admin:root@ds039504.mongolab.com:39504/chartnaka');
 
 var ItemSchema = new mongoose.Schema({
     prod_id: Number,

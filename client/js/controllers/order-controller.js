@@ -1,38 +1,4 @@
 angular.module('hotelApp')
-.factory('castToOrderedProductFactory',function(){
-    var service = {};
-    service.castToOrderedProduct = function(productObj){
-        if(productObj==null || productObj ==undefined)
-        {
-            return null;
-        }
-        
-        var orderedProd = angular.copy(productObj);
-        orderedProd.OP_PROD_ID = orderedProd.prod_id ;
-        orderedProd.OP_CATEGORY_ID = orderedProd.prod_category_id;
-        orderedProd.OP_RATE = orderedProd.prod_rate;
-        orderedProd.OP_WEIGHT = orderedProd.prod_weight;
-        orderedProd.OP_SIZE = orderedProd.prod_size;
-        
-        return orderedProd ;
-    }
-    return service;
-})
-.factory('dataFactory',function($http){
-    return {
-        get: function(url)
-        {
-            return $http.get(url).then(
-                function(response){
-                    return response.data;
-                },
-                function(err){
-                    logger().log("error","Customer typeahead["+err.stack+"]");
-                    return null;
-                })
-        }
-    }
-})
 
 .service('OrderService', function($http){
 
@@ -41,15 +7,12 @@ angular.module('hotelApp')
             return response.response
         })
     }
-
-    
     
 })
 
 
-.controller('OrderCtrl', function($scope, Product,Customer,Order,castToOrderedProductFactory,dataFactory, OrderService) {
+.controller('OrderCtrl', function($scope, Product,Customer,Order, OrderService) {
 
-    console.log('order controller');
     $scope.products = [];
     $scope.order = {};
     $scope.customers = [];
@@ -84,10 +47,10 @@ angular.module('hotelApp')
         /*$("#orderDateTime").datepicker({
         	format:'dd-mm-yyyy hh:mm'
         });*/
-        Customer.getAllCustomers().then(function(data){
-          logger().log("info","loading all customers");
-            $scope.customers = data;  
-        })
+        //Customer.getAllCustomers().then(function(data){
+          //logger().log("info","loading all customers");
+            //$scope.customers = data;  
+        //})
         showCurrentDateTime();
         $scope.createNewOrderScreen();
 
@@ -133,15 +96,12 @@ angular.module('hotelApp')
 
     $scope.lessItem = function(product){
 //    	product.count--;
-		console.log($scope.order.itemsInOrder)
-    	for (var i = 0; i < $scope.order.itemsInOrder.length; i++) {
+		for (var i = 0; i < $scope.order.itemsInOrder.length; i++) {
     		if($scope.order.itemsInOrder[i].OP_PROD_ID == product.prod_id){
     			$scope.order.itemsInOrder.splice(i,1);
     			break;
     		}
     	};
-
-    	console.log($scope.order.itemsInOrder);
 
     	product.OP_QUANTITY--;
         $scope.calTotalAmt();
@@ -201,11 +161,9 @@ angular.module('hotelApp')
     }
 
     $scope.createOrder = function(){
-        console.log($scope.order)
-
+        
         OrderService.createOrder($scope.order).then(function(response){
-            console.log(response);
-            console.log('Saved')
+            
         })
     }
 
@@ -266,7 +224,6 @@ angular.module('hotelApp')
     $scope.onCustomerSelect = function($item, $model, $label) {
         Customer.getCustomerInfoByCustomerCode($item.cust_id).then(function(response) {
             $scope.order.customer = response;
-            console.log(response);
         });
     }
 
@@ -280,7 +237,6 @@ angular.module('hotelApp')
 		var month = d.getMonth()+1;
 		var day = d.getDate();
 		var year = d.getFullYear();
-		console.log("day="+day+",date["+d+"]");
 		return {year:year,month:month,day:day,date:d,hr:d.getHours(),min:d.getMinutes()};
     }
 

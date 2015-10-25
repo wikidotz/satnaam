@@ -1,9 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var dbConnection = require('../dbconnection');
 var logger = require('../logger');
 var app = express();
-var ACTIVE_CUST_GET = 'select * from customer';
 
 router.get('/', function(req, res, next) {
 		
@@ -19,25 +17,14 @@ router.get('/', function(req, res, next) {
 		}
 
 	})*/
-	dbConnection.query(ACTIVE_CUST_GET,function(err,rows,fields){
-			if(err)
-			{
-				logger.log('error',err);
-				return ;
-			}
-			//console.log(rows);
-			//var prods = Util.loadJSONfile('sampleproducts.js','utf8');
-			
-			res.setHeader('Content-Type', 'application/json');
-			res.send(JSON.stringify(rows));	
-	});
+	
 
 });
 
 router.put('/addCustomer', function(req, res, next) {
 	
-	var custObj = req.params.customerDetail;
-	console.log(""+JSON.stringify(custObj)); 
+	//var custObj = req.params.customerDetail;
+	//console.log(""+JSON.stringify(custObj)); 
 	/*dbConnection.bookshelf.transaction(function(transaction){
 		dbConnection.Customer.forge(custObj).save().then(function(){
 			console.log('customer entry added');

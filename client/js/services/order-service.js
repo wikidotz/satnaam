@@ -6,7 +6,6 @@ angular.module('hotelApp').service('Order',function($http){
 			//orderObj :JSON.stringify(orderObj)
 			orderObj :orderObj
 		}
-		console.log(data);
 		return $http.put('/order/saveOrder',data).then(function(response){
 			alert(response);
 		},

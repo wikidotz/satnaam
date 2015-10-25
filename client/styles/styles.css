@@ -191,7 +191,7 @@ li.sp-item .spl-price {
 }
 
 .s-sidebar .s-hook {
-    margin-left: -20px;
+    margin-left: -25px;
     width: 20px;
     height: 50px;
     background-color: blue;
@@ -199,6 +199,7 @@ li.sp-item .spl-price {
     top: 50%;
     position: absolute;
     margin-top: -25px;
+    z-index: 3;
 }
 
 .spl-text-container {
