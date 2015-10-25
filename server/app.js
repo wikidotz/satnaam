@@ -21,8 +21,6 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static(__dirname + '../../client'));
 
-//mongoose.connect('mongodb://localhost:27017/test');
-
 
 function checkAuth(req, res, next) {
     if (!req.session.user_id) {
