@@ -3,7 +3,6 @@ var router = express.Router();
 var http = require('http');
 var fs= require('fs');
 var Util = require('../util');
-var dbConnection = require('../dbconnection');
 var ACTIVE_PRODS_GET = 'select * from product';
 var logger = require('../logger');
 var mongoose = require('mongoose');
@@ -34,10 +33,8 @@ var Item = mongoose.model('items', ItemSchema);
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
-	// Find all movies.
 	Item.find(function(err, result) {
 	  if (err) return console.error(err);
-	  console.dir(result);
 	  res.send(result);
 	});
 })

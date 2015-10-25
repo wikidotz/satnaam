@@ -33,7 +33,21 @@ angular.module('hotelApp')
         }
     }
 })
-.controller('OrderCtrl', function($scope, Product,Customer,Order,castToOrderedProductFactory,dataFactory) {
+
+.service('OrderService', function($http){
+
+    this.createOrder = function(data){
+        return $http.post('orders/createOrder', {orderObj:data}).then(function(response){
+            return response.response
+        })
+    }
+
+    
+    
+})
+
+
+.controller('OrderCtrl', function($scope, Product,Customer,Order,castToOrderedProductFactory,dataFactory, OrderService) {
 
     console.log('order controller');
     $scope.products = [];
@@ -184,6 +198,15 @@ angular.module('hotelApp')
         $scope.order.order_status = 1;
         $scope.order.order_pay_status = "none";
         $scope.order.order_mng_emp_id = 1;
+    }
+
+    $scope.createOrder = function(){
+        console.log($scope.order)
+
+        OrderService.createOrder($scope.order).then(function(response){
+            console.log(response);
+            console.log('Saved')
+        })
     }
 
 

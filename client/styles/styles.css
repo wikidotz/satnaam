@@ -100,7 +100,7 @@ footer.s-footer {
 .s-content {
     position: absolute;
     top: 60px;
-    bottom: 60px;
+    bottom: 0px;
     right: 10px;
     left: 10px;
     overflow-y: auto;
@@ -178,15 +178,16 @@ li.sp-item .spl-price {
 .s-sidebar {
     position: fixed;
     border: 1px solid #000000;
+    box-sizing: border-box;
     background-color: #ffffff;
     top: 50px;
     bottom: 0;
     z-index: 1;
     right: 0;
-    /* right: -430px; */
     left: 0px;
     padding: 6px;
     max-height: 700px;
+    height: 100%;
 }
 
 .s-sidebar .s-hook {
@@ -230,8 +231,32 @@ li.sp-item .spl-price {
 .orderDetail {
     background-color: white;
     padding: 8px;
-    border: solid 1px black;
-    height: 100%;
+    /* border: solid 1px black; */
+    height: 89%;
+    position: relative;
+    width: 100%;
+}
+
+.orderDetail > .title{
+
+}
+
+.orderDetail > .buttons{
+    
+}
+
+.sod-order-table{
+    position: absolute;
+    bottom: 90px;
+    top: 70px;
+    border: 1px solid;
+    left: 0;
+    right: 0;
+}
+.sod-order-table > table{
+    height: 86%;
+    padding: 0;
+    margin: 0;
 }
 
 .orderDetail.customerTokenNum {
@@ -268,6 +293,9 @@ li.sp-item .spl-price {
     bottom: 10px;
     position: absolute;
     width: 100%
+
+
+;
 }
 
 .F {
@@ -502,3 +530,11 @@ tr.summary {
     margin: 0;
     list-style: none;
 }
+
+tbody.scrollable{
+}
+tbody.scrollable > tr{
+    width: 90%;
+}
+
+

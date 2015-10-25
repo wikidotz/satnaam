@@ -1,50 +1,16 @@
-<div class="orderDetail container" ><!--ng-controller="OrderCtrl"-->
-	<form id="orderForm" role="form">
+<div class="orderDetail container">
 
-
-		 <div class="form-group">
-			  <input class="customerName" id="custNameAutoComplete" ng-model="order.customer.cust_first_name"  type="text" 
-			  placeholder="Search Customer..."><!--typeahead="customer as customer.cust_first_name for customer in customers | filter:$viewValue | limitTo:8"-->
-		 </div>
+		<div class="title">Your Order</div>
 		
-		<div ng-show="false">{{order.customer.cust_id}}</div>
-		
-		<div class="customerTokenNum">{{order.order_token_no}}</div>
-		
-		<div class="form-group">
-    		 <span class="label label-default glyphicon glyphicon-mobile">{{order.customer.contact1}}</span>
-    	</div>
-
-    	<div class="form-group">
-     		<span class="glyphicon glyphicon-search">{{order.customer.address}}</span>
-   		 </div>
-
-   		 <div class="form-group">
-	        <div style="float:left">
-	          <button type="button" class="btn btn-primary">T<span class="badge">{{order.itemsInOrder.length}}</span></button>  
-	        </div>
-
-	        <div class='input-group date' id='orderDateTime'>
-	          <input type='text' class="form-control" />
-	          <span class="input-group-addon">
-	              <span class="glyphicon glyphicon-calendar"></span>
-	          </span>
-	        </div>
-	    </div>
-
-		
-		 <div class="btn-group btn-group-justified">
-		      <button type="button" class="cancelOrder btn btn-danger btn-sm">
-		        <span class="glyphicon glyphicon-trash"></span>
-		      </button>
-		      <button type="button" class="btn btn-primary">1</button>
-		      <button type="button" class="btn btn-primary">2</button>
-		      <button type="button" class="btn btn-primary">3</button>
-		      <button type="button" class="btn btn-primary">4</button>
+		 <div class="buttons btn-group">
+		      <button type="button" class="cancelOrder btn btn-default"><i class="fa fa-trash"></i></button>
+		      <button type="button" class="btn btn-default"><i class="fa fa-gift"></i></button>
+		      <button type="button" class="btn btn-default"><i class="fa fa-hand-o-down"></i></button>
+		      <button type="button" class="btn btn-default"><i class="fa fa-clock-o"></i></button>
 		</div>
 	
-		<div class="form-group">
-			<table clasa="table table-condensed table-bordered"><!--class="F cf zt"-->
+		<div class="sod-order-table form-group">
+			<table cellspacing="0" cellpadding="0" border="0" clasa="table table-condensed" fixed-header><!--class="F cf zt"-->
 				<thead>
 					<tr>
 						<th class="col-sm-8">Item</th>
@@ -52,7 +18,7 @@
 				      	<th class="col-sm-2">Amount</th>
 				    </tr>
 				</thead>
-				<tbody>
+				<tbody class="scrollable" >
 					<tr ng-repeat="x in order.itemsInOrder track by $index" class="zA yO x7" tabIndex="-1">
 					    <td >{{ x.prod_name }}</td><!--class="yx"-->
 					    <td >{{ x.OP_QUANTITY }}</td><!--class="xz"-->
@@ -71,10 +37,8 @@
 		</div>
 
 		<div class="orderBtnsContainer2">
-			<a ng-click="payOrder()" href="#/payOrder" class="btn btn-danger btn-lg btn-block">Pay Now <span class="glyphicon glyphicons-money" aria-hidden="true"></span>	
+			<a ng-click="createOrder(order)" class="btn btn-danger btn-lg btn-block">Create Order</a>
 
-		 	<a ng-click="submitOrder()" class="btn btn-success btn-md btn-block ">Order <span 
-		 	class="glyphicon glyphicons-money" aria-hidden="true"></span>	<!--disabled-->
+		 	<a ng-click="submitOrder()" class="btn btn-success btn-md btn-block ">Order </a>
 		</div>
-	</form>
 </div>

@@ -4,17 +4,49 @@ var dbConnection = require('../dbconnection');
 var logger = require('../logger');
 //var bookshelf = require('bookshelf');
 var orderJson = require('../data/orderlist.json');
-
+var mongoose = require('mongoose');
 //COMMENTED AS OF NOW
-
 var app = express();
+
+
+var OrderSchema = new mongoose.Schema({
+    itemsInOrder: Array,
+	order_mng_emp_id: Number,
+	order_pay_status: String,
+	order_status: Number,
+	order_token_no: Number,
+	order_total_amt: Number,
+	order_total_qty: Number
+});
+
+var Order = mongoose.model('orders', OrderSchema);
+
+
+
+router.post('/createOrder', function(req, res, next) {
+
+	var order = new Order(req.body.orderObj);
+
+	order.save(function(err, thor) {
+	  	if (err) return console.error(err);
+	  	console.dir('saved');
+	  	res.send({msg:'saved'});
+	});
+
+})
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
 		
-	res.send('get all orders');
+	Order.find(function(err, result) {
+	  if (err) return console.error(err);
+	  res.send(result);
+	});
+
 });
 
+/*
 router.put('/saveOrder', function(req, res, next) {
 	logger.log('info','createOrder start');
 	var orderObj = req.body.orderObj;
@@ -106,6 +138,7 @@ router.put('/saveOrder', function(req, res, next) {
 		});
 	});
 });
+*/
 
 router.get('/lastestOrders/:status', function(req, res){
 

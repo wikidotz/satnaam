@@ -56,7 +56,7 @@ app.post('/login', function(req, res) {
 app.use('/products', productsRoutes);
 app.use('/categories',categoriesRoutes);
 app.use('/customers',customersRoutes);
-app.use('/order',orderRoutes);
+app.use('/orders',orderRoutes);
 
 
 app.get('/logout', function(req, res) {
