@@ -43,6 +43,15 @@ angular.module('hotelApp', ['ui.router', 'ngTouch', 'ui.bootstrap', 'ngMaterial'
     });
 })
 
+.run(function($location, $window){
+    if($window.sessionStorage.token){
+        $location.path($location.path())
+    }else{
+        $location.path('/login');
+    }
+})
+
+
 
 .service('Login', function($location, $window, $http) {
 
@@ -66,11 +75,8 @@ angular.module('hotelApp', ['ui.router', 'ngTouch', 'ui.bootstrap', 'ngMaterial'
             $location.path("/");
         }
     }
-}).run(function($location, $window){
-    if($window.sessionStorage.token){
-        $location.path('/home')
-    }
 })
+
 
 
 

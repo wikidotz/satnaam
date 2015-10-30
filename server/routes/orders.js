@@ -11,6 +11,7 @@ var app = express();
 
 var OrderSchema = new mongoose.Schema({
     itemsInOrder: Array,
+    customer_name: String,
 	order_mng_emp_id: Number,
 	order_pay_status: String,
 	order_status: Number,
@@ -44,6 +45,15 @@ router.get('/', function(req, res, next) {
 	  res.send(result);
 	});
 
+});
+
+/* GET home page. */
+router.get('/:status', function(req, res, next) {
+		
+	Order.find({ 'order_status': req.params.status }, function(err, result) {
+	  if (err) return console.error(err);
+	  res.send(result);
+	});
 });
 
 /*
@@ -143,9 +153,11 @@ router.put('/saveOrder', function(req, res, next) {
 router.get('/lastestOrders/:status', function(req, res){
 
 	var orders = orderJson.orderlist;
+
 	var response = {
 		orderlist: []
 	};
+
 
 	var status = req.params.status;
 
@@ -158,6 +170,8 @@ router.get('/lastestOrders/:status', function(req, res){
 	}else{
 		response = orderJson;
 	}
+
+
 	
 	res.json(response);
 })

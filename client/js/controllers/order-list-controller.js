@@ -30,19 +30,19 @@ angular.module('hotelApp')
         $scope.isShowingParcel = !$scope.isShowingParcel;
     }
 
-    $scope.orderStatus = 'pending';
+    $scope.orderStatus = '1';
 
     $scope.expandFooter = function (){
         isFooterOpen = !isFooterOpen;
     }
 })
 
-.controller('OrderListCtrl', function($scope, Order) {
+.controller('OrderListCtrl', function($scope, OrderService) {
 
     $scope.orderlist = [];
     $scope.includeCompletedOrders = false;
     
-    var getOrderWithStatus = 'pending';
+    var getOrderWithStatus = '1';
 
     function init() {
         
@@ -51,15 +51,15 @@ angular.module('hotelApp')
 
     $scope.showCompletedChange = function(){
 
-        getOrderWithStatus = ($scope.includeCompletedOrders) ? 'all' : 'pending';
+        getOrderWithStatus = ($scope.includeCompletedOrders) ? '1' : '1';
         loadOrders();
     }
 
-    
-
     function loadOrders(){
-        Order.getLatestOrder(getOrderWithStatus).then(function(response) {
-            $scope.orderlist = response.orderlist;
+        OrderService.getLatestOrder(getOrderWithStatus).then(function(response) {
+            $scope.orderlist = response;
+
+            console.log(response);
         })
     }
 

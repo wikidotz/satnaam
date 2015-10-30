@@ -1,17 +1,6 @@
 angular.module('hotelApp')
 
-.service('OrderService', function($http){
-
-    this.createOrder = function(data){
-        return $http.post('orders/createOrder', {orderObj:data}).then(function(response){
-            return response.response
-        })
-    }
-    
-})
-
-
-.controller('OrderCtrl', function($scope, Product,Customer,Order, OrderService) {
+.controller('OrderCtrl', function($scope, Product,Customer, OrderService) {
 
     $scope.products = [];
     $scope.order = {};
@@ -199,7 +188,7 @@ angular.module('hotelApp')
         $scope.order.order_expct_time = 0;
         $scope.order.order_date = formatDateTime(calcCurrentDateTime());
         $scope.order.mode = 'create';
-         Order.createNewOrder($scope.order).then(function(response) {
+         /*Order.createNewOrder($scope.order).then(function(response) {
             if(response==undefined)
             {
                 onOrderSubmitError();
@@ -218,7 +207,7 @@ angular.module('hotelApp')
         function(err){
             onOrderSubmitError();
 
-        })
+        })*/
     }
 
     $scope.onCustomerSelect = function($item, $model, $label) {

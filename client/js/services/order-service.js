@@ -1,23 +1,18 @@
-angular.module('hotelApp').service('Order',function($http){
-	
-	this.createNewOrder = function(orderObj){
+angular.module('hotelApp')
 
-		var data = {
-			//orderObj :JSON.stringify(orderObj)
-			orderObj :orderObj
-		}
-		return $http.put('/order/saveOrder',data).then(function(response){
-			alert(response);
-		},
-		function(err){
-			alert(err);
-		})
-	}
+.service('OrderService', function($http){
 
-	this.getLatestOrder = function(status){
+    this.createOrder = function(data){
+        return $http.post('orders/createOrder', {orderObj:data}).then(function(response){
+            return response.response
+        })
+    }
 
-		return $http.get('/order/lastestOrders/'+status).then(function(response){
+    this.getLatestOrder = function(status){
+
+		return $http.get('/orders/'+status).then(function(response){
 			return response.data;
 		})
 	}
+    
 })

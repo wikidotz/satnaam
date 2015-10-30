@@ -1,6 +1,8 @@
 <div class="orderDetail container">
 
 		<div class="title">Your Order</div>
+		<div class="col-md-10"><input type="text" class="form-control" ng-model="order.customer_name" /></div>
+
 		
 		 <div class="buttons btn-group">
 		      <button type="button" class="cancelOrder btn btn-default"><i class="fa fa-trash"></i></button>
@@ -19,7 +21,7 @@
 				    </tr>
 				</thead>
 				<tbody class="scrollable" >
-					<tr ng-repeat="x in order.itemsInOrder track by $index" class="zA yO x7" tabIndex="-1">
+					<tr ng-repeat="x in order.itemsInOrder track by $index">
 					    <td >{{ x.prod_name }}</td><!--class="yx"-->
 					    <td >{{ x.OP_QUANTITY }}</td><!--class="xz"-->
 					    <td >{{ x.OP_QUANTITY*x.prod_rate }}</td><!--class="xw"-->
