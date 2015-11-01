@@ -51,13 +51,9 @@ angular.module('hotelApp', ['ui.router', 'ngTouch', 'ui.bootstrap', 'ngMaterial'
     }
 })
 
-
-
 .service('Login', function($location, $window, $http) {
 
-
     this.login = function(username, password) {
-
         return $http.post('/login', {
             username: username,
             password: password
@@ -66,7 +62,6 @@ angular.module('hotelApp', ['ui.router', 'ngTouch', 'ui.bootstrap', 'ngMaterial'
             return data.data
         })
     }
-
 
     this.logout = function() {
         if (AuthenticationService.isLogged) {
@@ -78,12 +73,11 @@ angular.module('hotelApp', ['ui.router', 'ngTouch', 'ui.bootstrap', 'ngMaterial'
 })
 
 
-
-
 .controller('LoginCtrl', function($scope, $location, Login) {
     
-    $scope.login = function(uname, pass) {
-        Login.login(uname, pass).then(function(response) {
+    $scope.login = function(e, loginInfo) {
+        console.log(loginInfo)
+        Login.login(loginInfo.uname, loginInfo.pass).then(function(response) {
             $location.path("/home");
         }, function(err){
             $scope.errorMsg = err.data.message;    

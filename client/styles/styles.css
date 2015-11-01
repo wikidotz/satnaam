@@ -84,7 +84,8 @@ footer.s-footer {
     font-size: 2em;
     display: inline-block;
     margin: 0;
-    padding: 5px 15px;
+    padding: 5px 10px;
+    float: left;
 }
 
 .sh-parcel {
@@ -538,4 +539,6 @@ tbody.scrollable > tr{
     width: 90%;
 }
 
-
+.sod-cutomer-name{
+    margin-bottom: 10px;
+}

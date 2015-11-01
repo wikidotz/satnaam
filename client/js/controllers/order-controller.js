@@ -150,6 +150,8 @@ angular.module('hotelApp')
     }
 
     $scope.createOrder = function(){
+
+        $scope.order.time = new Date().getTime();
         
         OrderService.createOrder($scope.order).then(function(response){
             

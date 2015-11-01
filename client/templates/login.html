@@ -1,22 +1,22 @@
 <div class="jumbotron col-md-6 col-md-offset-3">
+    <p class="col-md-12 label label-danger">{{errorMsg}}</p>
     <form class="form-horizontal" role="form">
         <div class="form-group">
             <label for="inputUsername" class="col-sm-4 control-label">Username</label>
             <div class="col-sm-4">
-                <input type="text" class="form-control" id="inputUsername" placeholder="Username" ng-model="login.email">
+                <input type="text" class="form-control" placeholder="Username" ng-model="loginInfo.uname">
             </div>
         </div>
         <div class="form-group">
             <label for="inputPassword" class="col-sm-4 control-label">Password</label>
             <div class="col-sm-4">
-                <input type="password" class="form-control" id="inputPassword" placeholder="Password" ng-model="login.password">
+                <input type="password" class="form-control" placeholder="Password" ng-model="loginInfo.pass">
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-4 col-sm-10">
-                <button class="btn btn-default" ng-click="login(login.email, login.password)">Log In</button>
+                <button class="btn btn-default" ng-click="login($event, loginInfo)">Log In</button>
             </div>
         </div>
-        <p class="label label-danger">{{errorMsg}}</p>
     </form>
 </div>
