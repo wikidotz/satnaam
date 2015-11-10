@@ -38,8 +38,8 @@ router.post('/createOrder', function(req, res, next) {
 router.get('/', function(req, res, next) {
 		
 	Order.find(function(err, result) {
-	  if (err) return console.error(err);
-	  res.send(result);
+	 	if (err) return console.error(err);
+	 	res.send(result);
 	});
 
 });

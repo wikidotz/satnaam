@@ -188,6 +188,7 @@ li.sp-item .spl-price {
     left: 0px;
     padding: 6px;
     max-height: 700px;
+    width: 320px;
     height: 100%;
 }
 
@@ -256,9 +257,37 @@ li.sp-item .spl-price {
     right: 0;
 }
 .sod-order-table > table{
-    height: 86%;
     padding: 0;
     margin: 0;
+}
+
+
+
+.sod-order-table > table > thead{
+    position: absolute !important;
+    left: 0px;
+    right: 0;
+}
+
+.sod-order-table > table > tbody{
+    position: absolute;
+    top: 30px;
+    bottom: 30px;
+    right: 10px;
+    left: 0;
+    overflow: auto;
+}
+
+.sod-order-table > table > tfoot{
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    right: 10px;
+}
+
+.sod-order-table > table tr{
+    display: block;
+    width: 100%;   
 }
 
 .orderDetail.customerTokenNum {
@@ -336,9 +365,9 @@ table {
 }
 
 tr {
-    display: table-row;
-    vertical-align: inherit;
-    border-color: inherit;
+    /* display: table-row; */
+    /* vertical-align: inherit; */
+    /* border-color: inherit; */
 }
 
 td.yX {
@@ -536,7 +565,7 @@ tr.summary {
 tbody.scrollable{
 }
 tbody.scrollable > tr{
-    width: 90%;
+    width: 100%;
 }
 
 .sod-cutomer-name{

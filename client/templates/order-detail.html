@@ -1,5 +1,5 @@
 <div class="orderDetail container">
-		<input type="text" class="form-control sod-cutomer-name" ng-model="order.customer_name" />
+		<input type="text" class="form-control sod-cutomer-name" placeholder="Customer Name" ng-model="order.customer_name" />
 		<div class="buttons btn-group">
 		      <button type="button" class="cancelOrder btn btn-default"><i class="fa fa-trash"></i></button>
 		      <button type="button" class="btn btn-default"><i class="fa fa-gift"></i></button>
@@ -8,26 +8,31 @@
 		</div>
 	
 		<div class="sod-order-table form-group">
-			<table cellspacing="0" cellpadding="0" border="0" clasa="table table-condensed" fixed-header><!--class="F cf zt"-->
+			<table cellspacing="0" cellpadding="0" border="0" clasa="table table-condensed"><!--class="F cf zt"-->
 				<thead>
 					<tr>
-						<th class="col-sm-8">Item</th>
-				      	<th class="col-sm-2">Qty</th>
-				      	<th class="col-sm-2">Amount</th>
+						<th width="200">Item</th>
+				      	<th width="20%" style="text-align:center;">Qty</th>
+				      	<th width="20%">Amount</th>
 				    </tr>
 				</thead>
 				<tbody class="scrollable" >
-					<tr ng-repeat="x in order.itemsInOrder track by $index">
-					    <td >{{ x.prod_name }}</td><!--class="yx"-->
-					    <td >{{ x.OP_QUANTITY }}</td><!--class="xz"-->
-					    <td >{{ x.OP_QUANTITY*x.prod_rate }}</td><!--class="xw"-->
-					  </tr>
+					<tr ng-repeat="(key, product) in order.itemsInOrderMap">
+					    <td width="200" >{{ product.prod_name }}</td><!--class="yx"-->
+					    <td width="20%" align="center">{{ product.prod_qty }}</td><!--class="xz"-->
+					    <td width="20%" align="right">{{ product.prod_qty * product.prod_rate }}</td><!--class="xw"-->
+					</tr>
+					<tr>
+					    <td >&nbsp;</td>
+					    <td >&nbsp;</td>
+					    <td >&nbsp;</td>
+					</tr>
 				</tbody>	
 			  	<tfoot>
 			  		<tr ><!--class="summary"-->
-					  	<td >Total</td><!--class="total"-->
-					  	<td >{{order.itemsInOrder.length}}</td><!--class="xz totalQty"-->
-					  	<td >{{order.order_total_amt}}</td><!--class="xw totalAmt"-->
+					  	<td width="200" >Total</td><!--class="total"-->
+					  	<td width="20%" style="text-align:center;">{{}}</td><!--class="xz totalQty"-->
+					  	<td width="20%" align="right">{{order.order_total_amt}}</td><!--class="xw totalAmt"-->
 					 </tr>		
 			  	</tfoot>
 			</table>			

@@ -34,6 +34,7 @@ angular.module('hotelApp')
         $scope.isDrawerOpen = !$scope.isDrawerOpen;
     }
 
+
     $scope.ordersArray = [];
 
     $scope.leftSwipe = function(product) {
@@ -50,7 +51,6 @@ angular.module('hotelApp')
 
     $scope.lessItem = function(product){
 //    	product.count--;
-		console.log($scope.ordersArray)
     	for (var i = 0; i < $scope.ordersArray.length; i++) {
     		if($scope.ordersArray[i].prod_id == product.prod_id){
     			$scope.ordersArray.splice(i,1);
