@@ -5,22 +5,7 @@ angular.module('hotelApp')
     $scope.products = [];
     $scope.order = {};
     $scope.customers = [];
-    $scope.order.customer = {
-        cust_id: 0,
-        cust_first_name: '',
-        cust_last_name: '',
-        cust_nick_name: '',
-        cust_mobile: '',
-        cust_email: '',
-        cust_desc: '',
-        cust_address1: '',
-        cust_city1: '',
-        cust_state1: '',
-        cust_address2: '',
-        cust_city2: '',
-        cust_state2: ''
-    };
-
+    $scope.order.customer = {};
     $scope.order.itemsInOrder = [];
     $scope.order.itemsInOrderMap = {};
     //$scope.order.totalQty = 0;
@@ -57,7 +42,9 @@ angular.module('hotelApp')
         showCurrentDateTime();
         $scope.createNewOrderScreen();
 
-
+        Customer.getAllCustomers().then(function(data){
+            $scope.customers = data;
+        })
     }
 
     $scope.isDrawerOpen = false;
@@ -202,7 +189,8 @@ angular.module('hotelApp')
         $scope.order.time = new Date().getTime();
 
         OrderService.createOrder($scope.order).then(function(response) {
-
+            Customer.addCustomer($scope.order.customer);
+            $scope.order = {};
         })
     }
 
@@ -223,6 +211,10 @@ angular.module('hotelApp')
 
     $scope.payOrder = function() {
 
+    }
+
+    $scope.onSelectCustomer = function(item, model, label){
+        $scope.order.customer = angular.copy(item);
     }
 
 
@@ -257,11 +249,11 @@ angular.module('hotelApp')
         })*/
     }
 
-    $scope.onCustomerSelect = function($item, $model, $label) {
+    /*$scope.onCustomerSelect = function($item, $model, $label) {
         Customer.getCustomerInfoByCustomerCode($item.cust_id).then(function(response) {
             $scope.order.customer = response;
         });
-    }
+    }*/
 
     function onOrderSubmitError() {
         alert("Error in order submit");

@@ -1,4 +1,12 @@
-angular.module('hotelApp', ['ui.router', 'ngTouch', 'ui.bootstrap', 'ngMaterial', 'angularMoment', 'anguFixedHeaderTable'])
+angular.module('hotelApp', [
+    'ui.router', 
+    'ngTouch', 
+    'ui.bootstrap', 
+    'ngMaterial', 
+    'angularMoment', 
+    'anguFixedHeaderTable',
+    'LocalForageModule'
+])
 
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
 

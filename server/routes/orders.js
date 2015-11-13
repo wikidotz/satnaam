@@ -8,10 +8,15 @@ var mongoose = require('mongoose');
 
 var app = express();
 
+var Customer = new mongoose.Schema({
+	name: String,
+	mobile:Number
+});
+
 var OrderSchema = new mongoose.Schema({
 	time:Number,
     itemsInOrder: Array,
-    customer_name: String,
+    customer: Object,
 	order_mng_emp_id: Number,
 	order_pay_status: String,
 	order_status: Number,

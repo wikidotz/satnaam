@@ -1,5 +1,6 @@
 <div class="orderDetail container">
-		<input type="text" class="form-control sod-cutomer-name" placeholder="Customer Name" ng-model="order.customer_name" />
+		<input type="text" class="form-control col-md-6 sod-cutomer-name" placeholder="Mobile" ng-model="order.customer.mobile" typeahead-on-select="onSelectCustomer($item, $model, $label)" uib-typeahead="customer.mobile for customer in customers | filter:$viewValue | limitTo:8"/>
+		<input type="text" class="form-control col-md-6 sod-cutomer-name" placeholder="Name" ng-model="order.customer.name" typeahead-on-select="onSelectCustomer($item, $model, $label)" uib-typeahead="customer.name for customer in customers | filter:$viewValue | limitTo:8"/>
 		<div class="buttons btn-group">
 		      <button type="button" class="cancelOrder btn btn-default"><i class="fa fa-trash"></i></button>
 		      <button type="button" class="btn btn-default"><i class="fa fa-gift"></i></button>
@@ -21,11 +22,6 @@
 					    <td width="200" >{{ product.prod_name }}</td><!--class="yx"-->
 					    <td width="20%" align="center">{{ product.prod_qty }}</td><!--class="xz"-->
 					    <td width="20%" align="right">{{ product.prod_qty * product.prod_rate }}</td><!--class="xw"-->
-					</tr>
-					<tr>
-					    <td >&nbsp;</td>
-					    <td >&nbsp;</td>
-					    <td >&nbsp;</td>
 					</tr>
 				</tbody>	
 			  	<tfoot>

@@ -1,4 +1,10 @@
+
+
 module.exports = function(grunt) {
+
+    var open = require('open');
+    var os = require('os');
+    var browser = os.platform() === 'linux' ? 'google-chrome' : (os.platform() === 'darwin' ? 'google chrome' : (os.platform() === 'win32' ? 'chrome' : 'firefox'));
 
     // Project configuration.
     grunt.initConfig({
@@ -77,6 +83,14 @@ module.exports = function(grunt) {
                     args: ['dev'],
                     env: {
                         PORT: '3001'
+                    },
+                    callback: function(nodemon){
+                        nodemon.on('config:update', function () {
+                            console.log('opening the page in Chrome browser..');
+                            setTimeout(function() {
+                                open('http://localhost:'+nodemon.config.options.env.PORT, browser);
+                            }, 1000);
+                        });
                     },
                     cwd: 'server',
                     ignore: ['node_modules/**'],

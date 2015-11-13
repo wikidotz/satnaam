@@ -38,6 +38,7 @@
     "grunt-sass": "^1.0.0",
     "mongoose": "^4.1.7",
     "node-sass": "^3.3.2",
-    "nodemon": "^1.8.0"
+    "nodemon": "^1.8.0",
+    "open": "0.0.5"
   }
 }
