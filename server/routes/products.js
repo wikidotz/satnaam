@@ -6,7 +6,8 @@ var Util = require('../util');
 //var ACTIVE_PRODS_GET = 'select * from product';
 var logger = require('../logger');
 var mongoose = require('mongoose');
-var sampleCat = require('../data/samplecategories.json');
+//var sampleCat = [];//require('../data/samplecategories.json');
+//var sampleProd = require('../data/sampleproducts.json');
 var Q = require("q");
 
 var ItemSchema = new mongoose.Schema({
@@ -53,18 +54,25 @@ router.get('/itemCategories', function(req, res, next) {
 	});
 })
 
-var indexCat = sampleCat.length-1;
+/*var indexCat = sampleProd.length-1;
 
 router.get('/addCategory', function(req, res, next){
-	console.dir(sampleCat)
-	indexCat = sampleCat.length;
+	console.dir(sampleProd)
+	indexCat = sampleProd.length;
+	console.dir(indexCat)
+	addCats(res);
+})*/
+
+/*router.get('/addProduct', function(req, res, next){
+	console.dir(sampleProd)
+	indexCat = sampleProd.length;
 	console.dir(indexCat)
 	addCats(res);
 })
 
 function addCats(res){
 
-	var itemCat = new ItemCategory(sampleCat[indexCat])
+	var itemCat = new Item(sampleProd[indexCat])
 
 	itemCat.save(function(err, thor) {
 	  	if (err) return console.error(err);
@@ -78,7 +86,7 @@ function addCats(res){
 	  	}
 	});
 }
-
+*/
 /*
 router.get('/', function(req, res, next) {
 	logger.log('info','Loading active products');
