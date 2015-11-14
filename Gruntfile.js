@@ -84,14 +84,7 @@ module.exports = function(grunt) {
                     env: {
                         PORT: '3001'
                     },
-                    callback: function(nodemon){
-                        nodemon.on('config:update', function () {
-                            console.log('opening the page in Chrome browser..');
-                            setTimeout(function() {
-                                open('http://localhost:'+nodemon.config.options.env.PORT, browser);
-                            }, 1000);
-                        });
-                    },
+                    
                     cwd: 'server',
                     ignore: ['node_modules/**'],
                     ext: 'js'

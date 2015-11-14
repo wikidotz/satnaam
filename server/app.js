@@ -76,6 +76,7 @@ app.post('/login', function(req, res) {
 
 });
 
+
 // route middleware to verify a token
 apiRoutes.use(function(req, res, next) {
 
@@ -112,6 +113,7 @@ apiRoutes.use(function(req, res, next) {
 
 var unless = function(path, middleware) {
     return function(req, res, next) {
+        console.log(req.path)
         if (path === req.path) {
             return next();
         } else {
@@ -120,7 +122,8 @@ var unless = function(path, middleware) {
     };
 };
 
-app.use(unless('/setup', apiRoutes));//'/api', apiRoutes);
+//app.use(unless('/setup', apiRoutes));//'/api', apiRoutes);
+//app.use(unless('/products/addCategory', apiRoutes));//'/api', apiRoutes);
 
 
 app.get('/setup', function(req, res) {

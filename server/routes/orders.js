@@ -22,7 +22,8 @@ var OrderSchema = new mongoose.Schema({
 	order_status: Number,
 	order_token_no: Number,
 	order_total_amt: Number,
-	order_total_qty: Number
+	order_total_qty: Number,
+	
 });
 
 var Order = mongoose.model('orders', OrderSchema);

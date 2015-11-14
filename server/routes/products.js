@@ -6,6 +6,8 @@ var Util = require('../util');
 //var ACTIVE_PRODS_GET = 'select * from product';
 var logger = require('../logger');
 var mongoose = require('mongoose');
+var sampleCat = require('../data/samplecategories.json');
+var Q = require("q");
 
 var ItemSchema = new mongoose.Schema({
     prod_id: Number,
@@ -26,7 +28,15 @@ var ItemSchema = new mongoose.Schema({
     prod_modified_date: Date
 });
 
+
+var ItemCategorySchema = new mongoose.Schema({
+	category_id: Number,
+    category_name: String,
+    modified_by: String,
+    modified_date: Date
+})
 var Item = mongoose.model('items', ItemSchema);
+var ItemCategory = mongoose.model('itemCategories', ItemCategorySchema);
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -36,6 +46,40 @@ router.get('/', function(req, res, next) {
 	  res.send(result);
 	});
 })
+
+router.get('/itemCategories', function(req, res, next) {
+
+	ItemCategory.find(function(err, result) {
+	  if (err) return console.error(err);
+	  res.send(result);
+	});
+})
+
+var indexCat = sampleCat.length-1;
+
+router.get('/addCategory', function(req, res, next){
+	console.dir(sampleCat)
+	indexCat = sampleCat.length;
+	console.dir(indexCat)
+	addCats(res);
+})
+
+function addCats(res){
+
+	var itemCat = new ItemCategory(sampleCat[indexCat])
+
+	itemCat.save(function(err, thor) {
+	  	if (err) return console.error(err);
+	  	console.dir('saved'+indexCat);
+	  	indexCat--;
+	  	if(indexCat >= 0){
+	  		addCats(res);
+	  	}else{
+	  		console.dir('complete');
+	  		res.send({})
+	  	}
+	});
+}
 
 /*
 router.get('/', function(req, res, next) {

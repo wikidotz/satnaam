@@ -34,8 +34,7 @@ footer.s-footer {
     height: 50px;
     overflow: hidden;
     z-index: 2;
-    /*remove after coding of order details page*/
-    display: none;
+    
 }
 
 .sf-left-arrow,
