@@ -18,12 +18,10 @@ var ItemSchema = new mongoose.Schema({
     prod_ingredients: String,
     prod_rate: Number,
     prod_available: Number,
-    prod_size: Number,
-    prod_weight: Number,
-    prod_veg_nonveg: Number,
-    prod_pre_time: Number,
-    prod_created_by: String,
-    prod_created_date: Date,
+    prod_size: String,
+    prod_weight: String,
+    prod_veg_nonveg: String,
+    prod_pre_max_time_sec: Number,
     prod_modified_by: String,
     prod_modified_date: Date
 });
