@@ -3,8 +3,7 @@ angular.module('hotelApp', [
     'ngTouch', 
     'ui.bootstrap', 
     'ngMaterial', 
-    'angularMoment', 
-    'anguFixedHeaderTable',
+    'angularMoment',
     'LocalForageModule'
 ])
 

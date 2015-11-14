@@ -1,6 +1,6 @@
 <div class="orderDetail container">
-		<input type="text" class="form-control col-md-6 sod-cutomer-name" placeholder="Mobile" ng-model="order.customer.mobile" typeahead-on-select="onSelectCustomer($item, $model, $label)" uib-typeahead="customer.mobile for customer in customers | filter:$viewValue | limitTo:8"/>
-		<input type="text" class="form-control col-md-6 sod-cutomer-name" placeholder="Name" ng-model="order.customer.name" typeahead-on-select="onSelectCustomer($item, $model, $label)" uib-typeahead="customer.name for customer in customers | filter:$viewValue | limitTo:8"/>
+		<input type="text" class="form-control col-md-6 col-xs-6 sod-cutomer-name" placeholder="Mobile" ng-model="order.customer.mobile" typeahead-on-select="onSelectCustomer($item, $model, $label)" uib-typeahead="customer.mobile for customer in customers | filter:$viewValue | limitTo:8"/>
+		<input type="text" class="form-control col-md-6 col-xs-6 sod-cutomer-name" placeholder="Name" ng-model="order.customer.name" typeahead-on-select="onSelectCustomer($item, $model, $label)" uib-typeahead="customer.name for customer in customers | filter:$viewValue | limitTo:8"/>
 		<div class="buttons btn-group">
 		      <button type="button" class="cancelOrder btn btn-default"><i class="fa fa-trash"></i></button>
 		      <button type="button" class="btn btn-default"><i class="fa fa-gift"></i></button>
@@ -12,7 +12,7 @@
 			<table cellspacing="0" cellpadding="0" border="0" clasa="table table-condensed"><!--class="F cf zt"-->
 				<thead>
 					<tr>
-						<th width="200">Item</th>
+						<th width="172">Item</th>
 				      	<th width="20%" style="text-align:center;">Qty</th>
 				      	<th width="20%">Amount</th>
 				    </tr>
@@ -28,7 +28,7 @@
 			  		<tr ><!--class="summary"-->
 					  	<td width="200" >Total</td><!--class="total"-->
 					  	<td width="20%" style="text-align:center;">{{}}</td><!--class="xz totalQty"-->
-					  	<td width="20%" align="right">{{order.order_total_amt}}</td><!--class="xw totalAmt"-->
+					  	<td width="20%" align="right"><strong>{{order.order_total_amt}}</strong></td><!--class="xw totalAmt"-->
 					 </tr>		
 			  	</tfoot>
 			</table>			

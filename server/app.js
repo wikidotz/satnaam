@@ -36,7 +36,7 @@ app.post('/login', function(req, res) {
 
     // find the user
     User.findOne({
-        user: post.username
+        user: post.username.toLowerCase()
     }, function(err, user) {
 
         if (err) throw err;
@@ -137,7 +137,13 @@ app.get('/setup', function(req, res) {
         admin: true
     });
 
-    async.parallel([dhiraj.save, mukesh.save], function(err, results) {
+    var himmat = new User({
+        user: 'himmat',
+        password: 'hs1111',
+        admin: true
+    });
+
+    async.parallel([dhiraj.save, mukesh.save, himmat.save], function(err, results) {
         if (err) throw err;
         res.json({
             success: true
