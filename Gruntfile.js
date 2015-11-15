@@ -84,7 +84,6 @@ module.exports = function(grunt) {
                     env: {
                         PORT: '3001'
                     },
-                    
                     cwd: 'server',
                     ignore: ['node_modules/**'],
                     ext: 'js'

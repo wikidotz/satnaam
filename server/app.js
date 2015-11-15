@@ -66,6 +66,7 @@ app.post('/login', function(req, res) {
                 res.status(200).json({
                     success: true,
                     message: 'Enjoy your token!',
+                    defaultCategoryID: 2,
                     token: token
                 });
             }

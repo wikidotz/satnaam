@@ -3,7 +3,9 @@
         <!--a class="sh-buttons" href=""><i class="fa fa-bars"></i></a>
         <a class="sh-buttons" href=""><i class="fa fa-th"></i></a>
         <a class="sh-buttons" href=""><i class="fa fa-cutlery"></i></a-->
-        <a class="sh-buttons" href="javascript:void(0)" ng-click="newOrder()"><i class="fa fa-plus"></i></a-->
+        <a class="sh-buttons" href="javascript:void(0)" ng-click="newOrder()"><i class="fa fa-plus"></i></a>
+
+
 
         <div class="pull-right">
         	<a class="sh-buttons sh-parcel" href=""><i class="fa fa-gift"></i></a>
@@ -12,8 +14,9 @@
     </header>
 
     <div class="s-content">
+        <pre>{{token}}</pre>
     	<ul class="s-product-list">
-    		<li ng-swipe-left="leftSwipe(product)" ng-swipe-right="rightSwipe(product)" class="sp-item" ng-repeat="product in products track by $index">
+    		<li ng-swipe-left="leftSwipe(product)" ng-swipe-right="rightSwipe(product)" class="sp-item" ng-repeat="product in products | filter:{prod_category_id:catid}">
     			<div class="spl-text-container s-animate" ng-class="namePriceClass(product)"  ng-click="addItem(product)">
     				<div class="spl-name">{{product.prod_name}}</div>
     				<div class="spl-price">Rs. {{product.prod_rate}}/-</div>	
@@ -42,50 +45,12 @@
     	<div class="sf-left-arrow"><i class="fa fa-arrow-left"></i></div>
 
     	<ul class="sf-cat-list">
-    		<li class="sf-cat-item">
+    		<li ng-repeat="cat in categories" ng-click="changeCategory(cat.category_id)" ng-class="(cat.category_id==catid)?'selected':''" class="sf-cat-item">
     			<img src="">
-    			<a href="">Sandwiches</a>
-    		</li>
-    		<li class="sf-cat-item">
-    			<img src="">
-    			<a href="">Sandwiches</a>
-    		</li>
-    		<li class="sf-cat-item">
-    			<img src="">
-    			<a href="">Sandwiches</a>
-    		</li>
-    		<li class="sf-cat-item">
-    			<img src="">
-    			<a href="">Sandwiches</a>
-    		</li>
-    		<li class="sf-cat-item">
-    			<img src="">
-    			<a href="">Sandwiches</a>
-    		</li>
-    		<li class="sf-cat-item">
-    			<img src="">
-    			<a href="">Sandwiches</a>
-    		</li>
-    		<li class="sf-cat-item">
-    			<img src="">
-    			<a href="">Sandwiches</a>
-    		</li>
-    		<li class="sf-cat-item">
-    			<img src="">
-    			<a href="">Sandwiches</a>
-    		</li>
-    		<li class="sf-cat-item">
-    			<img src="">
-    			<a href="">Sandwiches</a>
-    		</li>
-    		<li class="sf-cat-item">
-    			<img src="">
-    			<a href="">Sandwiches</a>
+    			<a >{{cat.category_name}}</a>
     		</li>
     	</ul>
 
     	<div class="sf-right-arrow"><i class="fa fa-arrow-right"></i></div>
-
-
     </footer>
 </div>

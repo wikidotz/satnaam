@@ -10,8 +10,8 @@ angular.module('hotelApp', [
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
 
     $stateProvider
-    // HOME STATES AND NESTED VIEWS ========================================
-        .state('home', {
+    
+    .state('home', {
         url: '/home',
         templateUrl: 'templates/partial-home.html',
         controller: 'OrderCtrl'
@@ -83,9 +83,10 @@ angular.module('hotelApp', [
 .controller('LoginCtrl', function($scope, $location, Login) {
     
     $scope.login = function(e, loginInfo) {
-        console.log(loginInfo)
+        console.log(loginInfo);
         Login.login(loginInfo.uname, loginInfo.pass).then(function(response) {
-            $location.path("/home");
+            //console.log(response);
+            $location.path("/home/"+response.defaultCategoryID);
         }, function(err){
             $scope.errorMsg = err.data.message;    
         });

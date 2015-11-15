@@ -1,6 +1,6 @@
 angular.module('hotelApp')
 
-.controller('OrderCtrl', function($scope, Product, Customer, OrderService) {
+.controller('OrderCtrl', function($scope, $window, $stateParams, Product, Customer, OrderService) {
 
     $scope.products = [];
     $scope.order = {};
@@ -14,37 +14,34 @@ angular.module('hotelApp')
     MAX_TOKEN_NUM = 100;
     START_TOKEN_NUM = 1;
 
+    $scope.catid = 2
+
     function init() {
 
         $('#orderDateTime').datetimepicker();
 
+        //console.log($stateParams)
+
         Product.getProducts().then(function(data) {
-            logger().log("info", "loading products data");
+            console.log(data)
             $scope.products = data;
         })
 
-        /*Customer.getAllCustomers().then(function(data){
-            logger().log("info","loading all customers data");
-            $scope.customers = data;  
-        },function(err){
+        $scope.token = $window.sessionStorage.token;
 
-        })*/
-
-
-        //initialise bootstrap date time picker in order detail page
-        /*$("#orderDateTime").datepicker({
-            format:'dd-mm-yyyy hh:mm'
-        });*/
-        //Customer.getAllCustomers().then(function(data){
-        //logger().log("info","loading all customers");
-        //$scope.customers = data;  
-        //})
         showCurrentDateTime();
         $scope.createNewOrderScreen();
 
         Customer.getAllCustomers().then(function(data){
             $scope.customers = data;
         })
+
+        Product.getCategories().then(function(response){
+            
+            $scope.categories = response;
+        })
+
+        //categoryId
     }
 
     $scope.isDrawerOpen = false;
@@ -53,6 +50,15 @@ angular.module('hotelApp')
     };
 
     $scope.isItemSelected = false;
+
+    $scope.changeCategory = function(id){
+        $scope.catid = id
+    }
+
+    $scope.getSelectedCat = function(id){
+        return (id==catid)?'selected':'';
+    }
+
 
     $scope.toggleDrawer = function() {
         if ($scope.isDrawerOpen) {
@@ -84,7 +90,6 @@ angular.module('hotelApp')
         $scope.order.itemsInOrder = [];
 
         Product.getProducts().then(function(data) {
-            logger().log("info", "loading products data");
             $scope.products = data;
         })
 
@@ -220,8 +225,6 @@ angular.module('hotelApp')
 
 
     $scope.submitOrder = function() {
-
-        //logger().log('info',{$scope.order});
         $scope.order.cust_id = 1;
         $scope.order.order_table_no = 1;
         $scope.order.order_expct_time = 0;
@@ -257,7 +260,6 @@ angular.module('hotelApp')
 
     function onOrderSubmitError() {
         alert("Error in order submit");
-        logger().log("info", "Error in order submit");
     }
 
     function calcCurrentDateTime() {
