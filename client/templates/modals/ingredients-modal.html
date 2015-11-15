@@ -1,0 +1,22 @@
+<div class="modal-header">
+    <h3 class="modal-title" style="display:inline-block;">{{product.prod_name}}</h3>
+    <button ng-click="selectAll()" class="btn btn-default pull-right">Select all</button>
+</div>
+<div class="modal-body">
+    <ul class="sim-pr-qty">
+        <!--li ng-click="addQty()"> &plus; </li-->
+        <li ng-click="item.selected=!item.selected;isAllSelected=false" ng-class="[item.type.toLowerCase(), item.selected?'selected':'']" ng-repeat="item in product.ingredients.items track by $index ">{{item.abbr}}</li>
+        <!--li ng-show="product.prod_qty>1" ng-click="lessQty()"> &minus; </li-->
+    </ul>
+    <hr/>
+    <div class="btn-group" role="group" aria-label="...">
+        <button type="button" ng-click="toggleItemType('MIX', 'M')" class="btn btn-default mix">Mix</button>
+        <button type="button" ng-click="toggleItemType('JAIN', 'J')" class="btn btn-default jain">Jain</button>
+        <button type="button" ng-click="toggleItemType('HALFJAIN', 'HJ')" class="btn btn-default halfjain">Half Jain</button>
+    </div>
+    <!--pre>{{product.ingredients.items | json}}</pre-->
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>

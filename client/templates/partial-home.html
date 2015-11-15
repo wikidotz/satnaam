@@ -4,6 +4,7 @@
         <a class="sh-buttons" href=""><i class="fa fa-th"></i></a>
         <a class="sh-buttons" href=""><i class="fa fa-cutlery"></i></a-->
         <a class="sh-buttons" href="javascript:void(0)" ng-click="newOrder()"><i class="fa fa-plus"></i></a>
+        <a class="sh-buttons" href="#/orders"><i class="fa fa-list-alt"></i></a>
 
 
 
@@ -25,9 +26,9 @@
     			</div>
     			
     			<div class="spl-buttons-container s-animate" ng-show="product.selected">
-    				<div class="spl-button instruction" ><i class="fa fa-info-circle"></i></div>
+    				<div class="spl-button instruction" ng-click="openIngredientsModal(product)" ><i class="fa fa-info-circle"></i></div>
     				<div class="spl-button less" ng-disabled="product.count==0" ng-click="lessItem(product)" >-</div>
-    				<div class="spl-button add"  ng-click="addItem(product)" >+</div>	
+    				<div class="spl-button add" ng-click="addItem(product)" >+</div>	
     				<div class="spl-button pull-right" >{{getProductCount(product)}}</div>	
     			</div>
     			

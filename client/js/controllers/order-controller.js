@@ -1,6 +1,82 @@
 angular.module('hotelApp')
 
-.controller('OrderCtrl', function($scope, $window, $stateParams, Product, Customer, OrderService) {
+.controller('IngredientsModalCtrl', function($scope, $uibModalInstance, product){
+
+    function init(){
+        $scope.product = product;
+
+        if(!$scope.product.hasOwnProperty('ingredients')){
+
+            $scope.product.ingredients = {
+                items:[]
+            };
+
+            for (var i = 0; i < $scope.product.prod_qty; i++) {
+                $scope.product.ingredients.items[i] = {
+                    type:'MIX',
+                    abbr: 'M',
+                    selected: false
+                }
+            };
+        }else{
+            //$scope.product.ingredients.items.length == $scope.product.prod_qty
+        }
+    }
+
+    init();
+
+    $scope.isAllSelected = false;
+
+    $scope.selectAll = function(){
+        
+        for (var i = 0; i < $scope.product.ingredients.items.length; i++) {
+            $scope.product.ingredients.items[i].selected = !$scope.isAllSelected;
+        };
+    }
+
+    $scope.toggleItemType = function(type, abbr){
+        for (var i = 0; i < $scope.product.ingredients.items.length; i++) {
+
+            if($scope.product.ingredients.items[i].selected){
+                $scope.product.ingredients.items[i].type = type;
+                $scope.product.ingredients.items[i].abbr = abbr;
+                $scope.product.ingredients.items[i].selected = false;
+            }
+        };
+        $scope.isAllSelected = false;
+    }
+
+    $scope.addQty = function(){
+        product.prod_qty++;
+        for (var i = 0; i < $scope.product.prod_qty; i++) {
+            $scope.subitems.push({
+                selected: false
+            })
+        };
+    }
+    $scope.lessQty = function(){
+        if(product.prod_qty>1){
+            product.prod_qty--;    
+            for (var i = 0; i < $scope.product.prod_qty; i++) {
+                $scope.subitems.push({
+                    selected: false
+                })
+            };
+        }
+
+        
+    }
+
+    $scope.ok = function () {
+        $uibModalInstance.close($scope.product);
+    };
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+})
+
+.controller('OrderCtrl', function($scope, $window, $uibModal, Product, Customer, OrderService) {
 
     $scope.products = [];
     $scope.order = {};
@@ -20,10 +96,7 @@ angular.module('hotelApp')
 
         $('#orderDateTime').datetimepicker();
 
-        //console.log($stateParams)
-
         Product.getProducts().then(function(data) {
-            console.log(data)
             $scope.products = data;
         })
 
@@ -57,6 +130,26 @@ angular.module('hotelApp')
 
     $scope.getSelectedCat = function(id){
         return (id==catid)?'selected':'';
+    }
+
+    $scope.openIngredientsModal =  function(p){
+        var modalInstance = $uibModal.open({
+            animation: 'true',
+            templateUrl: 'templates/modals/ingredients-modal.html',
+            controller: 'IngredientsModalCtrl',
+            size: 'md',
+            resolve: {
+                product: function () {
+                    return p;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (product) {
+                p = product;
+            }, function () {
+                
+        });
     }
 
 

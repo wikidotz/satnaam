@@ -67,10 +67,11 @@ footer.s-footer {
 .sf-cat-item {
     display: inline-block;
     /* padding: 10px; */
-    margin-top: 6px;
+    margin-top: 3px;
     min-width: 140px;
     text-align: center;
     font-size: 18px;
+    margin-bottom: 3px;
 }
 
 .sf-cat-item a {
@@ -597,4 +598,46 @@ tbody.scrollable > tr{
 .sod-cutomer-name{
     margin-bottom: 10px;
     width: 50%;
+}
+
+.sim-pr-qty{
+    margin: 0;padding: 0;
+}
+
+
+.sim-pr-qty li{
+    list-style: none;
+    display: inline-block;
+    border: 1px solid;
+    border-radius: 24px;
+    padding: 11px 5px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    min-width: 50px;
+    min-height: 50px;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    font-size: 1.3em;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+
+
+.sim-pr-qty .jain {
+    background-color: #de0000;
+}
+
+.sim-pr-qty .mix {
+    background-color: #af0063;
+}
+
+.sim-pr-qty .halfjain {
+    background-color: #cf5e00;
+}
+
+.sim-pr-qty li.selected{
+    background-color: #85AFFF !important;
 }

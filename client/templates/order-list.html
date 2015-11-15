@@ -30,7 +30,7 @@
 
                                     <header class="row no-gutters">
                                         <span class="col-xs-1 ol-order-token">{{order.order_token_no}}</span>
-                                        <span class="col-xs-8 ol-order-name">{{order.customer_name}}</span>
+                                        <span class="col-xs-8 ol-order-name">{{order.customer.name}}</span>
                                         
                                         <span class="col-xs-1">{{order.order_total_qty}}</span>
                                         <span ng-click="showParcel()" class="col-xs-1 pull-right"><i class="fa fa-gift"></i></span>
@@ -77,6 +77,4 @@
             </div>
         </div>
     </div>
-    <footer class="s-footer s-strip">
-    </footer>
 </div>
