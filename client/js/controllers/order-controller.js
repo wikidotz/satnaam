@@ -87,10 +87,23 @@ angular.module('hotelApp')
     //$scope.order.totalQty = 0;
     $scope.order.order_total_amt = 0.00;
     $scope.order.order_token_no = 0;
+    //new code
+    $scope.order.order_id=0;
+    $scope.order.order_date_time = new Date();
+    //1-> order pending, 2-> order in process ,3-> completed,4-> order delivered,5-> order cancelled
+    $scope.order.order_status=1;
+    $scope.order.modified_by = 'admin';
+    $scope.order.last_modified_date_time= new Date();
+    $scope.order.delivery_mode = 'DINE';
+    $scope.order.is_scheduled = 0;
+    $scope.order.scheduled_date_time = undefined;
+    $scope.order.order_dlv_by = "admin";
+    //new code
     MAX_TOKEN_NUM = 100;
     START_TOKEN_NUM = 1;
 
-    $scope.catid = 2
+
+    $scope.catid = 2;
 
     function init() {
 
@@ -181,6 +194,7 @@ angular.module('hotelApp')
         //var i = $scope.order.itemsInOrder.length;
 
         $scope.order.itemsInOrder = [];
+        $scope.order.itemsInOrderMap = {}; 
 
         Product.getProducts().then(function(data) {
             $scope.products = data;
