@@ -85,8 +85,7 @@ angular.module('hotelApp', [
     $scope.login = function(e, loginInfo) {
         console.log(loginInfo);
         Login.login(loginInfo.uname, loginInfo.pass).then(function(response) {
-            //console.log(response);
-            $location.path("/home/"+response.defaultCategoryID);
+            $location.path("/home");
         }, function(err){
             $scope.errorMsg = err.data.message;    
         });
