@@ -191,10 +191,9 @@ angular.module('hotelApp')
     }
 
     $scope.newOrder = function() {
-        //var i = $scope.order.itemsInOrder.length;
-
         $scope.order.itemsInOrder = [];
         $scope.order.itemsInOrderMap = {}; 
+        //$scope.order.order_token_no = $rootScope.currentTokenNum;
 
         Product.getProducts().then(function(data) {
             $scope.products = data;
@@ -301,8 +300,18 @@ angular.module('hotelApp')
         $scope.order.time = new Date().getTime();
 
         OrderService.createOrder($scope.order).then(function(response) {
-            Customer.addCustomer($scope.order.customer);
-            $scope.order = {};
+            if(response.code == 'ORDER_CREATED')
+            {
+                alert(response.msg+'.Token Number:'+response.curr_token);
+                Customer.addCustomer($scope.order.customer);
+                $scope.order = {};
+                $scope.newOrder();
+            }else if(response.code == 'ERROR')
+            {
+                alert(response.msg+'[Code='+response.code+']');
+                console.log(response.stack);
+            }
+            
         })
     }
 

@@ -59,6 +59,7 @@ router.post('/createOrder', function(req, res, next) {
 		if(err) return console.error(err);
 		if(matchedCustomer !=undefined && matchedCustomer.length==0)
 		{
+			console.log('saving new customer record');
 			customer.save(function(err,result){
 					if(err)console.error(err);
 			})
@@ -68,14 +69,29 @@ router.post('/createOrder', function(req, res, next) {
 	console.log(order);
 	order.order_date_time = new Date();
 	order.last_modified_date_time = new Date();
-	
-	order.save(function(err, records) {
-	  	if (err) return console.error(err);
-	  	console.dir('saved');
-	  	console.log(records);
-	  	res.send({msg:'saved'});
-	});
+	/*
+	Generate first token number before new order creation.
+	check last created order in db for the same day, if not found then token num = 1
+	if found then get number, increment it by 1 . if more than 100 then make it 1 */ 
+	generateTokenNumber(function(currentTokenNum){
+		  order.order_token_no = currentTokenNum;			
+		  order.save(function(err, records) {
+	  
+		  	if (err) {
+		  		console.error(err);
+		  		res.send({msg:'Error in Order save',code:'ERROR',stack:err});
+		  		return ;
+		  	}
+		  	console.log(records);
+	  		console.log({msg:'Order saved successfully',code:'ORDER_CREATED',curr_token:currentTokenNum}); 
+	  		res.send({msg:'Order saved successfully',code:'ORDER_CREATED',curr_token:currentTokenNum});	
+		  			  	
+		});
 
+	});
+	  	
+
+	
 })
 
 
@@ -115,5 +131,30 @@ app.get("/products",function(req,res){
 	console.log(""+res);
 })
 
+function generateTokenNumber(callBack)
+{
+	/*The 1 will sort ascending (oldest to newest) and -1 will sort descending (newest to oldest.)
+	If you use the auto created _id field it has a date embedded in it ... 
+	so you can use that to order by ...*/
+	Order.find(function(err, result) {
+	 console.log('get last order token number');
+	 if(result && result.length>0)
+	 {
+	 	 
+	 	 console.log(result[0].order_token_no);
+	 	 if(callBack)
+	 	 {
+	 	 		callBack(parseInt(result[0].order_token_no)+1);	
+	 	 }
+	 	 
+	 }else{
+	 	if(callBack)
+	 	 {
+	 	 		callBack(1);	
+	 	 }
 
+	 }		
+	}).sort({_id:-1}).limit(1)	;
+	
+}
 module.exports = router;

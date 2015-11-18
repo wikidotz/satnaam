@@ -5,7 +5,10 @@ angular.module('hotelApp')
     this.createOrder = function(data){
         return $http.post('orders/createOrder', {orderObj:data}).then(function(response){
             
-            return response.response
+            return response.data;
+        },
+        function(error){
+            return error;
         })
     }
 
