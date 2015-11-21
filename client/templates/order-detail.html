@@ -3,9 +3,13 @@
 		<input type="text" class="form-control col-md-6 col-xs-6 sod-cutomer-name" placeholder="Name" ng-model="order.customer.name" typeahead-on-select="onSelectCustomer($item, $model, $label)" uib-typeahead="customer.name for customer in customers | filter:$viewValue | limitTo:8"/>
 		<div class="buttons btn-group">
 		      <button type="button" class="cancelOrder btn btn-default"><i class="fa fa-trash"></i></button>
-		      <button type="button" class="btn btn-default"><i class="fa fa-gift"></i></button>
-		      <button type="button" class="btn btn-default"><i class="fa fa-hand-o-down"></i></button>
+		      <!--order items are for parcel delivery-->
+		      <button type="button" class="btn btn-default" ng-click="parcelOrder()"><i class="fa fa-gift"></i></button>
+		      <!--order items are for Dining table delivery-->
+		      <button type="button" class="btn btn-default" ng-click="dinningOrder()"><i class="fa fa-hand-o-down"></i></button>
 		      <button type="button" class="btn btn-default"><i class="fa fa-clock-o"></i></button>
+		      <button type="button" class="btn btn-default"><i class="fa fa-print"></i></button>
+
 		</div>
 	
 		<div class="sod-order-table form-group">
@@ -19,16 +23,16 @@
 				</thead>
 				<tbody class="scrollable" >
 					<tr ng-repeat="(key, product) in order.itemsInOrderMap">
-					    <td width="200" >{{ product.prod_name }}</td><!--class="yx"-->
-					    <td width="20%" align="center">{{ product.prod_qty }}</td><!--class="xz"-->
-					    <td width="20%" align="right">{{ product.prod_qty * product.prod_rate }}</td><!--class="xw"-->
+					    <td width="200" class="orderedItemName" >{{ product.prod_name }}</td><!--class="yx"-->
+					    <td width="20%" align="center" class="orderedItemQty">{{ product.prod_qty }}</td><!--class="xz"-->
+					    <td width="20%" align="right" class="orderedItemAmount">{{ product.prod_qty * product.prod_rate }}</td><!--class="xw"-->
 					</tr>
 				</tbody>	
 			  	<tfoot>
 			  		<tr ><!--class="summary"-->
 					  	<td width="200" >Total</td><!--class="total"-->
-					  	<td width="20%" style="text-align:center;">{{}}</td><!--class="xz totalQty"-->
-					  	<td width="20%" align="right"><strong>{{order.order_total_amt}}</strong></td><!--class="xw totalAmt"-->
+					  	<td width="20%" style="text-align:center;" class="totalItemsCount">{{order.itemsInOrder.length}}</td><!--class="xz totalQty"-->
+					  	<td width="20%" align="right" class="totalAmount"><strong>{{order.order_total_amt}}</strong></td><!--class="xw totalAmt"-->
 					 </tr>		
 			  	</tfoot>
 			</table>			
@@ -36,8 +40,10 @@
 		</div>
 
 		<div class="orderBtnsContainer2">
-			<a ng-click="createOrder(order)" class="btn btn-danger btn-lg btn-block">Create Order</a>
+			<input type="checkbox" id="order-paid-check" name="order-paid" checked data-on-text="Yes" data-off-text="No">Paid
+		
+			<a ng-click="validateOrderSave('CREATE')" class="btn btn-danger btn-lg btn-block">Create Order</a>
 
-		 	<a ng-click="submitOrder()" class="btn btn-success btn-md btn-block ">Order </a>
+		 	<!--<a ng-click="submitOrder()" class="btn btn-success btn-md btn-block ">Paid</a>-->
 		</div>
 </div>

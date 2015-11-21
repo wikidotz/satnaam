@@ -98,6 +98,8 @@ angular.module('hotelApp')
     $scope.order.is_scheduled = 0;
     $scope.order.scheduled_date_time = undefined;
     $scope.order.order_dlv_by = "admin";
+
+    $scope.sideBarOrderDetailOpen =false;
     //new code
     MAX_TOKEN_NUM = 100;
     START_TOKEN_NUM = 1;
@@ -108,7 +110,8 @@ angular.module('hotelApp')
     function init() {
 
         $('#orderDateTime').datetimepicker();
-
+        $("[name='order-paid']").bootstrapSwitch();
+        
         Product.getProducts().then(function(data) {
             $scope.products = data;
         })
@@ -172,12 +175,14 @@ angular.module('hotelApp')
                 'margin-left': 'calc(100% - 0px)'
             };
 
+
         } else {
             $scope.drawerStyle = {
                 'margin-left': 'calc(100% - 320px)'
             };
         }
         $scope.isDrawerOpen = !$scope.isDrawerOpen;
+        $scope.sideBarOrderDetailOpen = !$scope.sideBarOrderDetailOpen;
         //$scope.$digest();
         //while opening order details section show current date and time
         showCurrentDateTime();
@@ -295,10 +300,17 @@ angular.module('hotelApp')
         $scope.order.order_mng_emp_id = 1;
     }
 
+    $scope.validateOrderSave = function(mode){
+        if(mode.toLowerCase() == 'create')
+        {
+            $scope.createOrder();
+        }
+    }
+
     $scope.createOrder = function() {
 
         $scope.order.time = new Date().getTime();
-
+        $scope.order.order_pay_status = $("#order-paid-check").prop('checked')? 'full':'none';
         OrderService.createOrder($scope.order).then(function(response) {
             if(response.code == 'ORDER_CREATED')
             {
@@ -373,6 +385,14 @@ angular.module('hotelApp')
             $scope.order.customer = response;
         });
     }*/
+
+    $scope.parcelOrder = function (){
+        $scope.order.delivery_mode = 'PARCEL';   
+    }
+
+    $scope.dinningOrder = function (){
+        $scope.order.delivery_mode = 'DINE';   
+    }
 
     function onOrderSubmitError() {
         alert("Error in order submit");

@@ -49,7 +49,7 @@ var OrderSchema = new mongoose.Schema({
 
 var Order = mongoose.model('orders', OrderSchema);
 var Customer = mongoose.model('customers', CustomerSchema);
-
+var MAX_ORDER_TOKEN_NUM= 100;
 router.post('/createOrder', function(req, res, next) {
 
 	var order = new Order(req.body.orderObj);
@@ -144,7 +144,11 @@ function generateTokenNumber(callBack)
 	 	 console.log(result[0].order_token_no);
 	 	 if(callBack)
 	 	 {
-	 	 		callBack(parseInt(result[0].order_token_no)+1);	
+	 	 		var lastOrderTokenNum = parseInt(result[0].order_token_no) ;
+	 	 		lastOrderTokenNum = 99;
+
+	 	 		//if token number reached to max then restart it
+	 	 		callBack((lastOrderTokenNum==MAX_ORDER_TOKEN_NUM)?1:(lastOrderTokenNum+1));	
 	 	 }
 	 	 
 	 }else{
