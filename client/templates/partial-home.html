@@ -14,8 +14,11 @@
         </div>
     </header>
 
-    <div class="s-content">
-        <pre>{{token}}</pre>
+    <div class="s-content"> 
+        <button class="btn copy-btn btn-default" data-clipboard-text="{{token}}">
+                Copy Token
+        </button>
+
     	<ul class="s-product-list">
     		<li ng-swipe-left="leftSwipe(product)" ng-swipe-right="rightSwipe(product)" class="sp-item" ng-repeat="product in products | filter:{prod_category_id:catid}">
     			<div class="spl-text-container s-animate" ng-class="namePriceClass(product)"  ng-click="addItem(product)">
