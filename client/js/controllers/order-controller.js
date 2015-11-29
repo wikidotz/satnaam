@@ -1,5 +1,28 @@
 angular.module('hotelApp')
 
+.directive('sauces', function(){
+    return {
+        templateUrl: 'templates/sauces-directive.html',
+        link: function(scope, element, attrs){
+            
+            var stepSlider = $(element).find('.slider-snap')[0];
+
+            noUiSlider.create(stepSlider, {
+                start: [ 0 ],
+                step: 4,
+                range: {
+                    'min': [  0 ],
+                    'max': [ 12 ]
+                }
+            });
+
+        },
+        scope: {
+            name: '@name'
+        },
+    }
+})
+
 .factory('SubProduct', function(){
 
     function SubProduct (product){
@@ -64,8 +87,6 @@ angular.module('hotelApp')
                 })
             };
         }
-
-        
     }
 
     $scope.ok = function () {
