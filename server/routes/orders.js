@@ -1,8 +1,6 @@
 var express = require('express');
 var router = express.Router();
-//var dbConnection = require('../dbconnection');
 var logger = require('../logger');
-//var bookshelf = require('bookshelf');
 var orderJson = require('../data/orderlist.json');
 var mongoose = require('mongoose');
 
@@ -16,6 +14,7 @@ var CustomerSchema = new mongoose.Schema({
 var OrderSchema = new mongoose.Schema({
 	time:Number,
     order_id:Number,
+    order_id_str:String,
 	order_token_no: Number,
 	customer: Object,
 	order_date_time:Date,
@@ -65,7 +64,7 @@ router.post('/createOrder', function(req, res, next) {
 			})
 		}	
 	})
-	console.log('Creating an order');
+	console.log('Server - Creating an order');
 	console.log(order);
 	order.order_date_time = new Date();
 	order.last_modified_date_time = new Date();
@@ -81,10 +80,14 @@ router.post('/createOrder', function(req, res, next) {
 		  		console.error(err);
 		  		res.send({msg:'Error in Order save',code:'ERROR',stack:err});
 		  		return ;
+
 		  	}
+		  	console.log('order save results');
 		  	console.log(records);
-	  		console.log({msg:'Order saved successfully',code:'ORDER_CREATED',curr_token:currentTokenNum}); 
-	  		res.send({msg:'Order saved successfully',code:'ORDER_CREATED',curr_token:currentTokenNum});	
+		  	console.log({msg:'Order saved successfully',code:'ORDER_CREATED',
+		  					curr_token:currentTokenNum,order_id_str:order._id}); 
+	  		res.send({msg:'Order saved successfully',code:'ORDER_CREATED',
+	  			curr_token:currentTokenNum,order_id_str:order._id});	
 		  			  	
 		});
 

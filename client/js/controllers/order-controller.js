@@ -77,29 +77,12 @@ angular.module('hotelApp')
 })
 
 .controller('OrderCtrl', function($scope, $window, $uibModal, Product, Customer, OrderService) {
+    //start OrderCtrl controller
 
     $scope.products = [];
-    $scope.order = {};
     $scope.customers = [];
-    $scope.order.customer = {};
-    $scope.order.itemsInOrder = [];
-    $scope.order.itemsInOrderMap = {};
-    //$scope.order.totalQty = 0;
-    $scope.order.order_total_amt = 0.00;
-    $scope.order.order_token_no = 0;
-    //new code
-    $scope.order.order_id=0;
-    $scope.order.order_date_time = new Date();
-    //1-> order pending, 2-> order in process ,3-> completed,4-> order delivered,5-> order cancelled
-    $scope.order.order_status=1;
-    $scope.order.modified_by = 'admin';
-    $scope.order.last_modified_date_time= new Date();
-    $scope.order.delivery_mode = 'DINE';
-    $scope.order.is_scheduled = 0;
-    $scope.order.scheduled_date_time = undefined;
-    $scope.order.order_dlv_by = "admin";
-
     $scope.sideBarOrderDetailOpen =false;
+    
     //new code
     MAX_TOKEN_NUM = 100;
     START_TOKEN_NUM = 1;
@@ -119,7 +102,8 @@ angular.module('hotelApp')
         $scope.token = $window.sessionStorage.token;
 
         showCurrentDateTime();
-        $scope.createNewOrderScreen();
+        $scope.initNewOrderObj();
+        $scope.initNewTransactionObj();
 
         Customer.getAllCustomers().then(function(data){
             $scope.customers = data;
@@ -196,10 +180,10 @@ angular.module('hotelApp')
     }
 
     $scope.newOrder = function() {
+        $scope.order = {};
         $scope.order.itemsInOrder = [];
         $scope.order.itemsInOrderMap = {}; 
-        //$scope.order.order_token_no = $rootScope.currentTokenNum;
-
+        
         Product.getProducts().then(function(data) {
             $scope.products = data;
         })
@@ -287,19 +271,6 @@ angular.module('hotelApp')
 
     }
 
-    $scope.createNewOrderScreen = function() {
-        if ($scope.order.order_token_no == MAX_TOKEN_NUM) {
-            $scope.order.order_token_no = START_TOKEN_NUM;
-        } else {
-            $scope.order.order_token_no++;
-        }
-
-        $scope.order.itemsInOrder = [];
-        $scope.order.order_status = 1;
-        $scope.order.order_pay_status = "none";
-        $scope.order.order_mng_emp_id = 1;
-    }
-
     $scope.validateOrderSave = function(mode){
         if(mode.toLowerCase() == 'create')
         {
@@ -315,9 +286,16 @@ angular.module('hotelApp')
             if(response.code == 'ORDER_CREATED')
             {
                 alert(response.msg+'.Token Number:'+response.curr_token);
+                $scope.order.order_token_no = response.curr_token;
+                //store generated new order id 
+                $scope.order.order_id_str = response.order_id_str;
                 Customer.addCustomer($scope.order.customer);
-                $scope.order = {};
-                $scope.newOrder();
+                var orderCopy = {};
+                angular.copy($scope.order, orderCopy);
+                $scope.generateBill(orderCopy,function(){
+                    $scope.newOrder();    
+                });
+                
             }else if(response.code == 'ERROR')
             {
                 alert(response.msg+'[Code='+response.code+']');
@@ -348,36 +326,6 @@ angular.module('hotelApp')
 
     $scope.onSelectCustomer = function(item, model, label){
         $scope.order.customer = angular.copy(item);
-    }
-
-
-
-    $scope.submitOrder = function() {
-        $scope.order.cust_id = 1;
-        $scope.order.order_table_no = 1;
-        $scope.order.order_expct_time = 0;
-        $scope.order.order_date = formatDateTime(calcCurrentDateTime());
-        $scope.order.mode = 'create';
-        /*Order.createNewOrder($scope.order).then(function(response) {
-            if(response==undefined)
-            {
-                onOrderSubmitError();
-            }else if(response.data!=undefined && response.data.code!=undefined && response.data.code.toUpperCase()=="ORDER_SUBMIT_SUCCESS")
-            {
-                alert("order submit successfully");    
-                $scope.$emit('ORDER_SUBMIT_SUCCESS');
-                $scope.createNewOrderScreen();
-            }else
-            {
-               onOrderSubmitError();
-            }
-            
-           // $scope.products = data;
-        },
-        function(err){
-            onOrderSubmitError();
-
-        })*/
     }
 
     /*$scope.onCustomerSelect = function($item, $model, $label) {
@@ -425,6 +373,124 @@ angular.module('hotelApp')
 
     }
 
-    init();
+     $scope.initNewTransactionObj = function(){
+        $scope.transaction = {};
+        $scope.transaction.order = {};
+        $scope.transaction.bill_no= 0;
+        $scope.transaction.order_total_amt = 0.0;
+        $scope.transaction.paid_amt = 0.0;
+        $scope.transaction.bal_amt = 0.0;
+        $scope.transaction.tran_date_time = new Date();
+        $scope.transaction.modified_by ="admin";
+        $scope.transaction.last_modified_date_time = new Date();
+        $scope.transaction.desc = "";
+        $scope.transaction.type="ORDER_PAYMENT";
+        $scope.transaction.mode = "CASH";
+    }
 
+    //transaction code
+    
+    $scope.initNewOrderObj = function(){
+        $scope.order = {};
+        $scope.order.customer = {};
+        $scope.order.itemsInOrder = [];
+        $scope.order.itemsInOrderMap = {};
+        $scope.order.order_total_amt = 0.00;
+        $scope.order.order_token_no = 0;
+        $scope.order.order_id_str="";
+        $scope.order.order_date_time = new Date();
+        //1-> order pending, 2-> order in process ,3-> completed,4-> order delivered,5-> order cancelled
+        $scope.order.order_status=1;
+        $scope.order.modified_by = 'admin';
+        $scope.order.last_modified_date_time= new Date();
+        $scope.order.delivery_mode = 'DINE';
+        $scope.order.is_scheduled = 0;
+        $scope.order.scheduled_date_time = undefined;
+        //set it after order is delivered by
+        $scope.order.order_dlv_by = "";
+    }
+
+     $scope.generateBill = function(orderData, callBack) {
+        alert('generateBill');
+        
+        $scope.transaction.order_id_str = orderData.order_id_str ;
+        $scope.transaction.order_total_amt = orderData.order_total_amt;
+        $scope.transaction.order_total_qty= orderData.order_total_qty;
+    
+        $scope.transaction.tran_date_time = new Date();
+        $scope.transaction.paidAmt = 100.00;
+        
+        $scope.transaction.order_total_amt = orderData.order_total_amt;
+        $scope.transaction.bal_amt = orderData.order_total_amt - $scope.transaction.paidAmt ;
+
+        $scope.transaction.type="ORDER_PAYMENT";
+
+        OrderService.addBill($scope.transaction).then(function(response) {
+            if(response.code == 'TRANS_ADDED')
+            {
+                alert(response.msg);
+                //Customer.addCustomer($scope.order.customer);
+                callBack.call();
+
+            }else if(response.code == 'ERROR')
+            {
+                alert(response.msg+'[Code='+response.code+']');
+                console.log(response.stack);
+            }
+            
+        })
+    }
+
+    init();
+    
+})
+
+/*
+CURRENTLY NOT IN USE
+SOME ISSUES WITH BELOW NEWLY CREATED CONTROL
+NEED TO FIX
+*/
+.controller('TransactionCtrl',function($scope,Customer,OrderService){
+    $scope.transaction.order = {};
+    $scope.transaction.bill_no= 0;
+    $scope.transaction.order_total_amt = 0.0;
+    $scope.transaction.paid_amt = 0.0;
+    $scope.transaction.bal_amt = 0.0;
+    $scope.transaction.tran_date_time = new Date();
+    $scope.transaction.modified_by ="admin";
+    $scope.transaction.last_modified_date_time = new Date();
+    $scope.transaction.desc = "";
+    $scope.transaction.type="ORDER";
+    $scope.transaction.mode = "CASH";
+
+     $scope.generateBill = function(orderData) {
+        alert('generateBill');
+        $scope.transaction.order = orderData;
+        $scope.transaction.tran_date_time = new Date();
+        $scope.transaction.paidAmt = 100.00;
+        $scope.transaction.bal_amt = 0.00;
+        $scope.transaction.order_total_amt = $scope.transaction.order.order_total_amt;
+
+
+        OrderService.addBill($scope.transaction.order).then(function(response) {
+            if(response.code == 'TRANS_ADDED')
+            {
+                alert(response.msg);
+                //Customer.addCustomer($scope.order.customer);
+            }else if(response.code == 'ERROR')
+            {
+                alert(response.msg+'[Code='+response.code+']');
+                console.log(response.stack);
+            }
+            
+        })
+    }
+
+    $scope.$on('test',function(event){
+        alert('test event catched');
+    })
+
+    $scope.$on('generate-bill',function(event,orderData){
+        $scope.generateBill(orderData);
+    })
 })

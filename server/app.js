@@ -6,6 +6,7 @@ var productsRoutes = require('./routes/products')
 var categoriesRoutes = require('./routes/categories');
 var customersRoutes = require('./routes/customers');
 var orderRoutes = require('./routes/orders');
+var transactionRoutes = require('./routes/transactions');
 var config = require('./config');
 var mongoose = require('mongoose');
 var morgan = require('morgan');
@@ -164,6 +165,7 @@ app.use('/products', productsRoutes);
 app.use('/categories', categoriesRoutes);
 app.use('/customers', customersRoutes);
 app.use('/orders', orderRoutes);
+app.use('/transactions',transactionRoutes);
 
 
 app.get('/logout', function(req, res) {

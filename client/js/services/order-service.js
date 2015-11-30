@@ -20,5 +20,33 @@ angular.module('hotelApp')
 			return response.data;
 		})
 	}
+
+    this.addBill = function(data)
+    {
+        return $http.post('transactions/addTransaction',{transObj:data}).then(function(response){
+            return response.data ;
+        },function(error){
+            return error;
+        })
+    }
+
+    this.addPayment = function(data)
+    {
+        return $http.post('transactions/addTransaction',{transObj:data}).then(function(response){
+            return response.data ;
+        },function(error){
+            return error;
+        })
+    }
+
+    this.addAdvancePayment = function(data)
+    {
+        return $http.post('transactions/addAdvancePayment',{transObj:data}).then(function(response){
+            return response.data ;
+        },function(error){
+            return error;
+        })
+    }
+
     
-})
+});
