@@ -1,26 +1,50 @@
 angular.module('hotelApp')
 
+.directive('sauces', function(){
+    return {
+        templateUrl: 'templates/sauces-directive.html',
+        link: function(scope, element, attrs){
+            
+            var stepSlider = $(element).find('.slider-snap')[0];
+
+            noUiSlider.create(stepSlider, {
+                start: [ 0 ],
+                step: 4,
+                range: {
+                    'min': [  0 ],
+                    'max': [ 12 ]
+                }
+            });
+
+        },
+        scope: {
+            name: '@name'
+        },
+    }
+})
+
+.factory('SubProduct', function(){
+
+    function SubProduct (product){
+        SubProduct.prototype = product.prototype;
+    }
+
+    return( SubProduct);
+})
+
 .controller('IngredientsModalCtrl', function($scope, $uibModalInstance, product){
 
     function init(){
         $scope.product = product;
 
-        if(!$scope.product.hasOwnProperty('ingredients')){
-
-            $scope.product.ingredients = {
-                items:[]
-            };
-
-            for (var i = 0; i < $scope.product.prod_qty; i++) {
-                $scope.product.ingredients.items[i] = {
-                    type:'MIX',
-                    abbr: 'M',
-                    selected: false
-                }
-            };
-        }else{
-            //$scope.product.ingredients.items.length == $scope.product.prod_qty
-        }
+        for (var i = 0; i < $scope.product.quantities.length; i++) {
+            $scope.product.quantities[i].ingredients = {
+                type:'MIX',
+                abbr: 'M',
+                selected: false
+            }
+        };
+    
     }
 
     init();
@@ -29,18 +53,18 @@ angular.module('hotelApp')
 
     $scope.selectAll = function(){
         
-        for (var i = 0; i < $scope.product.ingredients.items.length; i++) {
-            $scope.product.ingredients.items[i].selected = !$scope.isAllSelected;
+        for (var i = 0; i < $scope.product.quantities.items.length; i++) {
+            $scope.product.quantities[i].selected = !$scope.isAllSelected;
         };
     }
 
     $scope.toggleItemType = function(type, abbr){
-        for (var i = 0; i < $scope.product.ingredients.items.length; i++) {
+        for (var i = 0; i < $scope.product.quantities.length; i++) {
 
-            if($scope.product.ingredients.items[i].selected){
-                $scope.product.ingredients.items[i].type = type;
-                $scope.product.ingredients.items[i].abbr = abbr;
-                $scope.product.ingredients.items[i].selected = false;
+            if($scope.product.quantities[i].selected){
+                $scope.product.quantities[i].ingredients.type = type;
+                $scope.product.quantities[i].ingredients.abbr = abbr;
+                $scope.product.quantities[i].selected = false;
             }
         };
         $scope.isAllSelected = false;
@@ -63,8 +87,6 @@ angular.module('hotelApp')
                 })
             };
         }
-
-        
     }
 
     $scope.ok = function () {
@@ -76,8 +98,7 @@ angular.module('hotelApp')
     };
 })
 
-.controller('OrderCtrl', function($scope, $window, $uibModal, Product, Customer, OrderService) {
-    //start OrderCtrl controller
+.controller('OrderCtrl', function($scope, $window, $uibModal, SubProduct, Product, Customer, OrderService) {
 
     $scope.products = [];
     $scope.customers = [];
@@ -97,6 +118,8 @@ angular.module('hotelApp')
         
         Product.getProducts().then(function(data) {
             $scope.products = data;
+
+            new Clipboard('.copy-btn');
         })
 
         $scope.token = $window.sessionStorage.token;
@@ -220,7 +243,8 @@ angular.module('hotelApp')
 
         if (p.prod_qty > 0) {
             p.prod_qty--;
-        } 
+            product.quantities.splice(0, 1);
+        }
 
         if (p.prod_qty == 0) {
             product.selected = false;
@@ -243,6 +267,11 @@ angular.module('hotelApp')
         if(product.prod_qty==1){
             product.selected = true;
         }
+
+        if(!product.hasOwnProperty('quantities')){
+            product.quantities = [];
+        }
+        product.quantities.push(new SubProduct(angular.copy(product)));
         
         $scope.order.itemsInOrderMap[product.prod_id] = product;
 
