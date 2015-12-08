@@ -20,8 +20,8 @@
         </button>
 
     	<ul class="s-product-list">
-    		<li ng-swipe-left="leftSwipe(product)" ng-swipe-right="rightSwipe(product)" class="sp-item" ng-repeat="product in products | filter:{prod_category_id:catid}">
-    			<div class="spl-text-container s-animate" ng-class="namePriceClass(product)"  ng-click="addItem(product)">
+    		<li ng-swipe-left="leftSwipe(product)" ng-swipe-right="rightSwipe(product)" class="sp-item" ng-repeat="product in products | filter:{prod_category_id:catid}" >
+    			<div class="spl-text-container s-animate" ng-class="namePriceClass(product)" ng-click="addItem(product)">
     				<div class="spl-name">{{product.prod_name}}</div>
     				<div class="spl-price">Rs. {{product.prod_rate}}/-</div>	
                     <div class="spl-button pull-right" >{{product.prod_qty}}</div>  
@@ -30,7 +30,7 @@
     			
     			<div class="spl-buttons-container s-animate" ng-show="product.selected">
     				<div class="spl-button instruction" ng-click="openIngredientsModal(product)" ><i class="fa fa-info-circle"></i></div>
-    				<div class="spl-button less" ng-disabled="product.count==0" ng-click="lessItem(product)" >-</div>
+    				<div class="spl-button less" ng-click="lessItem(product)" >-</div>
     				<div class="spl-button add" ng-click="addItem(product)" >+</div>	
     				<div class="spl-button pull-right" >{{getProductCount(product)}}</div>	
     			</div>

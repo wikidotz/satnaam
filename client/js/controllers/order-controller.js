@@ -32,39 +32,37 @@ angular.module('hotelApp')
     return( SubProduct);
 })
 
-.controller('IngredientsModalCtrl', function($scope, $uibModalInstance, product){
+.controller('IngredientsModalCtrl', function($scope, $uibModalInstance, product, order){
 
-    function init(){
-        $scope.product = product;
+    $scope.product = product;
+    $scope.order = order;
 
-        for (var i = 0; i < $scope.product.quantities.length; i++) {
-            $scope.product.quantities[i].ingredients = {
-                type:'MIX',
-                abbr: 'M',
-                selected: false
-            }
-        };
-    
+    function isSameProduct(item) {
+        return item.prod_id == product.prod_id;
     }
 
-    init();
+    $scope.productFilter = function(item){
+        return item.prod_id == product.prod_id;
+    }
 
-    $scope.isAllSelected = false;
+    $scope.isAllSelected = true;
 
     $scope.selectAll = function(){
         
-        for (var i = 0; i < $scope.product.quantities.items.length; i++) {
-            $scope.product.quantities[i].selected = !$scope.isAllSelected;
+        for (var i = 0; i < $scope.order.itemsInOrder.filter(isSameProduct).length; i++) {
+            $scope.order.itemsInOrder.filter(isSameProduct)[i].selected = !$scope.isAllSelected;
         };
     }
 
-    $scope.toggleItemType = function(type, abbr){
-        for (var i = 0; i < $scope.product.quantities.length; i++) {
+    $scope.selectAll();
 
-            if($scope.product.quantities[i].selected){
-                $scope.product.quantities[i].ingredients.type = type;
-                $scope.product.quantities[i].ingredients.abbr = abbr;
-                $scope.product.quantities[i].selected = false;
+    $scope.toggleItemType = function(type, abbr){
+        for (var i = 0; i < $scope.order.itemsInOrder.filter(isSameProduct).length; i++) {
+
+            if($scope.order.itemsInOrder.filter(isSameProduct)[i].selected){
+                $scope.order.itemsInOrder.filter(isSameProduct)[i].ingredients.type = type;
+                $scope.order.itemsInOrder.filter(isSameProduct)[i].ingredients.abbr = abbr;
+                $scope.order.itemsInOrder.filter(isSameProduct)[i].selected = false;
             }
         };
         $scope.isAllSelected = false;
@@ -164,6 +162,9 @@ angular.module('hotelApp')
             resolve: {
                 product: function () {
                     return p;
+                },
+                order: function () {
+                    return $scope.order;
                 }
             }
         });
@@ -230,28 +231,22 @@ angular.module('hotelApp')
 
     $scope.lessItem = function(product) {
 
-        var p = $scope.order.itemsInOrderMap[product.prod_id];
-
         var index = -1;
-
         for (var i = 0; i < $scope.order.itemsInOrder.length; i++) {
             if ($scope.order.itemsInOrder[i].prod_id == product.prod_id) {
-                index = i;
+                $scope.order.itemsInOrder.splice(i, 1);
                 break;
             }
         };
-
-        if (p.prod_qty > 0) {
-            p.prod_qty--;
-            product.quantities.splice(0, 1);
+        if (product.prod_qty > 0) {
+            product.prod_qty--;
         }
 
-        if (p.prod_qty == 0) {
+        if (product.prod_qty == 0) {
             product.selected = false;
-            $scope.order.itemsInOrder.splice(index, 1);
-            delete $scope.order.itemsInOrderMap[p.prod_id];
+            delete $scope.order.itemsInOrderMap[product.prod_id];
         } else {
-            $scope.order.itemsInOrderMap[p.prod_id] = p;
+            $scope.order.itemsInOrderMap[product.prod_id] = product;
         }
 
         $scope.calTotalAmt();
@@ -259,21 +254,21 @@ angular.module('hotelApp')
 
     $scope.addItem = function(product) {
 
-        var p = angular.copy(product);
-        $scope.order.itemsInOrder.push(product);
-
+        var p = angular.copy(angular.extend(product, {
+            ingredients: {
+                type:'MIX',
+                abbr: 'M',
+            }
+        }));
         
         product.prod_qty++;
+
         if(product.prod_qty==1){
             product.selected = true;
         }
 
-        if(!product.hasOwnProperty('quantities')){
-            product.quantities = [];
-        }
-        product.quantities.push(new SubProduct(angular.copy(product)));
-        
-        $scope.order.itemsInOrderMap[product.prod_id] = product;
+        $scope.order.itemsInOrder.push(p);
+        $scope.order.itemsInOrderMap[p.prod_id] = product;
 
         $scope.order.order_total_qty = $scope.order.itemsInOrder.length;
         $scope.calTotalAmt();
