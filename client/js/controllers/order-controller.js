@@ -1,38 +1,50 @@
 angular.module('hotelApp')
 
-.directive('sauces', function(){
+.directive('sauces', function() {
     return {
         templateUrl: 'templates/sauces-directive.html',
-        link: function(scope, element, attrs){
-            
-            var stepSlider = $(element).find('.slider-snap')[0];
+        link: function(scope, element, attrs) {
 
-            noUiSlider.create(stepSlider, {
-                start: [ 0 ],
-                step: 4,
-                range: {
-                    'min': [  0 ],
-                    'max': [ 12 ]
+            var valuesHash = {
+                0 : 'no',
+                1 : 'less',
+                2 : 'medium',
+                3 : 'more'
+            }
+
+            scope.stringValue = function(){
+                return valuesHash[scope.sliderValue]
+            }
+
+            scope.sliderValue = 2;
+
+            scope.slider = {
+                options: {
+                    stop: function (event, ui) { 
+                        console.log(scope.sliderValue); 
+                        scope.updateFn()(scope.name, scope.stringValue()) 
+                    }
                 }
-            });
+            }
 
         },
         scope: {
-            name: '@name'
+            name: '@name',
+            updateFn: '&'
         },
     }
 })
 
-.factory('SubProduct', function(){
+.factory('SubProduct', function() {
 
-    function SubProduct (product){
+    function SubProduct(product) {
         SubProduct.prototype = product.prototype;
     }
 
-    return( SubProduct);
+    return (SubProduct);
 })
 
-.controller('IngredientsModalCtrl', function($scope, $uibModalInstance, product, order){
+.controller('IngredientsModalCtrl', function($scope, $uibModalInstance, product, order) {
 
     $scope.product = product;
     $scope.order = order;
@@ -41,14 +53,14 @@ angular.module('hotelApp')
         return item.prod_id == product.prod_id;
     }
 
-    $scope.productFilter = function(item){
+    $scope.productFilter = function(item) {
         return item.prod_id == product.prod_id;
     }
 
     $scope.isAllSelected = true;
 
-    $scope.selectAll = function(){
-        
+    $scope.selectAll = function() {
+
         for (var i = 0; i < $scope.order.itemsInOrder.filter(isSameProduct).length; i++) {
             $scope.order.itemsInOrder.filter(isSameProduct)[i].selected = !$scope.isAllSelected;
         };
@@ -56,10 +68,10 @@ angular.module('hotelApp')
 
     $scope.selectAll();
 
-    $scope.toggleItemType = function(type, abbr){
+    $scope.toggleItemType = function(type, abbr) {
         for (var i = 0; i < $scope.order.itemsInOrder.filter(isSameProduct).length; i++) {
 
-            if($scope.order.itemsInOrder.filter(isSameProduct)[i].selected){
+            if ($scope.order.itemsInOrder.filter(isSameProduct)[i].selected) {
                 $scope.order.itemsInOrder.filter(isSameProduct)[i].ingredients.type = type;
                 $scope.order.itemsInOrder.filter(isSameProduct)[i].ingredients.abbr = abbr;
                 $scope.order.itemsInOrder.filter(isSameProduct)[i].selected = false;
@@ -68,7 +80,17 @@ angular.module('hotelApp')
         $scope.isAllSelected = false;
     }
 
-    $scope.addQty = function(){
+    $scope.updateSauceges = function(name, value){
+
+        for (var i = 0; i < $scope.order.itemsInOrder.filter(isSameProduct).length; i++) {
+
+            if ($scope.order.itemsInOrder.filter(isSameProduct)[i].selected) {
+                $scope.order.itemsInOrder.filter(isSameProduct)[i].ingredients[name.toLowerCase()] = value;
+            }
+        };
+    }
+
+    $scope.addQty = function() {
         product.prod_qty++;
         for (var i = 0; i < $scope.product.prod_qty; i++) {
             $scope.subitems.push({
@@ -76,9 +98,9 @@ angular.module('hotelApp')
             })
         };
     }
-    $scope.lessQty = function(){
-        if(product.prod_qty>1){
-            product.prod_qty--;    
+    $scope.lessQty = function() {
+        if (product.prod_qty > 1) {
+            product.prod_qty--;
             for (var i = 0; i < $scope.product.prod_qty; i++) {
                 $scope.subitems.push({
                     selected: false
@@ -87,11 +109,13 @@ angular.module('hotelApp')
         }
     }
 
-    $scope.ok = function () {
+
+
+    $scope.ok = function() {
         $uibModalInstance.close($scope.product);
     };
 
-    $scope.cancel = function () {
+    $scope.cancel = function() {
         $uibModalInstance.dismiss('cancel');
     };
 })
@@ -100,8 +124,8 @@ angular.module('hotelApp')
 
     $scope.products = [];
     $scope.customers = [];
-    $scope.sideBarOrderDetailOpen =false;
-    
+    $scope.sideBarOrderDetailOpen = false;
+
     //new code
     MAX_TOKEN_NUM = 100;
     START_TOKEN_NUM = 1;
@@ -113,7 +137,7 @@ angular.module('hotelApp')
 
         $('#orderDateTime').datetimepicker();
         $("[name='order-paid']").bootstrapSwitch();
-        
+
         Product.getProducts().then(function(data) {
             $scope.products = data;
 
@@ -126,12 +150,12 @@ angular.module('hotelApp')
         $scope.initNewOrderObj();
         $scope.initNewTransactionObj();
 
-        Customer.getAllCustomers().then(function(data){
+        Customer.getAllCustomers().then(function(data) {
             $scope.customers = data;
         })
 
-        Product.getCategories().then(function(response){
-            
+        Product.getCategories().then(function(response) {
+
             $scope.categories = response;
         })
 
@@ -145,34 +169,34 @@ angular.module('hotelApp')
 
     $scope.isItemSelected = false;
 
-    $scope.changeCategory = function(id){
+    $scope.changeCategory = function(id) {
         $scope.catid = id
     }
 
-    $scope.getSelectedCat = function(id){
-        return (id==catid)?'selected':'';
+    $scope.getSelectedCat = function(id) {
+        return (id == catid) ? 'selected' : '';
     }
 
-    $scope.openIngredientsModal =  function(p){
+    $scope.openIngredientsModal = function(p) {
         var modalInstance = $uibModal.open({
             animation: 'true',
             templateUrl: 'templates/modals/ingredients-modal.html',
             controller: 'IngredientsModalCtrl',
             size: 'md',
             resolve: {
-                product: function () {
+                product: function() {
                     return p;
                 },
-                order: function () {
+                order: function() {
                     return $scope.order;
                 }
             }
         });
 
-        modalInstance.result.then(function (product) {
-                p = product;
-            }, function () {
-                
+        modalInstance.result.then(function(product) {
+            p = product;
+        }, function() {
+
         });
     }
 
@@ -206,8 +230,8 @@ angular.module('hotelApp')
     $scope.newOrder = function() {
         $scope.order = {};
         $scope.order.itemsInOrder = [];
-        $scope.order.itemsInOrderMap = {}; 
-        
+        $scope.order.itemsInOrderMap = {};
+
         Product.getProducts().then(function(data) {
             $scope.products = data;
         })
@@ -256,14 +280,17 @@ angular.module('hotelApp')
 
         var p = angular.copy(angular.extend(product, {
             ingredients: {
-                type:'MIX',
+                type: 'MIX',
                 abbr: 'M',
+                sweet: 'medium',
+                garlic: 'medium',
+                chilli: 'medium'
             }
         }));
-        
+
         product.prod_qty++;
 
-        if(product.prod_qty==1){
+        if (product.prod_qty == 1) {
             product.selected = true;
         }
 
@@ -295,9 +322,8 @@ angular.module('hotelApp')
 
     }
 
-    $scope.validateOrderSave = function(mode){
-        if(mode.toLowerCase() == 'create')
-        {
+    $scope.validateOrderSave = function(mode) {
+        if (mode.toLowerCase() == 'create') {
             $scope.createOrder();
         }
     }
@@ -305,27 +331,25 @@ angular.module('hotelApp')
     $scope.createOrder = function() {
 
         $scope.order.time = new Date().getTime();
-        $scope.order.order_pay_status = $("#order-paid-check").prop('checked')? 'full':'none';
+        $scope.order.order_pay_status = $("#order-paid-check").prop('checked') ? 'full' : 'none';
         OrderService.createOrder($scope.order).then(function(response) {
-            if(response.code == 'ORDER_CREATED')
-            {
-                alert(response.msg+'.Token Number:'+response.curr_token);
+            if (response.code == 'ORDER_CREATED') {
+                alert(response.msg + '.Token Number:' + response.curr_token);
                 $scope.order.order_token_no = response.curr_token;
                 //store generated new order id 
                 $scope.order.order_id_str = response.order_id_str;
                 Customer.addCustomer($scope.order.customer);
                 var orderCopy = {};
                 angular.copy($scope.order, orderCopy);
-                $scope.generateBill(orderCopy,function(){
-                    $scope.newOrder();    
+                $scope.generateBill(orderCopy, function() {
+                    $scope.newOrder();
                 });
-                
-            }else if(response.code == 'ERROR')
-            {
-                alert(response.msg+'[Code='+response.code+']');
+
+            } else if (response.code == 'ERROR') {
+                alert(response.msg + '[Code=' + response.code + ']');
                 console.log(response.stack);
             }
-            
+
         })
     }
 
@@ -348,7 +372,7 @@ angular.module('hotelApp')
 
     }
 
-    $scope.onSelectCustomer = function(item, model, label){
+    $scope.onSelectCustomer = function(item, model, label) {
         $scope.order.customer = angular.copy(item);
     }
 
@@ -358,12 +382,12 @@ angular.module('hotelApp')
         });
     }*/
 
-    $scope.parcelOrder = function (){
-        $scope.order.delivery_mode = 'PARCEL';   
+    $scope.parcelOrder = function() {
+        $scope.order.delivery_mode = 'PARCEL';
     }
 
-    $scope.dinningOrder = function (){
-        $scope.order.delivery_mode = 'DINE';   
+    $scope.dinningOrder = function() {
+        $scope.order.delivery_mode = 'DINE';
     }
 
     function onOrderSubmitError() {
@@ -397,36 +421,36 @@ angular.module('hotelApp')
 
     }
 
-     $scope.initNewTransactionObj = function(){
+    $scope.initNewTransactionObj = function() {
         $scope.transaction = {};
         $scope.transaction.order = {};
-        $scope.transaction.bill_no= 0;
+        $scope.transaction.bill_no = 0;
         $scope.transaction.order_total_amt = 0.0;
         $scope.transaction.paid_amt = 0.0;
         $scope.transaction.bal_amt = 0.0;
         $scope.transaction.tran_date_time = new Date();
-        $scope.transaction.modified_by ="admin";
+        $scope.transaction.modified_by = "admin";
         $scope.transaction.last_modified_date_time = new Date();
         $scope.transaction.desc = "";
-        $scope.transaction.type="ORDER_PAYMENT";
+        $scope.transaction.type = "ORDER_PAYMENT";
         $scope.transaction.mode = "CASH";
     }
 
     //transaction code
-    
-    $scope.initNewOrderObj = function(){
+
+    $scope.initNewOrderObj = function() {
         $scope.order = {};
         $scope.order.customer = {};
         $scope.order.itemsInOrder = [];
         $scope.order.itemsInOrderMap = {};
         $scope.order.order_total_amt = 0.00;
         $scope.order.order_token_no = 0;
-        $scope.order.order_id_str="";
+        $scope.order.order_id_str = "";
         $scope.order.order_date_time = new Date();
         //1-> order pending, 2-> order in process ,3-> completed,4-> order delivered,5-> order cancelled
-        $scope.order.order_status=1;
+        $scope.order.order_status = 1;
         $scope.order.modified_by = 'admin';
-        $scope.order.last_modified_date_time= new Date();
+        $scope.order.last_modified_date_time = new Date();
         $scope.order.delivery_mode = 'DINE';
         $scope.order.is_scheduled = 0;
         $scope.order.scheduled_date_time = undefined;
@@ -434,39 +458,37 @@ angular.module('hotelApp')
         $scope.order.order_dlv_by = "";
     }
 
-     $scope.generateBill = function(orderData, callBack) {
+    $scope.generateBill = function(orderData, callBack) {
         alert('generateBill');
-        
-        $scope.transaction.order_id_str = orderData.order_id_str ;
+
+        $scope.transaction.order_id_str = orderData.order_id_str;
         $scope.transaction.order_total_amt = orderData.order_total_amt;
-        $scope.transaction.order_total_qty= orderData.order_total_qty;
-    
+        $scope.transaction.order_total_qty = orderData.order_total_qty;
+
         $scope.transaction.tran_date_time = new Date();
         $scope.transaction.paidAmt = 100.00;
-        
-        $scope.transaction.order_total_amt = orderData.order_total_amt;
-        $scope.transaction.bal_amt = orderData.order_total_amt - $scope.transaction.paidAmt ;
 
-        $scope.transaction.type="ORDER_PAYMENT";
+        $scope.transaction.order_total_amt = orderData.order_total_amt;
+        $scope.transaction.bal_amt = orderData.order_total_amt - $scope.transaction.paidAmt;
+
+        $scope.transaction.type = "ORDER_PAYMENT";
 
         OrderService.addBill($scope.transaction).then(function(response) {
-            if(response.code == 'TRANS_ADDED')
-            {
+            if (response.code == 'TRANS_ADDED') {
                 alert(response.msg);
                 //Customer.addCustomer($scope.order.customer);
                 callBack.call();
 
-            }else if(response.code == 'ERROR')
-            {
-                alert(response.msg+'[Code='+response.code+']');
+            } else if (response.code == 'ERROR') {
+                alert(response.msg + '[Code=' + response.code + ']');
                 console.log(response.stack);
             }
-            
+
         })
     }
 
     init();
-    
+
 })
 
 /*
@@ -474,20 +496,20 @@ CURRENTLY NOT IN USE
 SOME ISSUES WITH BELOW NEWLY CREATED CONTROL
 NEED TO FIX
 */
-.controller('TransactionCtrl',function($scope,Customer,OrderService){
+.controller('TransactionCtrl', function($scope, Customer, OrderService) {
     $scope.transaction.order = {};
-    $scope.transaction.bill_no= 0;
+    $scope.transaction.bill_no = 0;
     $scope.transaction.order_total_amt = 0.0;
     $scope.transaction.paid_amt = 0.0;
     $scope.transaction.bal_amt = 0.0;
     $scope.transaction.tran_date_time = new Date();
-    $scope.transaction.modified_by ="admin";
+    $scope.transaction.modified_by = "admin";
     $scope.transaction.last_modified_date_time = new Date();
     $scope.transaction.desc = "";
-    $scope.transaction.type="ORDER";
+    $scope.transaction.type = "ORDER";
     $scope.transaction.mode = "CASH";
 
-     $scope.generateBill = function(orderData) {
+    $scope.generateBill = function(orderData) {
         alert('generateBill');
         $scope.transaction.order = orderData;
         $scope.transaction.tran_date_time = new Date();
@@ -497,24 +519,22 @@ NEED TO FIX
 
 
         OrderService.addBill($scope.transaction.order).then(function(response) {
-            if(response.code == 'TRANS_ADDED')
-            {
+            if (response.code == 'TRANS_ADDED') {
                 alert(response.msg);
                 //Customer.addCustomer($scope.order.customer);
-            }else if(response.code == 'ERROR')
-            {
-                alert(response.msg+'[Code='+response.code+']');
+            } else if (response.code == 'ERROR') {
+                alert(response.msg + '[Code=' + response.code + ']');
                 console.log(response.stack);
             }
-            
+
         })
     }
 
-    $scope.$on('test',function(event){
+    $scope.$on('test', function(event) {
         alert('test event catched');
     })
 
-    $scope.$on('generate-bill',function(event,orderData){
+    $scope.$on('generate-bill', function(event, orderData) {
         $scope.generateBill(orderData);
     })
 })

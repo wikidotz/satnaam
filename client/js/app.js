@@ -1,7 +1,8 @@
 angular.module('hotelApp', [
     'ui.router', 
     'ngTouch', 
-    'ui.bootstrap', 
+    'ui.bootstrap',
+    'ui.slider', 
     'ngMaterial', 
     'angularMoment',
     'LocalForageModule'

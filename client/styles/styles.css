@@ -492,8 +492,8 @@ tr.summary {
 }
 
 .ol-item-name > span {
-    color: black;
-    display: block;
+    /* color: black; */
+    /* display: block; */
 }
 
 .ol-order-token {
@@ -641,3 +641,13 @@ tbody.scrollable > tr{
 .sim-pr-qty li.selected{
     background-color: #85AFFF !important;
 }
+
+.sim-slider{
+    height: auto;
+    position: relative;
+    text-align: center;
+}
+
+
+
+.ssd-main{margin-bottom: 20px;}
