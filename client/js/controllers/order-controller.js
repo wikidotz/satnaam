@@ -150,10 +150,8 @@ angular.module('hotelApp')
         $scope.initNewOrderObj();
         $scope.initNewTransactionObj();
 
-        Customer.getAllCustomers().then(function(data) {
-            $scope.customers = data;
-        })
-
+        //fetch all customers record from online db
+        $scope.refreshCustomerList();
         Product.getCategories().then(function(response) {
 
             $scope.categories = response;
@@ -338,7 +336,7 @@ angular.module('hotelApp')
                 $scope.order.order_token_no = response.curr_token;
                 //store generated new order id 
                 $scope.order.order_id_str = response.order_id_str;
-                Customer.addCustomer($scope.order.customer);
+                $scope.refreshCustomerList();
                 var orderCopy = {};
                 angular.copy($scope.order, orderCopy);
                 $scope.generateBill(orderCopy, function() {
@@ -485,6 +483,13 @@ angular.module('hotelApp')
             }
 
         })
+    }
+
+    $scope.refreshCustomerList = function(){
+         Customer.getAllCustomersRemote().then(function(data) {
+            $scope.customers = data;
+        })
+
     }
 
     init();

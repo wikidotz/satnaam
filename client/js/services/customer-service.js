@@ -1,7 +1,12 @@
 angular.module('hotelApp').service('Customer', function($http, $localForage) {
-
-    this.getAllCustomersRemote = function() {
-        return $http.get('/customers').then(function(response) {
+    var self = this;
+    self.getAllCustomersRemote = function() {
+        return $http.get('customers/customersList').then(function(response) {
+                if(response.data!=undefined|| response.data!=null)
+                {
+                    $localForage.setItem('customers', response.data);    
+                }
+                
                 return response.data;
             },
             function(err) {
@@ -9,23 +14,24 @@ angular.module('hotelApp').service('Customer', function($http, $localForage) {
             })
     }
 
-    this.getAllCustomers = function() {
+    self.getAllCustomers = function() {
         return $localForage.getItem('customers').then(function(data) {
             return data || [];
         })
     }
 
-    this.addCustomer = function(customer) {
-        return $localForage.getItem('customers').then(function(data) {
-            var customers = data || [];
-            customers.push(customer);
-            $localForage.setItem('customers', customers).then(function() {
-                return customers;
-            });
-        })
+    self.addCustomer = function(customer) {
+        
+        $http.post('customers/addCustomer',{custObj:customer}).then(
+            function(response){
+                addCustomerInLocalForage(customer);       
+            },
+            function(err){
+                return err;
+            })
     }
 
-    this.getCustomerInfoByCustomerCode = function(customerCode) {
+    self.getCustomerInfoByCustomerCode = function(customerCode) {
         return $http.get('/customer').then(
             function(response) {
 
@@ -33,5 +39,50 @@ angular.module('hotelApp').service('Customer', function($http, $localForage) {
             function(err) {
 
             })
+    }
+
+    self.addCustomerIfNotExist = function(newCustomer) {
+         $localForage.getItem('customers').then(function(data) {
+            var existingCustomers = data || [];
+            //var tempObj ;
+            var mobileNoExist = false;
+            angular.forEach(existingCustomers,function(tempObj){
+                //check for customer mobile no first
+                 mobileNoExist = (newCustomer.mobile == tempObj.mobile);
+                 if(mobileNoExist)
+                 {
+                    return false;    
+                 }
+            })
+
+            if(!mobileNoExist)
+            {
+                self.addCustomer(newCustomer);    
+            }
+            
+        })
+    }
+
+    self.addCustomerInLocalForage = function(newCustomer){
+        $localForage.getItem('customers').then(function(data) {
+            var existingCustomers = data || [];
+            var mobileNoExist = false;
+            angular.forEach(existingCustomers,function(tempObj){
+                //check for customer mobile no first
+                 mobileNoExist = (newCustomer.mobile == tempObj.mobile);
+                 if(mobileNoExist)
+                 {
+                    return false;    
+                 }
+            })
+
+            if(!mobileNoExist)
+            {
+                existingCustomers.push(newCustomer)
+                $localForage.setItem('customers', existingCustomers);
+            }
+            
+        })
+         
     }
 });

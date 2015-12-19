@@ -3,13 +3,13 @@ var router = express.Router();
 var logger = require('../logger');
 var orderJson = require('../data/orderlist.json');
 var mongoose = require('mongoose');
-
+var Customer = require('../model/customer-model.js');
 var app = express();
 
-var CustomerSchema = new mongoose.Schema({
+/*var CustomerSchema = new mongoose.Schema({
 	name: String,
 	mobile:Number
-});
+});*/
 
 var OrderSchema = new mongoose.Schema({
 	time:Number,
@@ -47,7 +47,7 @@ var OrderSchema = new mongoose.Schema({
 });*/
 
 var Order = mongoose.model('orders', OrderSchema);
-var Customer = mongoose.model('customers', CustomerSchema);
+//var Customer = mongoose.model('customers', CustomerSchema);
 var MAX_ORDER_TOKEN_NUM= 100;
 router.post('/createOrder', function(req, res, next) {
 
@@ -61,11 +61,14 @@ router.post('/createOrder', function(req, res, next) {
 			console.log('saving new customer record');
 			customer.save(function(err,result){
 					if(err)console.error(err);
+				  console.log('new customer added');		
 			})
+		}else{
+			console.log('customer record already exist');
 		}	
 	})
 	console.log('Server - Creating an order');
-	console.log(order);
+	//console.log(order);
 	order.order_date_time = new Date();
 	order.last_modified_date_time = new Date();
 	/*
@@ -83,7 +86,7 @@ router.post('/createOrder', function(req, res, next) {
 
 		  	}
 		  	console.log('order save results');
-		  	console.log(records);
+		  	//console.log(records);
 		  	console.log({msg:'Order saved successfully',code:'ORDER_CREATED',
 		  					curr_token:currentTokenNum,order_id_str:order._id}); 
 	  		res.send({msg:'Order saved successfully',code:'ORDER_CREATED',
@@ -130,6 +133,29 @@ router.get('checkMobileExist/:mobilenumber',function(req,res,next){
 		res.send(matchedCustomer);	
 	})	
 });
+
+/*router.get('/customersList',function(req,res)
+{
+	console.log('server:fetching customer list.....');
+	Customer.find({},function(err,records){
+
+		 if(err)
+		 {
+		 	console.error(err.stack);
+		// 	logger.log('level',{error:'Error in customer list fetching!'})
+		// 	res.status(500).send({error:'Error in customer list fetching!'});
+		 }else
+		 {
+		 	console.log(records);
+		// 	res.json(records);	
+		 }
+		
+	}).sort('name',-1);
+	//res.send('Customers list');
+
+});
+*/
+
 app.get("/products",function(req,res){
 	console.log(""+res);
 })

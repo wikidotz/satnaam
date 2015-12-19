@@ -4,7 +4,7 @@ angular.module('hotelApp')
 
     this.createOrder = function(data){
         return $http.post('orders/createOrder', {orderObj:data}).then(function(response){
-            
+            Customer.addCustomerInLocalForage(data.customer);
             return response.data;
         },
         function(error){
@@ -47,6 +47,16 @@ angular.module('hotelApp')
             return error;
         })
     }
+
+    this.getAllCustomersRemote = function() {
+        return $http.get('orders/customersList').then(function(response) {
+                return response.data;
+            },
+            function(err) {
+                return err;
+            })
+    }
+
 
     
 });
