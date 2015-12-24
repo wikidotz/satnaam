@@ -351,9 +351,9 @@ li.sp-item .spl-price {
     bottom: 10px;
     position: absolute;
     width: 100%
-
-
-;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
 }
 
 .F {
@@ -651,3 +651,11 @@ tbody.scrollable > tr{
 
 
 .ssd-main{margin-bottom: 20px;}
+.right-text{
+    text-align: right !important;
+}
+
+.balAmtLabel
+{
+    float:left;
+}

@@ -174,7 +174,7 @@ function generateTokenNumber(callBack)
 	 	 if(callBack)
 	 	 {
 	 	 		var lastOrderTokenNum = parseInt(result[0].order_token_no) ;
-	 	 		lastOrderTokenNum = 99;
+	 	 		//lastOrderTokenNum = 99;
 
 	 	 		//if token number reached to max then restart it
 	 	 		callBack((lastOrderTokenNum==MAX_ORDER_TOKEN_NUM)?1:(lastOrderTokenNum+1));	

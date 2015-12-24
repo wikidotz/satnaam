@@ -230,6 +230,7 @@ angular.module('hotelApp')
         $scope.order.itemsInOrder = [];
         $scope.order.itemsInOrderMap = {};
 
+
         Product.getProducts().then(function(data) {
             $scope.products = data;
         })
@@ -329,9 +330,20 @@ angular.module('hotelApp')
     $scope.createOrder = function() {
 
         $scope.order.time = new Date().getTime();
-        $scope.order.order_pay_status = $("#order-paid-check").prop('checked') ? 'full' : 'none';
+        //$scope.order.order_pay_status = $("#order-paid-check").prop('checked') ? 'full' : 'none';
+        if(parseFloat($scope.transaction.bal_amt) == 0)
+        {
+            $scope.order.order_pay_status = 'full';    
+        }else if(parseFloat($scope.transaction.paid_amt) > 0){
+            $scope.order.order_pay_status = 'partial';    
+        }else if(parseFloat($scope.transaction.paid_amt) == 0){
+            $scope.order.order_pay_status = 'none';   
+        }
+
         OrderService.createOrder($scope.order).then(function(response) {
+            $scope.playOrderSound(response.code);
             if (response.code == 'ORDER_CREATED') {
+                
                 alert(response.msg + '.Token Number:' + response.curr_token);
                 $scope.order.order_token_no = response.curr_token;
                 //store generated new order id 
@@ -340,6 +352,10 @@ angular.module('hotelApp')
                 var orderCopy = {};
                 angular.copy($scope.order, orderCopy);
                 $scope.generateBill(orderCopy, function() {
+                    //clear binded variables
+                    $scope.transaction.paid_amt = 0;
+                    $scope.transaction.bal_amt = 0;
+                    
                     $scope.newOrder();
                 });
 
@@ -457,24 +473,20 @@ angular.module('hotelApp')
     }
 
     $scope.generateBill = function(orderData, callBack) {
-        alert('generateBill');
-
         $scope.transaction.order_id_str = orderData.order_id_str;
         $scope.transaction.order_total_amt = orderData.order_total_amt;
         $scope.transaction.order_total_qty = orderData.order_total_qty;
 
         $scope.transaction.tran_date_time = new Date();
-        $scope.transaction.paidAmt = 100.00;
+       // $scope.transaction.paidAmt = 100.00;
 
         $scope.transaction.order_total_amt = orderData.order_total_amt;
-        $scope.transaction.bal_amt = orderData.order_total_amt - $scope.transaction.paidAmt;
+        //$scope.transaction.bal_amt = $scope.orderData.order_total_amt - $scope.transaction.paidAmt;
 
         $scope.transaction.type = "ORDER_PAYMENT";
 
         OrderService.addBill($scope.transaction).then(function(response) {
             if (response.code == 'TRANS_ADDED') {
-                alert(response.msg);
-                //Customer.addCustomer($scope.order.customer);
                 callBack.call();
 
             } else if (response.code == 'ERROR') {
@@ -492,9 +504,31 @@ angular.module('hotelApp')
 
     }
 
+    $scope.balanceAmt = function(){
+        var balAmt = 0;
+        balAmt = $scope.order.order_total_amt - $scope.transaction.paid_amt;
+        $scope.transaction.bal_amt = balAmt;
+        return balAmt ;
+    }
+
+    $scope.playOrderSound = function(type){
+        var audio ;
+        switch(type.toLowerCase())
+        {
+            case 'order_created':
+                audio = document.getElementById("order_created_audio");
+            break;
+            case 'error':
+                audio = document.getElementById("error_audio");
+            break;
+        }
+        audio.play();
+    }
+
     init();
 
-})
+
+})//end of OrderCtrl
 
 /*
 CURRENTLY NOT IN USE
