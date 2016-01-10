@@ -659,3 +659,14 @@ tbody.scrollable > tr{
 {
     float:left;
 }
+
+.bigFont
+{
+    font-size:24px;
+    font-weight: bold;
+}
+
+.totalAmount
+{
+    color: deepskyblue;
+}

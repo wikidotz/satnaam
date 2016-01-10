@@ -29,10 +29,19 @@
 					</tr>
 				</tbody>	
 			  	<tfoot>
-			  		<tr ><!--class="summary"-->
+			  		<tr><!--class="summary"-->
 					  	<td width="200" >Total</td><!--class="total"-->
-					  	<td width="20%" style="text-align:center;" class="totalItemsCount">{{order.itemsInOrder.length}}</td><!--class="xz totalQty"-->
-					  	<td width="20%" align="right" class="totalAmount"><strong>{{order.order_total_amt}}</strong></td><!--class="xw totalAmt"-->
+					  	<td width="20%" style="text-align:center;" class="bigFont totalItemsCount">{{order.itemsInOrder.length}}</td><!--class="xz totalQty"-->
+					  	<td width="20%" align="right" class="bigFont totalAmount"><strong>{{order.order_total_amt}}</strong></td><!--class="xw totalAmt"-->
+					 </tr>
+					 <tr>
+					 	<td width="200"> Amount Paid </td>
+					 	<td><input type="number" id="order-paid-amt" ng-model="transaction.paid_amt" class="right-text ng-pristine ng-valid ng-touched" aria-invalid="false" ng-change="balanceAmt()" ></td>
+					 </tr>		
+					  <tr>
+					 	<td width="200"> Balance Amount</td>
+					 	<td width="20%" align="right" class="bigFont"><strong>
+					 	{{transaction.bal_amt}}</strong></td>
 					 </tr>		
 			  	</tfoot>
 			</table>			
@@ -41,20 +50,8 @@
 
 		<div class="orderBtnsContainer2">
 
-			<div>
-				<label for="order-paid-amt">Amount Paid:</label>
-				<input type="text" id="order-paid-amt" ng-model="transaction.paid_amt" 
-				class="right-text"/>
-			</div>
-				
-			<div>
-				<label class="balAmtLabel">Balance Amount:</label>
-				<div style="display:inline-block;">{{balanceAmt()}}</div>
-			</div>
-			
-			<!--<input type="checkbox" id="order-paid-check" name="order-paid" checked data-on-text="Yes" data-off-text="No">Paid-->
-		
-			<a ng-click="validateOrderSave('CREATE')" class="btn btn-danger btn-lg btn-block">Create Order</a>
+			<a ng-click="validateOrderSave('CREATE')" class="btn btn-success btn-lg btn-block">Create Order</a>
+			<a ng-click="propmptCancelOrder()" class="btn btn-danger btn-lg btn-block">Cancel</a>
 
 			<audio id="order_created_audio">
 			  <source src="../audio/CHINA_1.mp3">

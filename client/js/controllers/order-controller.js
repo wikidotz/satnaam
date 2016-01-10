@@ -229,6 +229,7 @@ angular.module('hotelApp')
         $scope.order = {};
         $scope.order.itemsInOrder = [];
         $scope.order.itemsInOrderMap = {};
+        $scope.initNewTransactionObj();
 
 
         Product.getProducts().then(function(data) {
@@ -524,6 +525,16 @@ angular.module('hotelApp')
         }
         audio.play();
     }
+
+    $scope.propmptCancelOrder = function(){
+        //prompt for cancel order
+        if(confirm("Cancel Order?")==true)
+        {
+            $scope.newOrder();    
+        }
+    }
+
+
 
     init();
 
