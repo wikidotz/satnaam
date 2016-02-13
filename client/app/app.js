@@ -5,7 +5,8 @@ angular.module('hotelApp', [
     'ui.slider', 
     'ngMaterial', 
     'angularMoment',
-    'LocalForageModule'
+    'LocalForageModule',
+    'ngWebSocket'
 ])
 
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
@@ -14,7 +15,7 @@ angular.module('hotelApp', [
     
     .state('home', {
         url: '/home',
-        templateUrl: 'templates/partial-home.html',
+        templateUrl: 'app/create-order/create-order.html',
         controller: 'OrderCtrl'
     })
 
@@ -28,6 +29,12 @@ angular.module('hotelApp', [
         url: '/login',
         templateUrl: 'templates/login.html',
         controller: 'LoginCtrl'
+    })
+
+    .state('phonelogin', {
+        url: '/phonelogin',
+        templateUrl: 'app/login/phone-login.html',
+        controller: 'PhoneLoginCtrl'
     })
 
     $urlRouterProvider.otherwise('/login');
@@ -91,6 +98,6 @@ angular.module('hotelApp', [
             $scope.errorMsg = err.data.message;    
         });
     }
-
-
 })
+
+

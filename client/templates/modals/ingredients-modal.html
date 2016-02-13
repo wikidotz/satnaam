@@ -5,20 +5,21 @@
 <div class="modal-body">
     <ul class="sim-pr-qty">
         <!--li ng-click="addQty()"> &plus; </li-->
-        <li ng-click="item.selected=!item.selected;isAllSelected=false" ng-class="[item.ingredients.type.toLowerCase(), item.selected?'selected':'']" ng-repeat="item in order.itemsInOrder | filter:productFilter">{{item.ingredients.abbr}}</li>
+        <li ng-click="itemClick(item)" ng-class="[item.ingredients.type.toLowerCase(), item.iSelected?'selected':'']" ng-repeat="item in order.itemsInOrder | filter:productFilter">{{item.ingredients.abbr}}</li>
         <!--li ng-show="product.prod_qty>1" ng-click="lessQty()"> &minus; </li-->
     </ul>
     <hr/>
     <div class="btn-group" role="group" aria-label="...">
-        <button type="button" ng-click="toggleItemType('MIX', 'M')" class="btn btn-default mix">Mix</button>
+        <button ng-repeat="type in itemTypes" type="button" ng-class="itemTypeBtnClass(type)" ng-click="toggleItemType($event, type)" class="btn btn-default mix">{{type.label}}</button>
+
+        <!--button type="button" ng-click="toggleItemType('MIX', 'M')" class="btn btn-default mix">Mix</button>
         <button type="button" ng-click="toggleItemType('JAIN', 'J')" class="btn btn-default jain">Jain</button>
-        <button type="button" ng-click="toggleItemType('HALFJAIN', 'HJ')" class="btn btn-default halfjain">Half Jain</button>
+        <button type="button" ng-click="toggleItemType('HALFJAIN', 'HJ')" class="btn btn-default halfjain">Half Jain</button-->
     </div>
     <hr/>
     <div class="row">
         <div class="col-md-12">
-            
-            <div class="">
+            <div>
                 <div class="col-md-3">No</div>
                 <div class="col-md-3">Less</div>
                 <div class="col-md-3">Medium</div>

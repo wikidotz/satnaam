@@ -7,6 +7,8 @@
 var app = require('../server/app');
 var debug = require('debug')('hotel:server');
 var http = require('http');
+var expressWs = require('express-ws-routes');
+var options = {}; // See 'Options' above 
 
 /**
  * Get port from environment and store in Express.
@@ -20,6 +22,7 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+server.wsServer = expressWs.createWebSocketServer(server, app, options);
 
 /**
  * Listen on provided port, on all network interfaces.

@@ -37,10 +37,16 @@
                                     </header>
                                     <div class="ol-tile-content">
                                         <table class="table table-condensed ol-table">
-                                            <tr ng-repeat="item in order.itemsInOrder | itemsFilter:item:orderStatus" ng-class="(isShowingParcel)? '': 'hide-bg'" ng-style="getRowStyle(item)">
+                                            <tr ng-repeat="item in order.itemsInOrder" ng-class="(isShowingParcel)? '': 'hide-bg'" ng-style="getRowStyle(item)">
                                                 <td>{{item.quantity}}</td>
                                                 <td class="ol-item-name"><div>{{item.prod_name}}</div>
-                                                    <span class="label label-primary">{{item.ingredients.type}}</span> <span class="label label-info">{{item.ingredients.sweet}} Sweet</span> <span class="label label-warning">{{item.ingredients.garlic}} Garlic</span> <span class="label label-danger">{{item.ingredients.chilli}} Chilli</span>
+                                                    <span   class="label label-primary">{{item.ingredients.type}}</span>
+                                                    <span ng-if="item.ingredients.isMedium">
+                                                        <span class="label label-info">Medium</span>
+                                                    </span>
+                                                    <span ng-if="!item.ingredients.isMedium">
+                                                        <span class="label label-info">{{item.ingredients.sweet}} Sweet</span> <span class="label label-warning">{{item.ingredients.garlic}} Garlic</span> <span class="label label-danger">{{item.ingredients.chilli}} Chilli</span>
+                                                     </span>
                                                 </td>
                                                 <td>{{item.prod_rate}}/-</td>
                                             </tr>

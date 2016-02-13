@@ -37,7 +37,7 @@ angular.module('hotelApp')
     }
 })
 
-.controller('OrderListCtrl', function($scope, OrderService) {
+.controller('OrderListCtrl', function($scope, OrderService, WSService) {
 
     $scope.orderlist = [];
     $scope.includeCompletedOrders = false;
@@ -47,6 +47,8 @@ angular.module('hotelApp')
     function init() {
         
         loadOrders();
+
+        WSService.init();
     }
 
     $scope.showCompletedChange = function(){

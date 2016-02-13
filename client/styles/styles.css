@@ -21,7 +21,7 @@ header.s-header {
     position: absolute;
     top: 0px;
     left: 0px;
-    right: 0px;
+    right: 0;
     height: 50px;
     z-index: 3;
 }
@@ -421,6 +421,7 @@ tr.summary {
     position: relative;
     width: 100%;
     height: 100%;
+    /* overflow: hidden; */
 }
 
 .ol-header,

@@ -48,35 +48,70 @@ angular.module('hotelApp')
 
     $scope.product = product;
     $scope.order = order;
+    $scope.selecteds = [];
+
+    $scope.itemTypes = [{
+        type: 'MIX',
+        label: 'Mix',
+        abbr: 'M'
+    }, {
+        type: 'HALFJAIN',
+        label: 'Half Jain',
+        abbr: 'HJ'
+    }, {
+        type: 'JAIN',
+        label: 'Jain',
+        abbr: 'J'
+    }]
 
     function isSameProduct(item) {
         return item.prod_id == product.prod_id;
+    }
+
+    function isSelected(item) {
+        return item.iSelected;
     }
 
     $scope.productFilter = function(item) {
         return item.prod_id == product.prod_id;
     }
 
-    $scope.isAllSelected = true;
+    $scope.isAllSelected = false;
 
     $scope.selectAll = function() {
 
         for (var i = 0; i < $scope.order.itemsInOrder.filter(isSameProduct).length; i++) {
-            $scope.order.itemsInOrder.filter(isSameProduct)[i].selected = !$scope.isAllSelected;
+            $scope.order.itemsInOrder.filter(isSameProduct)[i].iSelected = $scope.isAllSelected;
         };
     }
 
-    $scope.selectAll();
+    $scope.itemClick = function(item){
+        item.iSelected = !item.iSelected;
+        $scope.isAllSelected = false;
+        console.log($scope.order.itemsInOrder.filter(isSameProduct).filter(isSelected))
+    }
 
-    $scope.toggleItemType = function(type, abbr) {
+
+    $scope.itemTypeBtnClass = function(type){
+        type.type
+        
+    }
+
+    //$scope.selectAll();
+
+    $scope.toggleItemType = function($event, type) {
+
+        angular.element($event.target).parent().find('button').removeClass('active');
+        angular.element($event.target).addClass('active');
+
         for (var i = 0; i < $scope.order.itemsInOrder.filter(isSameProduct).length; i++) {
 
-            if ($scope.order.itemsInOrder.filter(isSameProduct)[i].selected) {
-                $scope.order.itemsInOrder.filter(isSameProduct)[i].ingredients.type = type;
-                $scope.order.itemsInOrder.filter(isSameProduct)[i].ingredients.abbr = abbr;
-                $scope.order.itemsInOrder.filter(isSameProduct)[i].selected = false;
+            if ($scope.order.itemsInOrder.filter(isSameProduct)[i].iSelected) {
+                $scope.order.itemsInOrder.filter(isSameProduct)[i].ingredients.type = type.type;
+                $scope.order.itemsInOrder.filter(isSameProduct)[i].ingredients.abbr = type.abbr;
             }
         };
+
         $scope.isAllSelected = false;
     }
 
@@ -84,8 +119,11 @@ angular.module('hotelApp')
 
         for (var i = 0; i < $scope.order.itemsInOrder.filter(isSameProduct).length; i++) {
 
-            if ($scope.order.itemsInOrder.filter(isSameProduct)[i].selected) {
+            if ($scope.order.itemsInOrder.filter(isSameProduct)[i].iSelected) {
                 $scope.order.itemsInOrder.filter(isSameProduct)[i].ingredients[name.toLowerCase()] = value;
+
+                $scope.order.itemsInOrder.filter(isSameProduct)[i].ingredients.isMedium = (value == 'medium')
+
             }
         };
     }
@@ -122,6 +160,7 @@ angular.module('hotelApp')
 
 .controller('OrderCtrl', function($scope, $window, $uibModal, SubProduct, Product, Customer, OrderService) {
 
+    $scope.isProductsLoaded = false;
     $scope.products = [];
     $scope.customers = [];
     $scope.sideBarOrderDetailOpen = false;
@@ -140,7 +179,7 @@ angular.module('hotelApp')
 
         Product.getProducts().then(function(data) {
             $scope.products = data;
-
+            $scope.isProductsLoaded = true;
             new Clipboard('.copy-btn');
         })
 
@@ -284,7 +323,8 @@ angular.module('hotelApp')
                 abbr: 'M',
                 sweet: 'medium',
                 garlic: 'medium',
-                chilli: 'medium'
+                chilli: 'medium',
+                isMedium: true
             }
         }));
 

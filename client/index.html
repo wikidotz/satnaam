@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="lib/jquery-ui/themes/smoothness/jquery-ui.css">
 
     <link rel="stylesheet" type="text/css" href="styles/styles.css" />
-    <link rel="stylesheet" type="text/css" href="styles/media-queries.css" />
+    <link rel="stylesheet" type="text/css" href="app/media-queries.css" />
     <link rel="stylesheet" type="text/css" href="styles/sass-styles.css" />
     
 </head>
@@ -32,6 +32,7 @@
     
     <script src="lib/angular/angular.js"></script>
 
+    <script src="lib/angular-websocket/angular-websocket.js"></script>
     <script src="lib/localforage/dist/localforage.min.js"></script>
     <script src="lib/angular-localforage/dist/angular-localForage.min.js"></script>
     <script src="lib/angular-bootstrap/ui-bootstrap.min.js"></script>
@@ -53,15 +54,14 @@
     <script src="lib/angular-moment/angular-moment.min.js"></script>
 
 
-    <script src="js/app.js"></script>
-    <script src="js/logger.js"></script>
-    <script src="js/controllers/order-controller.js"></script>
-    <script src="js/controllers/order-list-controller.js"></script>
-    <script src="js/services/product-service.js"></script>
-    <script src="js/services/customer-service.js"></script>
-    <script src="js/services/order-service.js"></script>
-    
-    <script src="js/ngCustomerAutocomplete.js"></script>
+    <script src="app/app.js"></script>
+    <script src="app/login/phone-login-controller.js"></script>
+    <script src="app/create-order/create-order-ctrl.js"></script>
+    <script src="app/controllers/order-list-controller.js"></script>
+    <script src="app/services/product-service.js"></script>
+    <script src="app/services/ws-service.js"></script>
+    <script src="app/services/customer-service.js"></script>
+    <script src="app/services/order-service.js"></script>
 
 </body>
 
