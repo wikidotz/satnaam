@@ -7,7 +7,8 @@
 var app = require('../server/app');
 var debug = require('debug')('hotel:server');
 var http = require('http');
-var expressWs = require('express-ws-routes');
+var http2 = require('http').Server(app);
+//var expressWs = require('express-ws-routes');
 var options = {}; // See 'Options' above 
 
 /**
@@ -22,7 +23,23 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
-server.wsServer = expressWs.createWebSocketServer(server, app, options);
+//server.wsServer = expressWs.createWebSocketServer(server, app, options);
+
+
+var io = require('socket.io')(server);
+
+io.on('connection', function(socket){
+  console.log('a user connected');
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
+  });
+
+  socket.on('order-created', function(){
+    //console.log('message: ' + msg);
+    io.emit('order-created');
+  });
+
+});
 
 /**
  * Listen on provided port, on all network interfaces.

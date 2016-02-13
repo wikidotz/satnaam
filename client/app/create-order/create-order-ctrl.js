@@ -368,6 +368,8 @@ angular.module('hotelApp')
         }
     }
 
+    var socket = io();
+
     $scope.createOrder = function() {
 
         $scope.order.time = new Date().getTime();
@@ -384,8 +386,10 @@ angular.module('hotelApp')
         OrderService.createOrder($scope.order).then(function(response) {
             $scope.playOrderSound(response.code);
             if (response.code == 'ORDER_CREATED') {
+
+                socket.emit('order-created');
                 
-                alert(response.msg + '.Token Number:' + response.curr_token);
+                //alert(response.msg + '.Token Number:' + response.curr_token);
                 $scope.order.order_token_no = response.curr_token;
                 //store generated new order id 
                 $scope.order.order_id_str = response.order_id_str;

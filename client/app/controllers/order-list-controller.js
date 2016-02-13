@@ -43,12 +43,33 @@ angular.module('hotelApp')
     $scope.includeCompletedOrders = false;
     
     var getOrderWithStatus = '1';
+    var socket = io();
+
+    $scope.playOrderSound = function(type){
+        var audio ;
+        switch(type.toLowerCase())
+        {
+            case 'order_created':
+                audio = document.getElementById("order_created_audio");
+            break;
+            case 'error':
+                audio = document.getElementById("error_audio");
+            break;
+        }
+        audio.play();
+    }
 
     function init() {
         
+        
         loadOrders();
+        //WSService.init();
+        
+        socket.on('order-created', function(){
+            $scope.playOrderSound('order_created');
+            loadOrders();
+        });
 
-        WSService.init();
     }
 
     $scope.showCompletedChange = function(){

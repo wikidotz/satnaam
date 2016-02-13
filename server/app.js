@@ -13,6 +13,7 @@ var morgan = require('morgan');
 var jwt = require('jsonwebtoken');
 var async = require('async');
 var app = express();
+
 var apiRoutes = express.Router();
 
 mongoose.connect(config.database);
@@ -25,10 +26,13 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static(__dirname + '../../client'));
 
+
 var UserSchema = new mongoose.Schema({
     "user": String,
     'password': String
 })
+
+
 
 var User = mongoose.model('users', UserSchema);
 
