@@ -6,7 +6,7 @@ angular.module('hotelApp', [
     'ngMaterial', 
     'angularMoment',
     'LocalForageModule',
-    'ngWebSocket'
+    'usermgmt'
 ])
 
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {

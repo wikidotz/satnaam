@@ -1,0 +1,25 @@
+
+<div class="container">
+    <div class="container col-md-6">
+        <h2>User form</h2>
+        <form role="form">
+            <div class="form-group">
+                <label for="email">Name:</label> <span ng-show="mode=='view'">{{user.name}}</span>
+                <input ng-show="mode!='view'" type="text" ng-model="user.name" class="form-control" placeholder="Name">
+            </div>
+            <div class="form-group">
+                <label for="pwd">Mobile:</label> <span ng-show="mode=='view'">{{user.mobile}}</span>
+                <input ng-show="mode!='view'" type="number" ng-model="user.mobile" class="form-control" placeholder="Mobile">
+            </div>
+
+            <div class="form-group">
+                <label for="pwd">Address:</label> <span ng-show="mode=='view'">{{user.address}}</span>
+                <input ng-show="mode!='view'" type="text" ng-model="user.address" class="form-control" placeholder="Address">
+            </div>
+            
+            <button ng-if="mode=='add'" type="button" ng-click="addUser(user)" class="btn btn-default">Add</button>
+            <button ng-if="mode=='edit'" type="button" ng-click="updateUser(user)" class="btn btn-default">Update</button>
+            <button type="button" ui-sref="app.users" class="btn btn-default">Back</button>
+        </form>
+    </div>
+</div>

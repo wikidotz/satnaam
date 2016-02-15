@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var CustomerSchema = new mongoose.Schema({
 	name: String,
 	mobile:Number,
+	address: String,
 	last_modified_date_time: Date,
 	desc:{type:String,default:null},
 	defaulter:{type:Boolean,default:false}

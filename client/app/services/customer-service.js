@@ -1,7 +1,7 @@
 angular.module('hotelApp').service('Customer', function($http, $localForage) {
     var self = this;
     self.getAllCustomersRemote = function() {
-        return $http.get('customers/customersList').then(function(response) {
+        return $http.get('customers').then(function(response) {
                 if(response.data!=undefined|| response.data!=null)
                 {
                     $localForage.setItem('customers', response.data);    
