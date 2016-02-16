@@ -38,7 +38,7 @@
                                     <div class="ol-tile-content">
                                         <table class="table table-condensed ol-table">
                                             <tr ng-repeat="item in order.itemsInOrder" ng-class="(isShowingParcel)? '': 'hide-bg'" ng-style="getRowStyle(item)">
-                                                <td>{{item.quantity}}</td>
+                                                <td>{{item.prod_qty}}</td>
                                                 <td class="ol-item-name"><div>{{item.prod_name}}</div>
                                                     <span   class="label label-primary">{{item.ingredients.type}}</span>
                                                     <span ng-if="item.ingredients.isMedium">
