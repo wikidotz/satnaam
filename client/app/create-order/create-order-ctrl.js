@@ -268,6 +268,7 @@ angular.module('hotelApp')
         $scope.order = {};
         $scope.order.itemsInOrder = [];
         $scope.order.itemsInOrderMap = {};
+        $scope.initNewOrderObj();
         $scope.initNewTransactionObj();
 
 
@@ -383,8 +384,12 @@ angular.module('hotelApp')
             $scope.order.order_pay_status = 'none';   
         }
 
+        console.log($scope.order);
+
         OrderService.createOrder($scope.order).then(function(response) {
+
             $scope.playOrderSound(response.code);
+
             if (response.code == 'ORDER_CREATED') {
 
                 socket.emit('order-created');

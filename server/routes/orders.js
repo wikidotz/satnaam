@@ -80,15 +80,15 @@ router.post('/createOrder', function(req, res, next) {
 		  order.save(function(err, records) {
 	  
 		  	if (err) {
-		  		console.error(err);
+		  		//console.error(err);
 		  		res.send({msg:'Error in Order save',code:'ERROR',stack:err});
 		  		return ;
 
 		  	}
-		  	console.log('order save results');
+		  	//console.log('order save results');
 		  	//console.log(records);
-		  	console.log({msg:'Order saved successfully',code:'ORDER_CREATED',
-		  					curr_token:currentTokenNum,order_id_str:order._id}); 
+		  	//console.log({msg:'Order saved successfully',code:'ORDER_CREATED',
+		  					//curr_token:currentTokenNum,order_id_str:order._id}); 
 	  		res.send({msg:'Order saved successfully',code:'ORDER_CREATED',
 	  			curr_token:currentTokenNum,order_id_str:order._id});	
 		  			  	
@@ -117,10 +117,6 @@ router.get('/:status', function(req, res, next) {
 	  if (err) return console.error(err);
 	  res.send(result);
 	});
-});
-
-router.get('/:id', function(req, res, next) {
-	res.send('get order details by id '+ req.params.id);
 });
 
 router.delete('/:id', function(req, res, next) {
@@ -157,7 +153,7 @@ router.get('checkMobileExist/:mobilenumber',function(req,res,next){
 */
 
 app.get("/products",function(req,res){
-	console.log(""+res);
+	
 })
 
 function generateTokenNumber(callBack)
@@ -166,11 +162,11 @@ function generateTokenNumber(callBack)
 	If you use the auto created _id field it has a date embedded in it ... 
 	so you can use that to order by ...*/
 	Order.find(function(err, result) {
-	 console.log('get last order token number');
+	 //console.log('get last order token number');
 	 if(result && result.length>0)
 	 {
 	 	 
-	 	 console.log(result[0].order_token_no);
+	 	 //console.log(result[0].order_token_no);
 	 	 if(callBack)
 	 	 {
 	 	 		var lastOrderTokenNum = parseInt(result[0].order_token_no) ;
