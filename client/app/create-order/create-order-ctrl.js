@@ -296,6 +296,7 @@ angular.module('hotelApp')
         $scope.order = {};
         $scope.order.itemsInOrder = [];
         $scope.order.itemsInOrderMap = {};
+        $scope.initNewOrderObj();
         $scope.source = "machine-id";
         Product.getProducts().then(function(data) {
             $scope.products = data;
