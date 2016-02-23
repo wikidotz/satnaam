@@ -83,6 +83,8 @@ angular.module('hotelApp')
         OrderService.getLatestOrder(getOrderWithStatus).then(function(response) {
             if($scope.displayItemGrouped)
             {
+                console.log(response.length);
+
                 //loop on itemsInOrder, grouped them based on item id and abbr
                 var orderList_ungroupedItems = response;
                 for(var i=0;i<orderList_ungroupedItems.length;i++)
@@ -96,7 +98,6 @@ angular.module('hotelApp')
                 $scope.orderlist = response;    
             }
             
-            console.log($scope.orderlist);
         })
     }
 

@@ -6,25 +6,30 @@ angular.module('hotelApp')
 
 	this.getProducts = function(){
 
-		return $http.get('products').then(function(response){
-			return response.data;
-		})
+		if(products.length>0){
+			var deferred = $q.defer();
+			deferred.resolve(products);
+			return deferred.promise;	
+		}else{
+			return $http.get('products').then(function(response){
+				products = response.data;
+				return products;
+			})	
+		}
 	}
 
 	this.getCategories = function(){
 
-		var deferred = $q.defer();
-
 		if(categories.length>0){
+			var deferred = $q.defer();
 			deferred.resolve(categories);
+			return deferred.promise;
 		}else{
 			return $http.get('products/categories').then(function(response){
 				categories = response.data.reverse();
 				return categories;
 			})
 		}
-
-		return deferred.promise;
 	}
 
 	

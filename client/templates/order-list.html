@@ -23,9 +23,7 @@
                 <div class="gridListdemoBasicUsage">
                     <md-content>
                         <md-grid-list md-cols-gt-md="12" md-cols-sm="1" md-cols-md="9" md-row-height-gt-md="1:1" md-row-height="4:3" md-gutter-gt-md="16px" md-gutter-gt-sm="16px" md-gutter="16px">
-                            <md-grid-tile ng-repeat="order in orderlist" ng-style="{
-			            'border': '1px solid #f00'
-			          }" class="ol-sheet" md-colspan-gt-sm="3" md-rowspan-gt-sm="3">
+                            <md-grid-tile ng-repeat="order in orderlist" ng-class="(order.delivery_mode=='PARCEL')?'parcel':''"  md-colspan-gt-sm="3" md-rowspan-gt-sm="3">
                                 <div class="ol-grid-tile-main" ng-controller="OrderGridCtrl">
 
                                     <header class="row no-gutters">
@@ -33,7 +31,7 @@
                                         <span class="col-xs-8 ol-order-name">{{order.customer.name}}</span>
                                         
                                         <span class="col-xs-1">{{order.order_total_qty}}</span>
-                                        <span ng-click="showParcel()" class="col-xs-1 pull-right"><i class="fa fa-gift"></i></span>
+                                        <span ng-click="showParcel()" ng-if="order.delivery_mode=='PARCEL'" class="col-xs-1 pull-right"><i class="fa fa-gift"></i></span>
                                     </header>
                                     <div class="ol-tile-content">
                                         <table class="table table-condensed ol-table">

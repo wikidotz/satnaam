@@ -441,7 +441,13 @@ tr.summary {
     margin: 0 auto;
 }
 
-.gridListdemoBasicUsage md-grid-tile {}
+.gridListdemoBasicUsage md-grid-tile {
+    border: 1px solid #f00;
+}
+
+.gridListdemoBasicUsage md-grid-tile.parcel {
+    border: 1px solid green;
+}
 
 .ol-grid-tile-main {
     position: absolute;
@@ -459,6 +465,10 @@ tr.summary {
     height: 30px;
     right: 0;
     background-color: #FDE;
+}
+
+md-grid-tile.parcel .ol-grid-tile-main > header {
+    background-color: #C4D2C3;
 }
 
 .ol-grid-tile-main > div.ol-tile-content {
@@ -480,6 +490,10 @@ tr.summary {
     padding: 0 5px;
     background-color: #fde;
     border-top: 1px solid grey;
+}
+
+md-grid-tile.parcel .ol-grid-tile-main > footer {
+    background-color: #C4D2C3;
 }
 
 .ol-grid-tile-main > footer.isOpen {
