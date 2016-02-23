@@ -45,7 +45,9 @@ angular.module('hotelApp')
 })
 
 .factory('TransactionFactory',function(){
-    function transaction(order){
+
+    var transaction ={};
+    transaction.createOrderBill = function(order){
         var transaction = {};
         transaction.order = order;
         transaction.bill_no = 0;
@@ -66,6 +68,7 @@ angular.module('hotelApp')
 
         return transaction;
     }
+    return transaction;
 })
 
 .controller('IngredientsModalCtrl', function($scope, $uibModalInstance, product, order) {
@@ -546,7 +549,7 @@ angular.module('hotelApp')
 
     $scope.generateBill = function(orderData, callBack) {
 
-        var bill = TransactionFactory.transaction(orderData);
+        var bill = TransactionFactory.createOrderBill(orderData);
         
         OrderService.addBill(bill).then(function(response) {
             if (response.code == 'TRANS_ADDED') {
