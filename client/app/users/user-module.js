@@ -61,6 +61,25 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
             return response.data;
         })
     }
+
+    this.getAllBldgs = function(){
+        return $http.get('customers/bldgs/').then(function(response){
+            return response.data;
+        })   
+    }
+
+    this.defaultCity = function(){
+        return 'Mumbai';
+    }
+
+    this.defaultCountry = function(){
+        return 'India';
+    }
+
+    this.defaultState = function(){
+        return 'Maharashtra';
+    }
+
 })
 
 .controller('AppCtrl', function($scope) {
@@ -79,6 +98,10 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
         } else if (!UserService.userEdit) {
             $location.path('/app/users');
         }
+
+        UserService.getAllBldgs().then(function(data){
+            $scope.allBldgs = data;
+        });
     }
 
     init();
@@ -98,17 +121,50 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
         });
     }
 
+    $scope.userAddress = function(user){
+        var tempArr = [];
+        tempArr.push("Bldg:"+user.bldgName);
+        tempArr.push("Wing:"+user.bldgWing);
+        tempArr.push("Room:"+user.bldgRoomNo);
+        tempArr.push("Near:"+user.landmark);
+        tempArr.push("city:"+UserService.defaultCity);
+        tempArr.push("state:"+UserService.defaultState);
+        tempArr.push("country:"+UserService.defaultCountry);
 
+        return tempArr.join(',');
+    }
+
+
+    $scope.reset = function(user)
+    {
+        //mukesh - check for optimised code
+        user.custID = (user.custID>0)?user.custID:-1;
+        user.name = "";
+        user.nameCalled = "";
+        user.mobile="";
+        user.email="";
+        user.bldgName ="";
+        user.address = "";
+        user.city = "";
+        user.landmark = "";
+        user.bldgRoomNo = "";
+        user.bldgWing = "";
+    }
 })
 
 .controller('UsersCtrl', function($scope, $location, UserService) {
 
 
     $scope.users = [];
+    $scope.userSearchStr;
 
     UserService.getUsers().then(function(data) {
         $scope.users = data;
     })
+
+    UserService.getAllBldgs().then(function(data){
+            $scope.allBldgs = data;
+    });
 
     $scope.gotoAddUser = function() {
         //$location.path('/app/users/add');
@@ -129,6 +185,16 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
         UserService.deleteUser(id).then(function(res) {
             $scope.users.splice(index, 1);
         })
+    }
+
+    $scope.searchUser = function(searchValue){
+        if(searchValue==undefined || searchValue.trim().length==0)
+        {
+            //show all users
+        }else{
+            //show users based on search value
+        }
+
     }
 
 

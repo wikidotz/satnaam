@@ -62,7 +62,6 @@ module.exports = (function() {
         return deferred.promise;
     }*/
 
-
     router.route('/user/:id')
         //delete the customers
         .delete(function(req, res) {
@@ -83,5 +82,13 @@ module.exports = (function() {
             });
         })
 
+    router.route('/bldgs').get(function(req,res){
+        console.log('bldgs royte');
+        var dummyData = [{bldgID:1,bldgAcr:'SKRI',bldgName:'Shree Krishna'},
+                         {bldgID:2,bldgAcr:'SKNJ',bldgName:'Shyam Kunj'}
+                        ];
+        res.send(dummyData);
+    });
+    
     return router;
 })();
