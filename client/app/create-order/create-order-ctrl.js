@@ -58,10 +58,10 @@ angular.module('hotelApp')
         transaction.last_modified_date_time = new Date();
         transaction.desc = "Bill for order";
         transaction.mode = "CASH";
-        transaction.order_id_str = orderorder_id_str;
-        transaction.order_total_qty = orderorder_total_qty;
+        transaction.order_id_str = order.order_id_str;
+        transaction.order_total_qty = order.order_total_qty;
         transaction.tran_date_time = new Date();
-        transaction.order_total_amt = orderorder_total_amt;
+        transaction.order_total_amt = order.order_total_amt;
         //transaction.bal_amt = $scope.orderorder_total_amt - $scope.transaction.paidAmt;
 
         transaction.type = "ORDER_PAYMENT";
@@ -344,6 +344,14 @@ angular.module('hotelApp')
 
     $scope.addItem = function(product) {
 
+        product.prod_qty++;
+
+        if (product.prod_qty == 1) {
+            product.selected = true;
+            product.iSelected = true;
+        }
+
+
         var p = angular.copy(angular.extend(product, {
             ingredients: {
                 type: 'MIX',
@@ -355,12 +363,7 @@ angular.module('hotelApp')
             }
         }));
 
-        product.prod_qty++;
-
-        if (product.prod_qty == 1) {
-            product.selected = true;
-        }
-
+        
         $scope.order.itemsInOrder.push(p);
         $scope.order.itemsInOrderMap[p.prod_id] = product;
 
