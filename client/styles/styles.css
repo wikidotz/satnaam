@@ -685,3 +685,14 @@ tbody.scrollable > tr{
 {
     color: deepskyblue;
 }
+
+input.search
+{
+  display: block;
+  margin: 0;
+  width: 90%; 
+  max-width: 400px;
+  height: 40px;
+  line-height: 40px; font-size: 17px;
+  border: 1px solid #bbb;
+}   

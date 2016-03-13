@@ -152,7 +152,7 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
     }
 })
 
-.controller('UsersCtrl', function($scope, $location, UserService) {
+.controller('UsersCtrl', function($scope, $location,$filter, UserService) {
 
 
     $scope.users = [];
@@ -186,16 +186,5 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
             $scope.users.splice(index, 1);
         })
     }
-
-    $scope.searchUser = function(searchValue){
-        if(searchValue==undefined || searchValue.trim().length==0)
-        {
-            //show all users
-        }else{
-            //show users based on search value
-        }
-
-    }
-
 
 })
