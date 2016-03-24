@@ -22,7 +22,7 @@
 				    </tr>
 				</thead>
 				<tbody class="scrollable" >
-					<tr ng-repeat="(key, product) in order.itemsInOrder">
+					<tr ng-repeat="(key, product) in order.itemsInOrderMap">
 					    <td width="200" class="orderedItemName" >{{ product.prod_name }}- {{product.ingredients.abbr}}</td><!--class="yx"-->
 					    <td width="20%" align="center" class="orderedItemQty">{{ product.prod_qty }}</td><!--class="xz"-->
 					    <td width="20%" align="right" class="orderedItemAmount">{{ product.prod_qty * product.prod_rate }}</td><!--class="xw"-->

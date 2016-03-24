@@ -5,7 +5,9 @@
 <div class="modal-body">
     <ul class="sim-pr-qty">
         <!--li ng-click="addQty()"> &plus; </li-->
-        <li ng-click="itemClick(item)" ng-class="[item.ingredients.type.toLowerCase(), item.iSelected?'selected':'']" ng-repeat="item in order.itemsInOrder | filter:productFilter">{{item.ingredients.abbr}}</li>
+        <li ng-click="itemClick(item)" class="sim-item" ng-class="[item.ingredients.type.toLowerCase(), item.iSelected?'selected':'']" ng-repeat="item in order.itemsInOrder | filter:productFilter track by $index">{{item.ingredients.abbr}}
+            <span ng-if="showCloseBtn" ng-click="removeItem($event, item)" class="sim-item-remove">x</span>
+        </li>
         <!--li ng-show="product.prod_qty>1" ng-click="lessQty()"> &minus; </li-->
     </ul>
     <hr/>

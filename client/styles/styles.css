@@ -637,6 +637,7 @@ tbody.scrollable > tr{
     font-size: 1.3em;
     box-sizing: border-box;
     margin-top: 5px;
+    background: #ddd;
 }
 
 
@@ -685,3 +686,7 @@ tbody.scrollable > tr{
 {
     color: deepskyblue;
 }
+
+.sim-item{position: relative;}
+
+.sim-item-remove{background: red;display: inline-block;position: absolute;top: -5px;right: -5px;font-size: 15px;border-radius: 10px;padding: 0px 6px 4px;line-height: 20px;}

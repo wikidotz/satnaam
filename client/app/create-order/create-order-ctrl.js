@@ -20,9 +20,9 @@ angular.module('hotelApp')
 
             scope.slider = {
                 options: {
-                    stop: function (event, ui) { 
-                        console.log(scope.sliderValue); 
-                        scope.updateFn()(scope.name, scope.stringValue()) 
+                    stop: function (event, ui) {
+                        console.log(scope.sliderValue);
+                        scope.updateFn()(scope.name, scope.stringValue())
                     }
                 }
             }
@@ -51,7 +51,7 @@ angular.module('hotelApp')
         var transaction = {};
         transaction.order = order;
         transaction.bill_no = 0;
-        
+
         transaction.paid_amt = order.paid_amt;
         transaction.bal_amt = order.bal_amt;
         transaction.modified_by = "admin";
@@ -71,7 +71,7 @@ angular.module('hotelApp')
     return transaction;
 })
 
-.controller('IngredientsModalCtrl', function($scope, $uibModalInstance, product, order) {
+.controller('IngredientsModalCtrl', function($scope, $uibModalInstance, product, order, lessItem) {
 
     $scope.product = product;
     $scope.order = order;
@@ -100,6 +100,7 @@ angular.module('hotelApp')
     }
 
     $scope.productFilter = function(item) {
+        console.log(item)
         return item.prod_id == product.prod_id;
     }
 
@@ -121,7 +122,7 @@ angular.module('hotelApp')
 
     $scope.itemTypeBtnClass = function(type){
         type.type
-        
+
     }
 
     //$scope.selectAll();
@@ -136,6 +137,7 @@ angular.module('hotelApp')
             if ($scope.order.itemsInOrder.filter(isSameProduct)[i].iSelected) {
                 $scope.order.itemsInOrder.filter(isSameProduct)[i].ingredients.type = type.type;
                 $scope.order.itemsInOrder.filter(isSameProduct)[i].ingredients.abbr = type.abbr;
+                $scope.order.itemsInOrder.filter(isSameProduct)[i].isModified = true;
             }
         };
 
@@ -148,8 +150,8 @@ angular.module('hotelApp')
 
             if ($scope.order.itemsInOrder.filter(isSameProduct)[i].iSelected) {
                 $scope.order.itemsInOrder.filter(isSameProduct)[i].ingredients[name.toLowerCase()] = value;
-
                 $scope.order.itemsInOrder.filter(isSameProduct)[i].ingredients.isMedium = (value == 'medium')
+                $scope.order.itemsInOrder.filter(isSameProduct)[i].isModified = true;
 
             }
         };
@@ -174,10 +176,25 @@ angular.module('hotelApp')
         }
     }
 
+    $scope.showCloseBtn = lessItem;
+
+    var itemTobeRemoved = [];
+
+    $scope.removeItem = function(e, theItem){
+        e.stopPropagation();
+        //alert('remove item');
+        var keys = theItem.prod_id + JSON.stringify(theItem.ingredients).replace(/[{}"]/g, '');
+        itemTobeRemoved.push(keys);
+    }
+
 
 
     $scope.ok = function() {
-        $uibModalInstance.close($scope.product);
+        if(!lessItem){
+            $uibModalInstance.close($scope.product);
+        }else{
+            $uibModalInstance.close(itemTobeRemoved);
+        }
     };
 
     $scope.cancel = function() {
@@ -254,6 +271,9 @@ angular.module('hotelApp')
                 },
                 order: function() {
                     return $scope.order;
+                },
+                lessItem: function(){
+                    return false;
                 }
             }
         });
@@ -321,22 +341,75 @@ angular.module('hotelApp')
 
     $scope.lessItem = function(product) {
 
-        var index = -1;
+        var isModifiersSelected  = false;
+        var lastKeyId = -1;
+
         for (var i = 0; i < $scope.order.itemsInOrder.length; i++) {
-            if ($scope.order.itemsInOrder[i].prod_id == product.prod_id) {
-                $scope.order.itemsInOrder.splice(i, 1);
-                break;
-            }
-        };
-        if (product.prod_qty > 0) {
-            product.prod_qty--;
+          if(product.prod_id == $scope.order.itemsInOrder[i].prod_id && $scope.order.itemsInOrder[i].isModified){
+            isModifiersSelected = true;
+            break;
+          }
         }
 
-        if (product.prod_qty == 0) {
-            product.selected = false;
-            delete $scope.order.itemsInOrderMap[product.prod_id];
-        } else {
-            $scope.order.itemsInOrderMap[product.prod_id] = product;
+        console.log(isModifiersSelected)
+
+        if(isModifiersSelected){
+
+            var modalInstance = $uibModal.open({
+                animation: 'true',
+                templateUrl: 'templates/modals/ingredients-modal.html',
+                controller: 'IngredientsModalCtrl',
+                size: 'md',
+                resolve: {
+                    product: function() {
+                        return product;
+                    },
+                    order: function() {
+                        return $scope.order;
+                    },
+                    lessItem: function(){
+                        return true;
+                    }
+
+                }
+            });
+
+            modalInstance.result.then(function(itemsToBeRemoved) {
+                //p = product;
+                console.log(itemsToBeRemoved);
+
+                for (var i = 0; i < itemsToBeRemoved.length; i++) {
+                  if($scope.order.itemsInOrder.indexOf(parseFloat(itemsToBeRemoved[i].substr(0,1))) != -1){
+                      $scope.order.itemsInOrder.splice(i,1);
+                  }
+                }
+
+            }, function() {
+              //
+            });
+        }else{
+
+          var key = product.prod_id + JSON.stringify(product.ingredients).replace(/[{}"]/g, '');
+
+          if($scope.order.itemsInOrderMap[key] && $scope.order.itemsInOrderMap[key].prod_qty){
+              if($scope.order.itemsInOrderMap[key].prod_qty > 1){
+                 $scope.order.itemsInOrderMap[key].prod_qty--;
+              }else{
+                 delete $scope.order.itemsInOrderMap[key];
+                 product.selected = false;
+                 product.iSelected = false;
+                 delete product.ingredients;
+              }
+              product.prod_qty--;
+
+              for (var i = 0; i < $scope.order.itemsInOrder.length; i++) {
+                if($scope.order.itemsInOrder[i].prod_id == product.prod_id){
+                    $scope.order.itemsInOrder.splice(i,1);
+                    break;
+                }
+              }
+
+          }
         }
 
         $scope.calTotalAmt();
@@ -351,7 +424,6 @@ angular.module('hotelApp')
             product.iSelected = true;
         }
 
-
         var p = angular.copy(angular.extend(product, {
             ingredients: {
                 type: 'MIX',
@@ -363,13 +435,41 @@ angular.module('hotelApp')
             }
         }));
 
-        
-        $scope.order.itemsInOrder.push(p);
-        $scope.order.itemsInOrderMap[p.prod_id] = product;
+        $scope.order.itemsInOrder.push(angular.copy(product));
+
+        var key = product.prod_id + JSON.stringify(product.ingredients).replace(/[{}"]/g, '')
+
+        if($scope.order.itemsInOrderMap.hasOwnProperty(key)){
+            $scope.order.itemsInOrderMap[key].prod_qty = product.prod_qty
+        }else{
+            $scope.order.itemsInOrderMap[key] = angular.copy(product);
+        }
 
         $scope.order.order_total_qty = $scope.order.itemsInOrder.length;
         $scope.calTotalAmt();
     }
+
+    $scope.$watch('order.itemsInOrder', function(orderItemsNew, orderItemsOld){
+
+        console.log(orderItemsNew, orderItemsOld)
+
+        // $scope.order.itemsInOrderMap = {};
+        //
+        // for (var i = 0; i < orderItemsNew.length; i++) {
+        //
+        //     var key = orderItemsNew[i].prod_id + JSON.stringify(orderItemsNew[i].ingredients).replace(/[{}"]/g, '')
+        //
+        //     if($scope.order.itemsInOrderMap.hasOwnProperty(key)){
+        //         $scope.order.itemsInOrderMap[key].prod_qty = orderItemsNew[i].prod_qty
+        //     }else{
+        //         $scope.order.itemsInOrderMap[key] = angular.copy(orderItemsNew[i]);
+        //     }
+        // }
+
+
+        console.log($scope.order.itemsInOrderMap)
+
+    }, true)
 
     $scope.getProductCount = function(product) {
         if (!product.hasOwnProperty('prod_qty')) {
@@ -406,11 +506,11 @@ angular.module('hotelApp')
         //$scope.order.order_pay_status = $("#order-paid-check").prop('checked') ? 'full' : 'none';
         if(parseFloat($scope.order.bal_amt) == 0)
         {
-            $scope.order.order_pay_status = 'full';    
+            $scope.order.order_pay_status = 'full';
         }else if(parseFloat($scope.order.paid_amt) > 0){
-            $scope.order.order_pay_status = 'partial';    
+            $scope.order.order_pay_status = 'partial';
         }else if(parseFloat($scope.order.paid_amt) == 0){
-            $scope.order.order_pay_status = 'none';   
+            $scope.order.order_pay_status = 'none';
         }
 
         console.log($scope.order);
@@ -422,10 +522,10 @@ angular.module('hotelApp')
             if (response.code == 'ORDER_CREATED') {
 
                 socket.emit('order-created');
-                
+
                 //alert(response.msg + '.Token Number:' + response.curr_token);
                 $scope.order.order_token_no = response.curr_token;
-                //store generated new order id 
+                //store generated new order id
                 $scope.order.order_id_str = response.order_id_str;
                 $scope.refreshCustomerList();
                 var orderCopy = {};
@@ -434,7 +534,7 @@ angular.module('hotelApp')
                     //clear binded variables
                     $scope.order.paid_amt = 0;
                     $scope.order.bal_amt = 0;
-                    
+
                     $scope.newOrder();
                 });
 
@@ -448,7 +548,7 @@ angular.module('hotelApp')
 
 
     /**
-        use safrApply instead of apply to prevent error 
+        use safrApply instead of apply to prevent error
     */
     $scope.safeApply = function(fn) {
         var phase = this.$root.$$phase;
@@ -554,7 +654,7 @@ angular.module('hotelApp')
     $scope.generateBill = function(orderData, callBack) {
 
         var bill = TransactionFactory.createOrderBill(orderData);
-        
+
         OrderService.addBill(bill).then(function(response) {
             if (response.code == 'TRANS_ADDED') {
                 callBack.call();
@@ -599,7 +699,7 @@ angular.module('hotelApp')
         //prompt for cancel order
         if(confirm("Cancel Order?")==true)
         {
-            $scope.newOrder();    
+            $scope.newOrder();
         }
     }
 
