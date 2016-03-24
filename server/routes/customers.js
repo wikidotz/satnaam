@@ -4,12 +4,33 @@ var logger = require('../logger');
 var app = express();
 var mongoose = require('mongoose');
 var Customer = require('../model/customer-model.js');
+var CustomerIDCounter = require('../model/customerIDCounter-model.js');
 var Q = require("q");
 
 //fetch customers list
 module.exports = (function() {
     'use strict';
     var router = express.Router();
+
+    function getNextSequence(name) {
+       /*var ret = CustomerIDCounter.findAndModify(
+              {
+                query: { _id: name },
+                update: { $inc: { seq: 1 } },
+                new: true
+              },function(err,host){
+                if(err)
+                {
+                    console.log(err);
+                    //return err;    
+                }
+              }
+       );*/
+    var ret = CustomerIDCounter.find({_id:'custID'});
+    console.log("getNextSequence res");
+    console.log(ret.seq);  
+    return (parseInt(ret.seq)+1); 
+    }
 
     //Get all Customers
     router.get('/', function(req, res) {
@@ -21,14 +42,23 @@ module.exports = (function() {
     //Add the Customer
     router.route('/user')
         .post(function(req, res) {
-            console.log('adding user here')
             var obj = req.body.user;
-            var user = new Customer(obj);
-
-            user.save(function(err, user) {
-                if (err) return console.error(err);
-                res.json(user);
-            });
+             CustomerIDCounter.findOneAndUpdate(
+                 {_id:'custID'},
+                 {"$inc": { "seq": 1 }} ,
+                 {"upsert":true,"returnNewDocument":true},
+                  function(errc,resc){
+                    if(errc)
+                        console.error(errc);
+                    //returnNewDocuemnt is not working as it is returning old seq
+                    obj.custID = resc.seq+1 ;
+                    var user = new Customer(obj);
+           
+                    user.save(function(err, user) {
+                        if (err) return console.error(err);
+                        res.json(user);
+                    });   
+                  });
         });
 
     //This method use to generate a unique id
@@ -90,5 +120,20 @@ module.exports = (function() {
         res.send(dummyData);
     });
     
+    router.route('/initCustomerIDCounter').get(function(req,res){
+        console.log('initialising CustomerIDCounter collection');
+
+        var startCounter = new CustomerIDCounter({
+              _id: "custID",
+              seq: 0
+           });
+
+        var customerIDCounterObj = new CustomerIDCounter(startCounter);
+        customerIDCounterObj.save(function(err, result) {
+            if (err) return console.error(err);
+            console.log('CustomerIDCounter result['+result+']   ');
+            res.json(result);
+        });
+    })
     return router;
 })();

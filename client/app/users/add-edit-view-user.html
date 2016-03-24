@@ -1,45 +1,45 @@
-<div class="container">
+<div class="container user-add-edit">
     <div class="container col-md-6">
         <h2>User form</h2>
         <form role="form">
 
-            <div class="form-group">
-                <label for="name">Customer ID:</label> 
-                <span class="form-control large">{{user.custID}}</span>
+            <div class="form-group" ng-show="mode!='add'">
+                <label class="user-form-control-heading" for="name" >Customer ID:</label> 
+                <span  ng-disabled>{{user.custID}}</span>
             </div>
 
             <div class="form-group">
-                <label for="name">Name:</label> <span ng-show="mode=='view'">{{user.name}}</span>
+                <label class="user-form-control-heading"  for="name">Name:</label> <span ng-show="mode=='view'">{{user.name}}</span>
                 <input ng-show="mode!='view'" type="text" ng-model="user.name" class="form-control" placeholder="Name">
             </div>
-
+ 
              <div class="form-group">
-                <label for="name">Name to called:</label> <span ng-show="mode=='view'">{{user.nameCalled}}</span>
+                <label class="user-form-control-heading"  for="name">Name to called:</label> <span ng-show="mode=='view'">{{user.nameCalled}}</span>
                 <input ng-show="mode!='view'" type="text" ng-model="user.nameCalled" class="form-control" placeholder="Enter name to be called">
             </div>
 
             <div class="form-group">
-                <label for="pwd">Mobile:</label> <span ng-show="mode=='view'">{{user.mobile}}</span>
+                <label class="user-form-control-heading"  for="pwd">Mobile:</label> <span ng-show="mode=='view'">{{user.mobile}}</span>
                 <input ng-show="mode!='view'" type="number" ng-model="user.mobile" class="form-control" placeholder="Enter Mobile no.">
             </div>
 
             <div class="form-group">
-                <label for="email">Email ID:</label>
+                <label class="user-form-control-heading"  for="email">Email ID:</label>
                 <span ng-show="mode=='view'">{{user.email}}</span>
                 <input type="email" name="email" id="email" ng-model="user.email" ng-show="mode!='view'" class="form-control" placeholder="Enter Email">
             </div>
 
             <div class="form-group">
-                <label for="bldg">Bldg:</label>
-                <span ng-show="mode=='view'">{{user.bldgName}}</span>
-                <span class="hidden">{{user.bldgAcr}}</span>
-                <select ng-model="user.bldgname" id="bldg" name="bldg" class="form-control">
-                    <option ng-repeat="eachBldg in allBldgs" value="eachBldg.bldgAcr">{{eachBldg.bldgName}}</option>
+                <label class="user-form-control-heading"  for="bldg">Bldg:</label>
+                <span ng-show="mode=='view'">{{user.bldg|parseJSONObj:'bldgName'}}</span>
+                <span class="hidden">{{user.bldg|parseJSONObj:'bldgAcr'}}</span>
+                <select ng-show="mode!='view'" ng-model="user.bldg" id="bldg" name="bldg" class="form-control">
+                    <option ng-repeat="eachBldg in allBldgs" value="{{eachBldg}}">{{eachBldg.bldgName}}</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label>Wing/Plot</label>
+                <label class="user-form-control-heading" >Wing/Plot</label>
                 <span ng-show="mode=='view'">{{user.bldgWing}}</span>
                 <input ng-show="mode!='view'" ng-model="user.bldgWing" class="form-control"
                 placeholder="Enter wing/plot no." type="text" 
@@ -47,29 +47,29 @@
             </div>
 
             <div class="form-group">
-                <label>Room NO./Shop No.</label>
+                <label class="user-form-control-heading" >Room NO./Shop No.</label>
                 <span ng-show="mode=='view'">{{user.bldgRoomNo}}</span>
                 <input ng-show="mode!='view'" ng-model="user.bldgRoomNo" class="form-control"
                 placeholder="Enter room no/shop no" type="text">
             </div>
 
             <div class="form-group">
-                <label>Landmark/Near To:</label>
+                <label class="user-form-control-heading" >Landmark/Near To:</label>
                 <span ng-show="mode=='view'">{{user.landmark}}</span>
                 <input ng-show="mode!='view'" ng-model="user.landmark" class="form-control"
                 type="text" placeholder="Enter near by famous place" type="text">
             </div>
 
             <div class="form-group">
-                <label>City:</label>
+                <label class="user-form-control-heading" >City:</label>
                 <span ng-show="mode=='view'">{{user.city}}</span>
                 <input ng-show="mode!='view'" ng-model="user.city" class="form-control"
                 type="text" placeholder="Enter city like kandivali, borivali">
             </div>
 
             <div class="form-group">
-                <label for="pwd">Address:</label> <span ng-show="mode=='view'">{{user.address}}</span>
-                <input ng-show="mode!='view'" type="text" ng-model="user.address" class="form-control" placeholder="Address">
+                <label class="user-form-control-heading"  for="pwd">Address:</label> <span ng-show="mode=='view'">{{user.address}}</span>
+                <input ng-show="mode!='view'" type="text" ng-model="user.address" class="form-control" placeholder="Address" ng-disabled>
             </div>
             
             <button type="button"  ng-click="reset(user)" class="btn btn-danger">Reset</button>

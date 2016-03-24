@@ -85,4 +85,18 @@ angular.module('hotelApp').service('Customer', function($http, $localForage) {
         })
          
     }
+
+    self.initCustomerIDCounter = function() {
+        return $http.get('/customers/initCustomerIDCounter').then(function(response) {
+                /*if(response.data!=undefined|| response.data!=null)
+                {
+                   // $localForage.setItem('customers', response.data);    
+                }
+                
+                //return response.data;*/
+            },
+            function(err) {
+                return err;
+            })
+    }
 });

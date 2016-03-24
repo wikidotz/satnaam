@@ -8,7 +8,7 @@ var CustomerSchema = new mongoose.Schema({
 	nameCalled:String,
 	mobile:Number,
 	email:String,
-	bldgName:String,
+	bldg:Object,
 	bldgWing:String,
 	bldgRoomNo:String,
 	landmark:String,
