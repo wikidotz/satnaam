@@ -696,3 +696,8 @@ input.search
   line-height: 40px; font-size: 17px;
   border: 1px solid #bbb;
 }   
+
+label.user-form-control-heading
+{
+    width: 140px;
+}

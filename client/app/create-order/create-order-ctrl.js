@@ -514,21 +514,6 @@ angular.module('hotelApp')
 
     }
 
-    /*$scope.initNewTransactionObj = function() {
-        $scope.transaction = {};
-        $scope.transaction.order = {};
-        $scope.transaction.bill_no = 0;
-        $scope.transaction.order_total_amt = 0.0;
-        $scope.transaction.paid_amt = 0.0;
-        $scope.transaction.bal_amt = 0.0;
-        $scope.transaction.tran_date_time = new Date();
-        $scope.transaction.modified_by = "admin";
-        $scope.transaction.last_modified_date_time = new Date();
-        $scope.transaction.desc = "";
-        $scope.transaction.type = "ORDER_PAYMENT";
-        $scope.transaction.mode = "CASH";
-    }*/
-
     //transaction code
 
     $scope.initNewOrderObj = function() {

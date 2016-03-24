@@ -81,6 +81,12 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
     }
 
 })
+.filter('parseJSONObj',function(){
+    return function(input,prop){
+        console.log(JSON.parse(input));
+        return JSON.parse(input)[prop];
+    }
+})
 
 .controller('AppCtrl', function($scope) {
     
@@ -107,6 +113,7 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
     init();
 
     $scope.addUser = function(user) {
+        user.address = $scope.userAddress(user);
         UserService.addUser(angular.copy(user)).then(function(user) {
             console.log('addUser');
             $scope.user = {};
@@ -115,6 +122,7 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
     }
 
     $scope.updateUser = function(user) {
+        user.address = $scope.userAddress(user);
         UserService.updateUser(user._id, angular.copy(user)).then(function(user) {
             $scope.user = {};
             $location.path('/app/users');
@@ -123,13 +131,14 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
 
     $scope.userAddress = function(user){
         var tempArr = [];
-        tempArr.push("Bldg:"+user.bldgName);
-        tempArr.push("Wing:"+user.bldgWing);
-        tempArr.push("Room:"+user.bldgRoomNo);
-        tempArr.push("Near:"+user.landmark);
-        tempArr.push("city:"+UserService.defaultCity);
-        tempArr.push("state:"+UserService.defaultState);
-        tempArr.push("country:"+UserService.defaultCountry);
+
+        tempArr.push("Bldg:"+JSON.parse(user.bldg).bldgName+"("+JSON.parse(user.bldg).bldgAcr+")"||'NA');
+        tempArr.push("Wing:"+user.bldgWing||'NA');
+        tempArr.push("Room:"+user.bldgRoomNo||'NA');
+        tempArr.push("Near:"+user.landmark||'NA');
+        tempArr.push("city:"+UserService.defaultCity()||'NA');
+        tempArr.push("state:"+UserService.defaultState()||'NA');
+        tempArr.push("country:"+UserService.defaultCountry()||'NA');
 
         return tempArr.join(',');
     }
