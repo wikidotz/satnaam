@@ -11,8 +11,8 @@
         <!--li ng-show="product.prod_qty>1" ng-click="lessQty()"> &minus; </li-->
     </ul>
     <hr ng-if="!showCloseBtn"/>
-    <div ng-if="!showCloseBtn" class="btn-group" role="group" aria-label="...">
-        <button ng-repeat="type in itemTypes" type="button" ng-class="itemTypeBtnClass(type)" ng-click="toggleItemType($event, type)" class="btn btn-default mix">{{type.label}}</button>
+    <div ng-if="!showCloseBtn" class="btn-group item-type-btn" role="group" aria-label="...">
+        <button ng-repeat="type in itemTypes" type="button" ng-click="toggleItemType($event, type)" class="btn btn-default {{type.type.toLowerCase()}}">{{type.label}}</button>
     </div>
     <hr ng-if="!showCloseBtn"/>
     <div  ng-if="!showCloseBtn" class="row">

@@ -105,12 +105,21 @@ angular.module('hotelApp')
     $scope.itemClick = function(item){
         item.iSelected = !item.iSelected;
         $scope.isAllSelected = false;
+
+        updateIngredients(item);
     }
 
+    function updateIngredients(item){
+        var itemType = item.ingredients.type;
 
-    $scope.itemTypeBtnClass = function(type){
-
+        if(item.iSelected) {
+            angular.element('.item-type-btn').find('button').removeClass('active');
+            angular.element('.'+itemType.toLowerCase()).addClass('active');
+        }else{
+            angular.element('.item-type-btn').find('button').removeClass('active');
+        }
     }
+
 
     $scope.toggleItemType = function($event, type) {
 
