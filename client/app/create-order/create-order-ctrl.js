@@ -100,32 +100,18 @@ angular.module('hotelApp')
     }
 
     $scope.productFilter = function(item) {
-        console.log(item)
         return item.prod_id == product.prod_id;
-    }
-
-    $scope.isAllSelected = false;
-
-    $scope.selectAll = function() {
-
-        for (var i = 0; i < $scope.order.itemsInOrder.filter(isSameProduct).length; i++) {
-            $scope.order.itemsInOrder.filter(isSameProduct)[i].iSelected = $scope.isAllSelected;
-        };
     }
 
     $scope.itemClick = function(item){
         item.iSelected = !item.iSelected;
         $scope.isAllSelected = false;
-        console.log($scope.order.itemsInOrder.filter(isSameProduct).filter(isSelected))
     }
 
 
     $scope.itemTypeBtnClass = function(type){
-        type.type
 
     }
-
-    //$scope.selectAll();
 
     $scope.toggleItemType = function($event, type) {
 
@@ -152,7 +138,6 @@ angular.module('hotelApp')
                 $scope.order.itemsInOrder.filter(isSameProduct)[i].ingredients[name.toLowerCase()] = value;
                 $scope.order.itemsInOrder.filter(isSameProduct)[i].ingredients.isMedium = (value == 'medium')
                 $scope.order.itemsInOrder.filter(isSameProduct)[i].isModified = true;
-
             }
         };
     }
@@ -182,12 +167,10 @@ angular.module('hotelApp')
 
     $scope.removeItem = function(e, theItem){
         e.stopPropagation();
-        //alert('remove item');
         var keys = theItem.prod_id + JSON.stringify(theItem.ingredients).replace(/[{}"]/g, '');
+        angular.element(e.target).parent().remove();
         itemTobeRemoved.push(keys);
     }
-
-
 
     $scope.ok = function() {
         if(!lessItem){
@@ -345,15 +328,13 @@ angular.module('hotelApp')
         var lastKeyId = -1;
 
         for (var i = 0; i < $scope.order.itemsInOrder.length; i++) {
-          if(product.prod_id == $scope.order.itemsInOrder[i].prod_id && $scope.order.itemsInOrder[i].isModified){
-            isModifiersSelected = true;
-            break;
-          }
+            if(product.prod_id == $scope.order.itemsInOrder[i].prod_id && $scope.order.itemsInOrder[i].isModified){
+                isModifiersSelected = true;
+                break;
+            }
         }
 
-        console.log(isModifiersSelected)
-
-        if(isModifiersSelected){
+        if(isModifiersSelected && $scope.order.itemsInOrder.length >1){
 
             var modalInstance = $uibModal.open({
                 animation: 'true',
@@ -375,41 +356,57 @@ angular.module('hotelApp')
             });
 
             modalInstance.result.then(function(itemsToBeRemoved) {
-                //p = product;
-                console.log(itemsToBeRemoved);
+                console.log(itemsToBeRemoved)
 
                 for (var i = 0; i < itemsToBeRemoved.length; i++) {
-                  if($scope.order.itemsInOrder.indexOf(parseFloat(itemsToBeRemoved[i].substr(0,1))) != -1){
-                      $scope.order.itemsInOrder.splice(i,1);
-                  }
+                    for (var j = 0; j < $scope.order.itemsInOrder.length; j++) {
+                        var key = $scope.order.itemsInOrder[j].prod_id + JSON.stringify($scope.order.itemsInOrder[j].ingredients).replace(/[{}"]/g, '');
+
+                        console.log(key == itemsToBeRemoved[i])
+                        if(key == itemsToBeRemoved[i]){
+                            $scope.order.itemsInOrder.splice(j,1);
+                            itemsToBeRemoved.splice(i,1);
+
+                            if(product.prod_qty > 1){
+                                product.prod_qty--;
+                            }else{
+                                //delete $scope.order.itemsInOrderMap[key];
+                                product.selected = false;
+                                product.iSelected = false;
+                                product.prod_qty = 1;
+                                delete product.ingredients;
+                            }
+                        }
+                    }
                 }
 
             }, function() {
-              //
+                //
             });
         }else{
 
-          var key = product.prod_id + JSON.stringify(product.ingredients).replace(/[{}"]/g, '');
+            console.log(product)
+            var productKey = product.prod_id + JSON.stringify(product.ingredients).replace(/[{}"]/g, '');
 
-          if($scope.order.itemsInOrderMap[key] && $scope.order.itemsInOrderMap[key].prod_qty){
-              if($scope.order.itemsInOrderMap[key].prod_qty > 1){
-                 $scope.order.itemsInOrderMap[key].prod_qty--;
-              }else{
-                 delete $scope.order.itemsInOrderMap[key];
-                 product.selected = false;
-                 product.iSelected = false;
-                 delete product.ingredients;
-              }
-              product.prod_qty--;
+            for (var i = 0; i < $scope.order.itemsInOrder.length; i++) {
+                var currKey = $scope.order.itemsInOrder[i].prod_id + JSON.stringify($scope.order.itemsInOrder[i].ingredients).replace(/[{}"]/g, '');
 
-              for (var i = 0; i < $scope.order.itemsInOrder.length; i++) {
-                if($scope.order.itemsInOrder[i].prod_id == product.prod_id){
+                if(currKey == productKey){
+
                     $scope.order.itemsInOrder.splice(i,1);
+
+                    if(product.prod_qty > 1){
+                        product.prod_qty--;
+                    }else{
+                        product.selected = false;
+                        product.iSelected = false;
+                        product.prod_qty = 1;
+                        delete product.ingredients;
+                    }
+
                     break;
                 }
-              }
-
-          }
+            }
         }
 
         $scope.calTotalAmt();
@@ -417,12 +414,7 @@ angular.module('hotelApp')
 
     $scope.addItem = function(product) {
 
-        product.prod_qty++;
 
-        if (product.prod_qty == 1) {
-            product.selected = true;
-            product.iSelected = true;
-        }
 
         var p = angular.copy(angular.extend(product, {
             ingredients: {
@@ -435,14 +427,14 @@ angular.module('hotelApp')
             }
         }));
 
+
         $scope.order.itemsInOrder.push(angular.copy(product));
 
-        var key = product.prod_id + JSON.stringify(product.ingredients).replace(/[{}"]/g, '')
+        product.prod_qty++;
 
-        if($scope.order.itemsInOrderMap.hasOwnProperty(key)){
-            $scope.order.itemsInOrderMap[key].prod_qty = product.prod_qty
-        }else{
-            $scope.order.itemsInOrderMap[key] = angular.copy(product);
+        if (product.prod_qty == 1) {
+            product.selected = true;
+            //product.iSelected = true;
         }
 
         $scope.order.order_total_qty = $scope.order.itemsInOrder.length;
@@ -450,24 +442,19 @@ angular.module('hotelApp')
     }
 
     $scope.$watch('order.itemsInOrder', function(orderItemsNew, orderItemsOld){
+        console.log($scope.order.itemsInOrder)
+        $scope.order.itemsInOrderMap = {};
 
-        console.log(orderItemsNew, orderItemsOld)
+        for (var i = 0; i < orderItemsNew.length; i++) {
+            var key = orderItemsNew[i].prod_id + JSON.stringify(orderItemsNew[i].ingredients).replace(/[{}"]/g, '')
 
-        // $scope.order.itemsInOrderMap = {};
-        //
-        // for (var i = 0; i < orderItemsNew.length; i++) {
-        //
-        //     var key = orderItemsNew[i].prod_id + JSON.stringify(orderItemsNew[i].ingredients).replace(/[{}"]/g, '')
-        //
-        //     if($scope.order.itemsInOrderMap.hasOwnProperty(key)){
-        //         $scope.order.itemsInOrderMap[key].prod_qty = orderItemsNew[i].prod_qty
-        //     }else{
-        //         $scope.order.itemsInOrderMap[key] = angular.copy(orderItemsNew[i]);
-        //     }
-        // }
-
-
-        console.log($scope.order.itemsInOrderMap)
+            if($scope.order.itemsInOrderMap.hasOwnProperty(key)){
+                console.log($scope.order.itemsInOrderMap[key])
+                $scope.order.itemsInOrderMap[key].prod_qty++;
+            }else{
+                $scope.order.itemsInOrderMap[key] = angular.copy(orderItemsNew[i]);
+            }
+        }
 
     }, true)
 
@@ -548,7 +535,7 @@ angular.module('hotelApp')
 
 
     /**
-        use safrApply instead of apply to prevent error
+    use safrApply instead of apply to prevent error
     */
     $scope.safeApply = function(fn) {
         var phase = this.$root.$$phase;
@@ -570,127 +557,127 @@ angular.module('hotelApp')
     }
 
     /*$scope.onCustomerSelect = function($item, $model, $label) {
-        Customer.getCustomerInfoByCustomerCode($item.cust_id).then(function(response) {
-            $scope.order.customer = response;
-        });
-    }*/
+    Customer.getCustomerInfoByCustomerCode($item.cust_id).then(function(response) {
+    $scope.order.customer = response;
+});
+}*/
 
-    $scope.parcelOrder = function() {
-        $scope.order.delivery_mode = 'PARCEL';
-    }
+$scope.parcelOrder = function() {
+    $scope.order.delivery_mode = 'PARCEL';
+}
 
-    $scope.dinningOrder = function() {
-        $scope.order.delivery_mode = 'DINE';
-    }
+$scope.dinningOrder = function() {
+    $scope.order.delivery_mode = 'DINE';
+}
 
-    function onOrderSubmitError() {
-        alert("Error in order submit");
-    }
+function onOrderSubmitError() {
+    alert("Error in order submit");
+}
 
-    function calcCurrentDateTime() {
-        var d = new Date();
-        var month = d.getMonth() + 1;
-        var day = d.getDate();
-        var year = d.getFullYear();
-        return {
-            year: year,
-            month: month,
-            day: day,
-            date: d,
-            hr: d.getHours(),
-            min: d.getMinutes()
-        };
-    }
+function calcCurrentDateTime() {
+    var d = new Date();
+    var month = d.getMonth() + 1;
+    var day = d.getDate();
+    var year = d.getFullYear();
+    return {
+        year: year,
+        month: month,
+        day: day,
+        date: d,
+        hr: d.getHours(),
+        min: d.getMinutes()
+    };
+}
 
-    function formatDateTime(targetDateObj) {
-        var formattedDate = targetDateObj.year + '/' + targetDateObj.month + '/' + targetDateObj.day + ' ';
-        formattedDate += targetDateObj.hr + ':' + targetDateObj.min + ':0';
-        return formattedDate;
-    }
+function formatDateTime(targetDateObj) {
+    var formattedDate = targetDateObj.year + '/' + targetDateObj.month + '/' + targetDateObj.day + ' ';
+    formattedDate += targetDateObj.hr + ':' + targetDateObj.min + ':0';
+    return formattedDate;
+}
 
-    function showCurrentDateTime() {
-        var currentDateTimeObj = calcCurrentDateTime();
-        $("#orderDateTime").val(+"" + currentDateTimeObj.day + "/" + currentDateTimeObj.month + "/" + currentDateTimeObj.year + " | " + "" + currentDateTimeObj.hr + ":" + currentDateTimeObj.min);
+function showCurrentDateTime() {
+    var currentDateTimeObj = calcCurrentDateTime();
+    $("#orderDateTime").val(+"" + currentDateTimeObj.day + "/" + currentDateTimeObj.month + "/" + currentDateTimeObj.year + " | " + "" + currentDateTimeObj.hr + ":" + currentDateTimeObj.min);
 
-    }
+}
 
-    //transaction code
+//transaction code
 
-    $scope.initNewOrderObj = function() {
-        $scope.order = {};
-        $scope.order.customer = {};
-        $scope.order.itemsInOrder = [];
-        $scope.order.itemsInOrderMap = {};
-        $scope.order.order_total_amt = 0.00;
-        $scope.order.order_token_no = 0;
-        $scope.order.order_id_str = "";
-        $scope.order.order_date_time = new Date();
-        //1-> order pending, 2-> order in process ,3-> completed,4-> order delivered,5-> order cancelled
-        $scope.order.order_status = 1;
-        $scope.order.modified_by = 'admin';
-        $scope.order.last_modified_date_time = new Date();
-        $scope.order.delivery_mode = 'DINE';
-        $scope.order.is_scheduled = 0;
-        $scope.order.scheduled_date_time = undefined;
-        //set it after order is delivered by
-        $scope.order.order_dlv_by = "";
-    }
+$scope.initNewOrderObj = function() {
+    $scope.order = {};
+    $scope.order.customer = {};
+    $scope.order.itemsInOrder = [];
+    $scope.order.itemsInOrderMap = {};
+    $scope.order.order_total_amt = 0.00;
+    $scope.order.order_token_no = 0;
+    $scope.order.order_id_str = "";
+    $scope.order.order_date_time = new Date();
+    //1-> order pending, 2-> order in process ,3-> completed,4-> order delivered,5-> order cancelled
+    $scope.order.order_status = 1;
+    $scope.order.modified_by = 'admin';
+    $scope.order.last_modified_date_time = new Date();
+    $scope.order.delivery_mode = 'DINE';
+    $scope.order.is_scheduled = 0;
+    $scope.order.scheduled_date_time = undefined;
+    //set it after order is delivered by
+    $scope.order.order_dlv_by = "";
+}
 
-    $scope.generateBill = function(orderData, callBack) {
+$scope.generateBill = function(orderData, callBack) {
 
-        var bill = TransactionFactory.createOrderBill(orderData);
+    var bill = TransactionFactory.createOrderBill(orderData);
 
-        OrderService.addBill(bill).then(function(response) {
-            if (response.code == 'TRANS_ADDED') {
-                callBack.call();
+    OrderService.addBill(bill).then(function(response) {
+        if (response.code == 'TRANS_ADDED') {
+            callBack.call();
 
-            } else if (response.code == 'ERROR') {
-                alert(response.msg + '[Code=' + response.code + ']');
-                console.log(response.stack);
-            }
-
-        })
-    }
-
-    $scope.refreshCustomerList = function(){
-         Customer.getAllCustomersRemote().then(function(data) {
-            $scope.customers = data;
-        })
-
-    }
-
-    $scope.balanceAmt = function(){
-        var balAmt = 0;
-        balAmt = $scope.order.order_total_amt - $scope.order.paid_amt;
-        $scope.order.bal_amt = balAmt;
-        return balAmt ;
-    }
-
-    $scope.playOrderSound = function(type){
-        var audio ;
-        switch(type.toLowerCase())
-        {
-            case 'order_created':
-                audio = document.getElementById("order_created_audio");
-            break;
-            case 'error':
-                audio = document.getElementById("error_audio");
-            break;
+        } else if (response.code == 'ERROR') {
+            alert(response.msg + '[Code=' + response.code + ']');
+            console.log(response.stack);
         }
-        audio.play();
+
+    })
+}
+
+$scope.refreshCustomerList = function(){
+    Customer.getAllCustomersRemote().then(function(data) {
+        $scope.customers = data;
+    })
+
+}
+
+$scope.balanceAmt = function(){
+    var balAmt = 0;
+    balAmt = $scope.order.order_total_amt - $scope.order.paid_amt;
+    $scope.order.bal_amt = balAmt;
+    return balAmt ;
+}
+
+$scope.playOrderSound = function(type){
+    var audio ;
+    switch(type.toLowerCase())
+    {
+        case 'order_created':
+        audio = document.getElementById("order_created_audio");
+        break;
+        case 'error':
+        audio = document.getElementById("error_audio");
+        break;
     }
+    audio.play();
+}
 
-    $scope.propmptCancelOrder = function(){
-        //prompt for cancel order
-        if(confirm("Cancel Order?")==true)
-        {
-            $scope.newOrder();
-        }
+$scope.propmptCancelOrder = function(){
+    //prompt for cancel order
+    if(confirm("Cancel Order?")==true)
+    {
+        $scope.newOrder();
     }
+}
 
 
 
-    init();
+init();
 
 
 })//end of OrderCtrl

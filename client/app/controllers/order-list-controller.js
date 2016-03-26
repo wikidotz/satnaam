@@ -42,7 +42,7 @@ angular.module('hotelApp')
     $scope.orderlist = [];
     $scope.includeCompletedOrders = false;
     $scope.displayItemGrouped = true;
-    
+
     var getOrderWithStatus = '1';
     var socket = io();
 
@@ -61,11 +61,11 @@ angular.module('hotelApp')
     }
 
     function init() {
-        
-        
+
+
         loadOrders();
         //WSService.init();
-        
+
         socket.on('order-created', function(){
             $scope.playOrderSound('order_created');
             loadOrders();
@@ -81,6 +81,10 @@ angular.module('hotelApp')
 
     function loadOrders(){
         OrderService.getLatestOrder(getOrderWithStatus).then(function(response) {
+
+            $scope.orderlist = response;
+            return;
+            
             if($scope.displayItemGrouped)
             {
                 console.log(response.length);
@@ -90,14 +94,14 @@ angular.module('hotelApp')
                 for(var i=0;i<orderList_ungroupedItems.length;i++)
                 {
                     var order = orderList_ungroupedItems[i];
-                    order.itemsInOrder = groupByItemID_Abbr(order.itemsInOrder);    
+                    order.itemsInOrder = groupByItemID_Abbr(order.itemsInOrder);
                 }
-                $scope.orderlist = orderList_ungroupedItems;    
+                $scope.orderlist = orderList_ungroupedItems;
             }else
             {
-                $scope.orderlist = response;    
+                $scope.orderlist = response;
             }
-            
+
         })
     }
 
@@ -112,7 +116,7 @@ angular.module('hotelApp')
             if(prodIdIngrAbbrMap==undefined)
             {
                 prodIdIngrAbbrMap = {};
-                prodIdIngrAbbrMap[key]= 1;  
+                prodIdIngrAbbrMap[key]= 1;
                 tempItem.prod_qty = 1;
                 itemsInOrderGrouped.push(angular.merge({},tempItem));
             }else
@@ -120,10 +124,10 @@ angular.module('hotelApp')
                 if(prodIdIngrAbbrMap.hasOwnProperty(key)){
                     //increases only qty as key is already present
                     prodIdIngrAbbrMap[key] += 1;
-                    itemsInOrder[i].prod_qty +=1;        
+                    itemsInOrder[i].prod_qty +=1;
                 }else{
                     //
-                    prodIdIngrAbbrMap[key]= 1;      
+                    prodIdIngrAbbrMap[key]= 1;
                     tempItem.prod_qty = 1 ;
                     itemsInOrderGrouped.push(angular.merge({},tempItem));
                 }
