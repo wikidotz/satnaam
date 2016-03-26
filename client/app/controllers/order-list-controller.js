@@ -46,6 +46,10 @@ angular.module('hotelApp')
     var getOrderWithStatus = '1';
     var socket = io();
 
+    $scope.filterItems = function(item){
+        return item
+    }
+
     $scope.playOrderSound = function(type){
         var audio ;
         switch(type.toLowerCase())
@@ -82,19 +86,13 @@ angular.module('hotelApp')
     function loadOrders(){
         OrderService.getLatestOrder(getOrderWithStatus).then(function(response) {
 
-            $scope.orderlist = response;
-            return;
-            
             if($scope.displayItemGrouped)
             {
-                console.log(response.length);
-
-                //loop on itemsInOrder, grouped them based on item id and abbr
                 var orderList_ungroupedItems = response;
                 for(var i=0;i<orderList_ungroupedItems.length;i++)
                 {
                     var order = orderList_ungroupedItems[i];
-                    order.itemsInOrder = groupByItemID_Abbr(order.itemsInOrder);
+                    order.itemsInOrderMap = groupByItemID_Abbr(order.itemsInOrder);
                 }
                 $scope.orderlist = orderList_ungroupedItems;
             }else
@@ -106,35 +104,19 @@ angular.module('hotelApp')
     }
 
     function groupByItemID_Abbr(itemsInOrder){
-        var itemsInOrderGrouped = [];
-        var prodIdIngrAbbrMap;//prodIdIngrAbbrMap[prod_id-abbr]= 0};
+        var map={};
         for(var i=0;i<itemsInOrder.length;i++)
         {
-            var tempItem = itemsInOrder[i];
-            var key = tempItem.prod_id+'-'+tempItem.ingredients.abbr;
-            //check for prod_id,ingredients-abbr
-            if(prodIdIngrAbbrMap==undefined)
-            {
-                prodIdIngrAbbrMap = {};
-                prodIdIngrAbbrMap[key]= 1;
-                tempItem.prod_qty = 1;
-                itemsInOrderGrouped.push(angular.merge({},tempItem));
-            }else
-            {
-                if(prodIdIngrAbbrMap.hasOwnProperty(key)){
-                    //increases only qty as key is already present
-                    prodIdIngrAbbrMap[key] += 1;
-                    itemsInOrder[i].prod_qty +=1;
-                }else{
-                    //
-                    prodIdIngrAbbrMap[key]= 1;
-                    tempItem.prod_qty = 1 ;
-                    itemsInOrderGrouped.push(angular.merge({},tempItem));
-                }
-            }
-        }
+            var product = itemsInOrder[i];
+            var key = product.prod_id + JSON.stringify(product.ingredients).replace(/[{}"]/g, '');
 
-        return itemsInOrderGrouped ;
+            if(map.hasOwnProperty(key)){
+                product.prod_qty++;
+            }
+
+            map[key] = product;
+        }
+        return map;
     }
 
     init()

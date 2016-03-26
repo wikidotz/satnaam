@@ -21,7 +21,6 @@ angular.module('hotelApp')
             scope.slider = {
                 options: {
                     stop: function (event, ui) {
-                        console.log(scope.sliderValue);
                         scope.updateFn()(scope.name, scope.stringValue())
                     }
                 }
@@ -356,13 +355,10 @@ angular.module('hotelApp')
             });
 
             modalInstance.result.then(function(itemsToBeRemoved) {
-                console.log(itemsToBeRemoved)
-
                 for (var i = 0; i < itemsToBeRemoved.length; i++) {
                     for (var j = 0; j < $scope.order.itemsInOrder.length; j++) {
                         var key = $scope.order.itemsInOrder[j].prod_id + JSON.stringify($scope.order.itemsInOrder[j].ingredients).replace(/[{}"]/g, '');
 
-                        console.log(key == itemsToBeRemoved[i])
                         if(key == itemsToBeRemoved[i]){
                             $scope.order.itemsInOrder.splice(j,1);
                             itemsToBeRemoved.splice(i,1);
@@ -385,7 +381,16 @@ angular.module('hotelApp')
             });
         }else{
 
-            console.log(product)
+            if($scope.order.itemsInOrder.length==1){
+                $scope.order.itemsInOrder.splice(0);
+                product.selected = false;
+                product.iSelected = false;
+                product.prod_qty = 0;
+                delete product.ingredients;
+                return
+            }
+
+
             var productKey = product.prod_id + JSON.stringify(product.ingredients).replace(/[{}"]/g, '');
 
             for (var i = 0; i < $scope.order.itemsInOrder.length; i++) {
@@ -400,7 +405,7 @@ angular.module('hotelApp')
                     }else{
                         product.selected = false;
                         product.iSelected = false;
-                        product.prod_qty = 1;
+                        product.prod_qty = 0;
                         delete product.ingredients;
                     }
 
@@ -427,8 +432,9 @@ angular.module('hotelApp')
             }
         }));
 
-
-        $scope.order.itemsInOrder.push(angular.copy(product));
+        var p = angular.copy(product);
+        p.prod_qty = 1;
+        $scope.order.itemsInOrder.push(p);
 
         product.prod_qty++;
 
@@ -442,17 +448,16 @@ angular.module('hotelApp')
     }
 
     $scope.$watch('order.itemsInOrder', function(orderItemsNew, orderItemsOld){
-        console.log($scope.order.itemsInOrder)
         $scope.order.itemsInOrderMap = {};
 
         for (var i = 0; i < orderItemsNew.length; i++) {
             var key = orderItemsNew[i].prod_id + JSON.stringify(orderItemsNew[i].ingredients).replace(/[{}"]/g, '')
 
             if($scope.order.itemsInOrderMap.hasOwnProperty(key)){
-                console.log($scope.order.itemsInOrderMap[key])
                 $scope.order.itemsInOrderMap[key].prod_qty++;
             }else{
                 $scope.order.itemsInOrderMap[key] = angular.copy(orderItemsNew[i]);
+                $scope.order.itemsInOrderMap[key].prod_qty = 1;
             }
         }
 
@@ -499,8 +504,6 @@ angular.module('hotelApp')
         }else if(parseFloat($scope.order.paid_amt) == 0){
             $scope.order.order_pay_status = 'none';
         }
-
-        console.log($scope.order);
 
         OrderService.createOrder($scope.order).then(function(response) {
 
