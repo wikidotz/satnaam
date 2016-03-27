@@ -222,6 +222,7 @@ angular.module('hotelApp')
     $scope.isProductsLoaded = false;
     $scope.products = [];
     $scope.customers = [];
+    $scope.showOrderDetail = true;
     $scope.sideBarOrderDetailOpen = false;
 
 
@@ -604,6 +605,25 @@ $scope.parcelOrder = function() {
 
 $scope.dinningOrder = function() {
     $scope.order.delivery_mode = 'DINE';
+}
+
+$scope.showSchedulerElement = false;
+
+$scope.showScheduler = function(e){
+
+    if(!$scope.showSchedulerElement){
+        $scope.showOrderDetail = false;
+        $scope.showSchedulerElement = true
+    }else{
+        $scope.showOrderDetail = true;
+        $scope.showSchedulerElement = false
+    }
+
+
+    //$scope.showSchedulerElement != $scope.showSchedulerElement;
+
+    console.log($scope.showSchedulerElement)
+
 }
 
 function onOrderSubmitError() {

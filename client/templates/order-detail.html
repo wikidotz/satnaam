@@ -1,28 +1,28 @@
 <div class="orderDetail container">
-		
+
 		<div class="form-control col-md-12 col-xs-12" style="border:0px;height:40px;padding:0px;margin-bottom:5px;">
 				<input type="text" class="form-control col-md-2 col-xs-4 sod-cutomer-id" placeholder="ID" ng-model="order.customer.custID" typeahead-on-select="onSelectCustomer($item, $model, $label)" uib-typeahead="customer.custID for customer in customers | filter:$viewValue | limitTo:8"/>
-					
+
 				<input type="text" class="form-control col-md-10 col-xs-8 sod-cutomer-mobile" placeholder="Mobile" ng-model="order.customer.mobile" typeahead-on-select="onSelectCustomer($item, $model, $label)" uib-typeahead="customer.mobile for customer in customers | filter:$viewValue | limitTo:8"/>
-		
+
 		</div>
 		<div class="form-control col-md-12 col-xs-12" style="height:40px;border:0px;margin-bottom:10px;">
-				<input type="text" class="form-control col-md-12 col-xs-12 sod-cutomer-name" placeholder="Name" ng-model="order.customer.name" typeahead-on-select="onSelectCustomer($item, $model, $label)" uib-typeahead="customer.name for customer in customers | filter:$viewValue | limitTo:8"/>	
-		</div>	
+				<input type="text" class="form-control col-md-12 col-xs-12 sod-cutomer-name" placeholder="Name" ng-model="order.customer.name" typeahead-on-select="onSelectCustomer($item, $model, $label)" uib-typeahead="customer.name for customer in customers | filter:$viewValue | limitTo:8"/>
+		</div>
 
-		
+
 		<div class="buttons btn-group">
 		      <button type="button" class="cancelOrder btn btn-default"><i class="fa fa-trash"></i></button>
 		      <!--order items are for parcel delivery-->
 		      <button type="button" class="btn btn-default" ng-click="parcelOrder()"><i class="fa fa-gift"></i></button>
 		      <!--order items are for Dining table delivery-->
 		      <button type="button" class="btn btn-default" ng-click="dinningOrder()"><i class="fa fa-hand-o-down"></i></button>
-		      <button type="button" class="btn btn-default"><i class="fa fa-clock-o"></i></button>
+		      <button type="button" class="btn btn-default" ng-class="(showSchedulerElement==true)?'active':''" ng-click="showScheduler($event)"><i class="fa fa-clock-o"></i></button>
 		      <button type="button" class="btn btn-default"><i class="fa fa-print"></i></button>
 
 		</div>
-	
-		<div class="sod-order-table form-group">
+
+		<div class="sod-order-table form-group" ng-show="showOrderDetail">
 			<table cellspacing="0" cellpadding="0" border="0" clasa="table table-condensed"><!--class="F cf zt"-->
 				<thead>
 					<tr>
@@ -37,7 +37,7 @@
 					    <td width="20%" align="center" class="orderedItemQty">{{ product.prod_qty }}</td><!--class="xz"-->
 					    <td width="20%" align="right" class="orderedItemAmount">{{ product.prod_qty * product.prod_rate }}</td><!--class="xw"-->
 					</tr>
-				</tbody>	
+				</tbody>
 			  	<tfoot>
 			  		<tr><!--class="summary"-->
 					  	<td width="200" >Total</td><!--class="total"-->
@@ -47,15 +47,17 @@
 					 <tr>
 					 	<td width="200"> Amount Paid </td>
 					 	<td><input type="number" id="order-paid-amt" ng-model="order.paid_amt" class="right-text ng-pristine ng-valid ng-touched" aria-invalid="false" ng-change="balanceAmt()" ></td>
-					 </tr>		
+					 </tr>
 					  <tr>
 					 	<td width="200"> Balance Amount</td>
 					 	<td width="20%" align="right" class="bigFont"><strong>
 					 	{{order.bal_amt}}</strong></td>
-					 </tr>		
+					 </tr>
 			  	</tfoot>
-			</table>			
-
+			</table>
+		</div>
+		<div class="sod-order-table" ng-show="showSchedulerElement">
+			Time
 		</div>
 
 		<div class="orderBtnsContainer2">
@@ -63,7 +65,7 @@
 			<a ng-click="validateOrderSave('CREATE')" class="btn btn-success btn-lg btn-block">Create Order</a>
 			<a ng-click="propmptCancelOrder()" class="btn btn-danger btn-lg btn-block">Cancel</a>
 
-			
+
 		 	<!--<a ng-click="submitOrder()" class="btn btn-success btn-md btn-block ">Paid</a>-->
 		</div>
 </div>
