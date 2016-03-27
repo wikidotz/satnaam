@@ -16,11 +16,13 @@ angular.module('hotelApp')
                 return valuesHash[scope.sliderValue]
             }
 
-            scope.sliderValue = 2;
+            //scope.sliderValue = 2;
 
             scope.slider = {
                 options: {
                     stop: function (event, ui) {
+                        //scope.sliderValue = 2;
+                        console.log(scope.sliderValue)
                         scope.updateFn()(scope.name, scope.stringValue())
                     }
                 }
@@ -29,6 +31,7 @@ angular.module('hotelApp')
         },
         scope: {
             name: '@name',
+            sliderValue: '=',
             updateFn: '&'
         },
     }
@@ -76,6 +79,13 @@ angular.module('hotelApp')
     $scope.order = order;
     $scope.selecteds = [];
 
+    var sliderValueMap = {
+        'no' : 0,
+        'less' : 1,
+        'medium' : 2,
+        'more' : 3
+    }
+
     $scope.itemTypes = [{
         type: 'MIX',
         label: 'Mix',
@@ -115,6 +125,18 @@ angular.module('hotelApp')
         if(item.iSelected) {
             angular.element('.item-type-btn').find('button').removeClass('active');
             angular.element('.'+itemType.toLowerCase()).addClass('active');
+
+            if(item.isModified){
+                $scope.sweetValue = sliderValueMap[item.ingredients.sweet];
+                $scope.garlicValue = sliderValueMap[item.ingredients.garlic];
+                $scope.chilliValue = sliderValueMap[item.ingredients.chilli];
+            }else{
+                $scope.sweetValue =
+                $scope.garlicValue =
+                $scope.chilliValue = 2;
+            }
+
+            console.log($scope.sweetValue, $scope.garlicValue, $scope.chilliValue)
         }else{
             angular.element('.item-type-btn').find('button').removeClass('active');
         }
@@ -146,6 +168,8 @@ angular.module('hotelApp')
                 $scope.order.itemsInOrder.filter(isSameProduct)[i].ingredients[name.toLowerCase()] = value;
                 $scope.order.itemsInOrder.filter(isSameProduct)[i].ingredients.isMedium = (value == 'medium')
                 $scope.order.itemsInOrder.filter(isSameProduct)[i].isModified = true;
+
+                $scope[name.toLowerCase()+'Value'] = value;
             }
         };
     }
