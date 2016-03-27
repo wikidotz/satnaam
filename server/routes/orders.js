@@ -4,6 +4,7 @@ var logger = require('../logger');
 var orderJson = require('../data/orderlist.json');
 var mongoose = require('mongoose');
 var Customer = require('../model/customer-model.js');
+var CustomerIDCounter = require('../model/customerIDCounter-model.js');
 var app = express();
 
 /*var CustomerSchema = new mongoose.Schema({
@@ -53,18 +54,39 @@ router.post('/createOrder', function(req, res, next) {
 
 	var order = new Order(req.body.orderObj);
 	var customer = new Customer(order.customer);
-	
+	console.log('--------server-orders.js:checking for customer-----------');
 	Customer.find({mobile:customer.mobile},function(err,matchedCustomer){
 		if(err) return console.error(err);
 		if(matchedCustomer !=undefined && matchedCustomer.length==0)
 		{
-			console.log('saving new customer record');
-			customer.save(function(err,result){
-					if(err)console.error(err);
-				  console.log('new customer added');		
-			})
+			console.log('-----------server-orders.js:saving new customer record-----');
+			console.log(order.customer);
+			//new code for generating customer code
+			var obj = order.customer;
+                   
+            CustomerIDCounter.findOneAndUpdate(
+                 {_id:'custID'},
+                 {"$inc": { "seq": 1 }} ,
+                 {"upsert":true,"returnNewDocument":true},
+                  function(errc,resc){
+                    if(errc)
+                        console.error(errc);
+                    //returnNewDocuemnt is not working as it is returning old seq
+                    obj.custID = resc.seq+1 ;
+                    console.log('orders.js->new customer custID'+obj.custID);
+                    var user = new Customer(obj);
+           
+                    user.save(function(err, user) {
+                        if (err) return console.error(err);
+                        //res.json(user);
+                        console.log('orders.js-> new customer added');
+
+                    });   
+            });
+			//new code
+
 		}else{
-			console.log('customer record already exist');
+			console.log('-----------server-orders.js:customer record already exist------------');
 		}	
 	})
 	console.log('Server - Creating an order');

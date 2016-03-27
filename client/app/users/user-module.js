@@ -83,6 +83,11 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
 })
 .filter('parseJSONObj',function(){
     return function(input,prop){
+       if(input==undefined)
+       {
+        return "";
+       }
+       
         console.log(JSON.parse(input));
         return JSON.parse(input)[prop];
     }

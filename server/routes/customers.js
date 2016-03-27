@@ -6,31 +6,11 @@ var mongoose = require('mongoose');
 var Customer = require('../model/customer-model.js');
 var CustomerIDCounter = require('../model/customerIDCounter-model.js');
 var Q = require("q");
-
+var customerIDGenerator = require('../common/customerid.js');
 //fetch customers list
 module.exports = (function() {
     'use strict';
     var router = express.Router();
-
-    function getNextSequence(name) {
-       /*var ret = CustomerIDCounter.findAndModify(
-              {
-                query: { _id: name },
-                update: { $inc: { seq: 1 } },
-                new: true
-              },function(err,host){
-                if(err)
-                {
-                    console.log(err);
-                    //return err;    
-                }
-              }
-       );*/
-    var ret = CustomerIDCounter.find({_id:'custID'});
-    console.log("getNextSequence res");
-    console.log(ret.seq);  
-    return (parseInt(ret.seq)+1); 
-    }
 
     //Get all Customers
     router.get('/', function(req, res) {
@@ -43,7 +23,8 @@ module.exports = (function() {
     router.route('/user')
         .post(function(req, res) {
             var obj = req.body.user;
-             CustomerIDCounter.findOneAndUpdate(
+                   
+            CustomerIDCounter.findOneAndUpdate(
                  {_id:'custID'},
                  {"$inc": { "seq": 1 }} ,
                  {"upsert":true,"returnNewDocument":true},
@@ -52,13 +33,15 @@ module.exports = (function() {
                         console.error(errc);
                     //returnNewDocuemnt is not working as it is returning old seq
                     obj.custID = resc.seq+1 ;
+                    console.log('customers.js->new customer custID'+obj.custID);
                     var user = new Customer(obj);
            
                     user.save(function(err, user) {
                         if (err) return console.error(err);
                         res.json(user);
                     });   
-                  });
+            });
+        
         });
 
     //This method use to generate a unique id

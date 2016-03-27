@@ -1,5 +1,9 @@
 <div class="orderDetail container">
+		
+		<input type="text" class="form-control col-md-6 col-xs-6 sod-cutomer-name" placeholder="ID" ng-model="order.customer.custID" typeahead-on-select="onSelectCustomer($item, $model, $label)" uib-typeahead="customer.custID for customer in customers | filter:$viewValue | limitTo:8"/>
+	
 		<input type="text" class="form-control col-md-6 col-xs-6 sod-cutomer-name" placeholder="Mobile" ng-model="order.customer.mobile" typeahead-on-select="onSelectCustomer($item, $model, $label)" uib-typeahead="customer.mobile for customer in customers | filter:$viewValue | limitTo:8"/>
+	
 		<input type="text" class="form-control col-md-6 col-xs-6 sod-cutomer-name" placeholder="Name" ng-model="order.customer.name" typeahead-on-select="onSelectCustomer($item, $model, $label)" uib-typeahead="customer.name for customer in customers | filter:$viewValue | limitTo:8"/>
 		<div class="buttons btn-group">
 		      <button type="button" class="cancelOrder btn btn-default"><i class="fa fa-trash"></i></button>
