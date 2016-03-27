@@ -278,7 +278,7 @@ li.sp-item .spl-price {
 .sod-order-table{
     position: absolute;
     bottom: 90px;
-    top: 90px;
+    top: 140px;
     border: 1px solid;
     left: 0;
     right: 0;
@@ -610,9 +610,18 @@ tbody.scrollable > tr{
     width: 100%;
 }
 
+.sod-cutomer-id{
+    width: 20%;
+}
+
+.sod-cutomer-mobile{
+    width: 80%;
+}
+
+
 .sod-cutomer-name{
     margin-bottom: 10px;
-    width: 50%;
+    width: 100%;
 }
 
 .sim-pr-qty{

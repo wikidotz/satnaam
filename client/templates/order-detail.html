@@ -1,10 +1,16 @@
 <div class="orderDetail container">
 		
-		<input type="text" class="form-control col-md-6 col-xs-6 sod-cutomer-name" placeholder="ID" ng-model="order.customer.custID" typeahead-on-select="onSelectCustomer($item, $model, $label)" uib-typeahead="customer.custID for customer in customers | filter:$viewValue | limitTo:8"/>
-	
-		<input type="text" class="form-control col-md-6 col-xs-6 sod-cutomer-name" placeholder="Mobile" ng-model="order.customer.mobile" typeahead-on-select="onSelectCustomer($item, $model, $label)" uib-typeahead="customer.mobile for customer in customers | filter:$viewValue | limitTo:8"/>
-	
-		<input type="text" class="form-control col-md-6 col-xs-6 sod-cutomer-name" placeholder="Name" ng-model="order.customer.name" typeahead-on-select="onSelectCustomer($item, $model, $label)" uib-typeahead="customer.name for customer in customers | filter:$viewValue | limitTo:8"/>
+		<div class="form-control col-md-12 col-xs-12" style="border:0px;height:40px;padding:0px;margin-bottom:5px;">
+				<input type="text" class="form-control col-md-2 col-xs-4 sod-cutomer-id" placeholder="ID" ng-model="order.customer.custID" typeahead-on-select="onSelectCustomer($item, $model, $label)" uib-typeahead="customer.custID for customer in customers | filter:$viewValue | limitTo:8"/>
+					
+				<input type="text" class="form-control col-md-10 col-xs-8 sod-cutomer-mobile" placeholder="Mobile" ng-model="order.customer.mobile" typeahead-on-select="onSelectCustomer($item, $model, $label)" uib-typeahead="customer.mobile for customer in customers | filter:$viewValue | limitTo:8"/>
+		
+		</div>
+		<div class="form-control col-md-12 col-xs-12" style="height:40px;border:0px;margin-bottom:10px;">
+				<input type="text" class="form-control col-md-12 col-xs-12 sod-cutomer-name" placeholder="Name" ng-model="order.customer.name" typeahead-on-select="onSelectCustomer($item, $model, $label)" uib-typeahead="customer.name for customer in customers | filter:$viewValue | limitTo:8"/>	
+		</div>	
+
+		
 		<div class="buttons btn-group">
 		      <button type="button" class="cancelOrder btn btn-default"><i class="fa fa-trash"></i></button>
 		      <!--order items are for parcel delivery-->
