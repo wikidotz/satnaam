@@ -90,6 +90,7 @@ angular.module('hotelApp')
 
         if(ahead == 0){
             newTime.setHours(newTime.getHours()+1)
+            newTime.setMinutes(0);
         }else{
             newTime.setMinutes(ahead);
         }
