@@ -22,7 +22,6 @@ angular.module('hotelApp')
                 options: {
                     stop: function (event, ui) {
                         //scope.sliderValue = 2;
-                        console.log(scope.sliderValue)
                         scope.updateFn()(scope.name, scope.stringValue())
                     }
                 }
@@ -136,7 +135,7 @@ angular.module('hotelApp')
                 $scope.chilliValue = 2;
             }
 
-            console.log($scope.sweetValue, $scope.garlicValue, $scope.chilliValue)
+            //console.log($scope.sweetValue, $scope.garlicValue, $scope.chilliValue)
         }else{
             angular.element('.item-type-btn').find('button').removeClass('active');
         }
@@ -618,12 +617,11 @@ $scope.showScheduler = function(e){
         $scope.showOrderDetail = true;
         $scope.showSchedulerElement = false
     }
+}
 
-
-    //$scope.showSchedulerElement != $scope.showSchedulerElement;
-
-    console.log($scope.showSchedulerElement)
-
+$scope.scheduleOrder = function(){
+    $scope.order.is_scheduled = 1;
+    $scope.showScheduler();
 }
 
 function onOrderSubmitError() {
@@ -674,7 +672,9 @@ $scope.initNewOrderObj = function() {
     $scope.order.last_modified_date_time = new Date();
     $scope.order.delivery_mode = 'DINE';
     $scope.order.is_scheduled = 0;
-    $scope.order.scheduled_date_time = undefined;
+    var dt = new Date();
+    dt.setMinutes((Math.round(dt.getMinutes()/15) * 15) % 60);
+    $scope.order.scheduled_date_time = dt;
     //set it after order is delivered by
     $scope.order.order_dlv_by = "";
 }

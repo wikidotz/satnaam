@@ -56,11 +56,13 @@
 			  	</tfoot>
 			</table>
 		</div>
-		<div class="sod-order-table" ng-show="showSchedulerElement">
-			Time
+		<div class="sod-schedule" ng-show="showSchedulerElement">
+			<uib-timepicker style="margin:8px auto;" ng-model="order.scheduled_date_time" ng-change="" hour-step="1" minute-step="15" show-meridian="true"></uib-timepicker>
+			<pre class="alert alert-info sod-schedule-info" ng-if="order.scheduled_date_time">Schedule at: {{order.scheduled_date_time | date:'shortTime' }}</pre>
+		<button ng-click="scheduleOrder()" class="btn btn-primary sod-schedule-btn">Schedule</button>
 		</div>
 
-		<div class="orderBtnsContainer2">
+		<div class="orderBtnsContainer2" ng-hide="showSchedulerElement">
 
 			<a ng-click="validateOrderSave('CREATE')" class="btn btn-success btn-lg btn-block">Create Order</a>
 			<a ng-click="propmptCancelOrder()" class="btn btn-danger btn-lg btn-block">Cancel</a>

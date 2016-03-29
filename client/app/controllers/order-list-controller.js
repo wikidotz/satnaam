@@ -13,6 +13,10 @@ angular.module('hotelApp')
 
     var isFooterOpen = false;
 
+    $scope.showDate = function(dateStr){
+        return new Date(dateStr).toTimeString().split(' ')[0];
+    }
+
     $scope.getRowStyle = function(item) {
         var color = (item.isParcel) ? '#FF0' : '#F0F';
 
@@ -74,7 +78,36 @@ angular.module('hotelApp')
             $scope.playOrderSound('order_created');
             loadOrders();
         });
+    }
 
+    var intervalID;
+
+    function createTimer() {
+
+        var now = new Date();
+        var newTime = new Date();
+        var ahead = (Math.ceil(now.getMinutes()/15) * 15) % 60;
+
+        if(ahead == 0){
+            newTime.setHours(newTime.getHours()+1)
+        }else{
+            newTime.setMinutes(ahead);
+        }
+
+        var diff = newTime - now;
+
+        setTimeout(function(){
+            if(intervalID){
+                clearInterval(intervalID)
+            }
+
+            intervalID = setInterval(scheduleReloader, 15*60*1000)
+        }, diff)
+    }
+
+    function scheduleReloader(){
+
+        $scope.orderlist = filterScheduledOrder(orderBackBuffer);
     }
 
     $scope.showCompletedChange = function(){
@@ -83,24 +116,43 @@ angular.module('hotelApp')
         loadOrders();
     }
 
+    var orderBackBuffer = [];
+
     function loadOrders(){
         OrderService.getLatestOrder(getOrderWithStatus).then(function(response) {
 
             if($scope.displayItemGrouped)
             {
-                var orderList_ungroupedItems = response;
-                for(var i=0;i<orderList_ungroupedItems.length;i++)
+                orderBackBuffer = response;
+                for(var i=0;i<orderBackBuffer.length;i++)
                 {
-                    var order = orderList_ungroupedItems[i];
+                    var order = orderBackBuffer[i];
                     order.itemsInOrderMap = groupByItemID_Abbr(order.itemsInOrder);
                 }
-                $scope.orderlist = orderList_ungroupedItems;
+                $scope.orderlist = filterScheduledOrder(orderBackBuffer);
             }else
             {
                 $scope.orderlist = response;
             }
-
+            createTimer()
         })
+    }
+
+    function filterScheduledOrder(orders){
+
+        return orders.filter(function(order){
+
+            if(order.is_scheduled==1){
+                var now = new Date().getTime();
+                var scheduled_date_time = new Date(order.scheduled_date_time).getTime();
+                return (scheduled_date_time - now <= 900000)
+            }
+
+            return true;
+        })
+
+
+
     }
 
     function groupByItemID_Abbr(itemsInOrder){
@@ -113,6 +165,8 @@ angular.module('hotelApp')
             if(map.hasOwnProperty(key)){
                 product.prod_qty++;
             }
+
+
 
             map[key] = product;
         }

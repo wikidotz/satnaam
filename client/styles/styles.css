@@ -34,7 +34,7 @@ footer.s-footer {
     height: 50px;
     overflow: hidden;
     z-index: 2;
-    
+
 }
 
 .sf-left-arrow,
@@ -272,10 +272,10 @@ li.sp-item .spl-price {
 }
 
 .orderDetail > .buttons{
-    
+
 }
 
-.sod-order-table{
+.sod-order-table, .sod-schedule{
     position: absolute;
     bottom: 90px;
     top: 140px;
@@ -314,8 +314,22 @@ li.sp-item .spl-price {
 
 .sod-order-table > table tr{
     display: block;
-    width: 100%;   
+    width: 100%;
 }
+
+.sod-schedule-btn{
+ width:100%;
+}
+
+.sod-schedule-info{
+    display: block;
+    width: 100%;
+    float: none;
+    text-align: center;
+    margin: 0px;
+}
+
+
 
 .orderDetail.customerTokenNum {
     border: 1px solid #3f50b4;
@@ -449,6 +463,10 @@ tr.summary {
     border: 1px solid green;
 }
 
+.gridListdemoBasicUsage md-grid-tile.scheduled {
+    border: 1px solid blue;
+}
+
 .ol-grid-tile-main {
     position: absolute;
     top: 0;
@@ -469,6 +487,10 @@ tr.summary {
 
 md-grid-tile.parcel .ol-grid-tile-main > header {
     background-color: #C4D2C3;
+}
+
+md-grid-tile.scheduled .ol-grid-tile-main > header {
+    background-color: burlywood;
 }
 
 .ol-grid-tile-main > div.ol-tile-content {
@@ -708,12 +730,12 @@ input.search
 {
   display: block;
   margin: 0;
-  width: 90%; 
+  width: 90%;
   max-width: 400px;
   height: 40px;
   line-height: 40px; font-size: 17px;
   border: 1px solid #bbb;
-}   
+}
 
 label.user-form-control-heading
 {
