@@ -57,7 +57,7 @@
 			</table>
 		</div>
 		<div class="sod-schedule" ng-show="showSchedulerElement">
-			<uib-timepicker style="margin:8px auto;" ng-model="order.scheduled_date_time" ng-change="" hour-step="1" minute-step="15" show-meridian="true"></uib-timepicker>
+			<uib-timepicker style="margin:8px auto;" ng-model="order.scheduled_date_time" ng-change="" hour-step="1" minute-step="5" show-meridian="true"></uib-timepicker>
 			<pre class="alert alert-info sod-schedule-info" ng-if="order.scheduled_date_time">Schedule at: {{order.scheduled_date_time | date:'shortTime' }}</pre>
 		<button ng-click="scheduleOrder()" class="btn btn-primary sod-schedule-btn">Schedule</button>
 		</div>

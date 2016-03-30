@@ -673,7 +673,8 @@ $scope.initNewOrderObj = function() {
     $scope.order.delivery_mode = 'DINE';
     $scope.order.is_scheduled = 0;
     var dt = new Date();
-    dt.setMinutes((Math.round(dt.getMinutes()/15) * 15) % 60);
+    dt.setMinutes((Math.round(dt.getMinutes()/5) * 5) % 60);
+    dt.setSeconds(0);
     $scope.order.scheduled_date_time = dt;
     //set it after order is delivered by
     $scope.order.order_dlv_by = "";

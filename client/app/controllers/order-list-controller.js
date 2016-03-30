@@ -47,6 +47,8 @@ angular.module('hotelApp')
     $scope.includeCompletedOrders = false;
     $scope.displayItemGrouped = true;
 
+    var timeSlotMins = 5;
+
     var getOrderWithStatus = '1';
     var socket = io();
 
@@ -86,7 +88,7 @@ angular.module('hotelApp')
 
         var now = new Date();
         var newTime = new Date();
-        var ahead = (Math.ceil(now.getMinutes()/15) * 15) % 60;
+        var ahead = (Math.ceil(now.getMinutes()/timeSlotMins) * timeSlotMins) % 60;
 
         if(ahead == 0){
             newTime.setHours(newTime.getHours()+1)
@@ -102,13 +104,16 @@ angular.module('hotelApp')
                 clearInterval(intervalID)
             }
 
-            intervalID = setInterval(scheduleReloader, 15*60*1000)
+            intervalID = setInterval(scheduleReloader, timeSlotMins*60*1000)
+            scheduleReloader();
         }, diff)
     }
 
     function scheduleReloader(){
+        $scope.$apply(function(){
+            $scope.orderlist = filterScheduledOrder(orderBackBuffer);
+        })
 
-        $scope.orderlist = filterScheduledOrder(orderBackBuffer);
     }
 
     $scope.showCompletedChange = function(){
@@ -140,20 +145,17 @@ angular.module('hotelApp')
     }
 
     function filterScheduledOrder(orders){
-
         return orders.filter(function(order){
 
             if(order.is_scheduled==1){
-                var now = new Date().getTime();
-                var scheduled_date_time = new Date(order.scheduled_date_time).getTime();
-                return (scheduled_date_time - now <= 900000)
+                var now = new Date()
+                now.setSeconds(59);
+                var sdt = new Date(order.scheduled_date_time)
+                return ((sdt - now) <= (timeSlotMins*60*1000))
             }
 
             return true;
         })
-
-
-
     }
 
     function groupByItemID_Abbr(itemsInOrder){
