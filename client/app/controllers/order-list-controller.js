@@ -12,9 +12,34 @@ angular.module('hotelApp')
 .controller('OrderGridCtrl', function($scope) {
 
     var isFooterOpen = false;
+    var statusClasses = [
+        '',
+        'pending',
+        'process',
+        'completed',
+        'delivered',
+        'cancelled'
+    ]
 
     $scope.showDate = function(dateStr){
         return new Date(dateStr).toTimeString().split(' ')[0];
+    }
+
+    $scope.changeStatus = function(item){
+        item.status++;
+        item.status = item.status % 4;
+        if(item.status==0){
+            item.status++;
+        }
+    }
+
+    $scope.getStatus = function (item) {
+        var classes = '';
+        if(!$scope.isShowingParcel){
+            classes = 'hide-bg '
+        }
+
+        return classes + statusClasses[item.status]
     }
 
     $scope.getRowStyle = function(item) {

@@ -462,7 +462,9 @@ angular.module('hotelApp')
                 garlic: 'medium',
                 chilli: 'medium',
                 isMedium: true
-            }
+            },
+            status: 1
+
         }));
 
         var p = angular.copy(product);

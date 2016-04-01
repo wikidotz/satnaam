@@ -741,3 +741,19 @@ label.user-form-control-heading
 {
     width: 140px;
 }
+
+table.ol-table tbody tr.pending td:first-child {
+    background-color: #B9833B !important;
+}
+table.ol-table tbody tr.process td:first-child {
+    background-color: #F5DF37 !important;
+}
+table.ol-table tbody tr.completed td:first-child {
+    background-color: #B0EFA1 !important;
+}
+table.ol-table tbody tr.pending td:first-child .remove-btn, table.ol-table tbody tr.process td:first-child .remove-btn  {
+    display: none;
+}
+table.ol-table tbody tr.completed td:first-child .remove-btn {
+    display: block;
+}

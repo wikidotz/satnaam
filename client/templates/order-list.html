@@ -36,8 +36,8 @@
                                     </header>
                                     <div class="ol-tile-content">
                                         <table class="table table-condensed ol-table">
-                                            <tr ng-repeat="(key, item) in order.itemsInOrderMap" ng-class="(isShowingParcel)? '': 'hide-bg'" ng-style="getRowStyle(item)">
-                                                <td>{{item.prod_qty}}</td>
+                                            <tr ng-repeat="(key, item) in order.itemsInOrderMap" ng-dblclick="changeStatus(item)" ng-class="getStatus(item)" ng-style="getRowStyle(item)">
+                                                <td>{{item.prod_qty}} <i class="remove-btn fa fa-minus"></i></td>
                                                 <td class="ol-item-name"><div>{{item.prod_name}}</div>
                                                     <span   class="label label-primary">{{item.ingredients.type}}</span>
                                                     <span ng-if="item.ingredients.isMedium">
