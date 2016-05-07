@@ -255,8 +255,6 @@ angular.module('hotelApp')
 
             $scope.categories = response;
         })
-
-        //categoryId
     }
 
     $scope.isDrawerOpen = false;
@@ -520,8 +518,11 @@ angular.module('hotelApp')
 
     $scope.validateOrderSave = function(mode) {
         if (mode.toLowerCase() == 'create') {
+           $("#createOrderBtn").html('Saving........');
             $scope.createOrder();
         }
+
+
     }
 
     var socket = io();
@@ -566,6 +567,8 @@ angular.module('hotelApp')
                 alert(response.msg + '[Code=' + response.code + ']');
                 console.log(response.stack);
             }
+
+            $("#createOrderBtn").html('Create Order');
 
         })
     }
