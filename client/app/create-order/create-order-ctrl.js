@@ -447,13 +447,10 @@ angular.module('hotelApp')
             }
         }
 
-        $scope.calTotalAmt();
+        //$scope.calTotalAmt();
     }
 
     $scope.addItem = function(product) {
-
-
-
         var p = angular.copy(angular.extend(product, {
             ingredients: {
                 type: 'MIX',
@@ -479,7 +476,7 @@ angular.module('hotelApp')
         }
 
         $scope.order.order_total_qty = $scope.order.itemsInOrder.length;
-        $scope.calTotalAmt();
+        //$scope.calTotalAmt();
     }
 
     $scope.$watch('order.itemsInOrder', function(orderItemsNew, orderItemsOld){
@@ -495,6 +492,8 @@ angular.module('hotelApp')
                 $scope.order.itemsInOrderMap[key].prod_qty = 1;
             }
         }
+
+        $scope.calTotalAmt();
 
     }, true)
 
