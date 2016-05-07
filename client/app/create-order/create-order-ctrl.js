@@ -16,12 +16,9 @@ angular.module('hotelApp')
                 return valuesHash[scope.sliderValue]
             }
 
-            //scope.sliderValue = 2;
-
             scope.slider = {
                 options: {
                     stop: function (event, ui) {
-                        //scope.sliderValue = 2;
                         scope.updateFn()(scope.name, scope.stringValue())
                     }
                 }
@@ -171,25 +168,6 @@ angular.module('hotelApp')
                 $scope[name.toLowerCase()+'Value'] = value;
             }
         };
-    }
-
-    $scope.addQty = function() {
-        product.prod_qty++;
-        for (var i = 0; i < $scope.product.prod_qty; i++) {
-            $scope.subitems.push({
-                selected: false
-            })
-        };
-    }
-    $scope.lessQty = function() {
-        if (product.prod_qty > 1) {
-            product.prod_qty--;
-            for (var i = 0; i < $scope.product.prod_qty; i++) {
-                $scope.subitems.push({
-                    selected: false
-                })
-            };
-        }
     }
 
     $scope.showCloseBtn = lessItem;
@@ -386,25 +364,27 @@ angular.module('hotelApp')
             });
 
             modalInstance.result.then(function(itemsToBeRemoved) {
-                for (var i = 0; i < itemsToBeRemoved.length; i++) {
-                    for (var j = 0; j < $scope.order.itemsInOrder.length; j++) {
-                        var key = $scope.order.itemsInOrder[j].prod_id + JSON.stringify($scope.order.itemsInOrder[j].ingredients).replace(/[{}"]/g, '');
 
-                        if(key == itemsToBeRemoved[i]){
-                            $scope.order.itemsInOrder.splice(j,1);
-                            itemsToBeRemoved.splice(i,1);
+                var itemsOrder = angular.copy($scope.order.itemsInOrder);
+                
+                for (var i = 0; i < itemsOrder.length; i++) {
+                    var key = itemsOrder[i].prod_id + JSON.stringify(itemsOrder[i].ingredients).replace(/[{}"]/g, '');
+                    var k = itemsToBeRemoved.indexOf(key);
 
-                            if(product.prod_qty > 1){
-                                product.prod_qty--;
-                            }else{
-                                //delete $scope.order.itemsInOrderMap[key];
-                                product.selected = false;
-                                product.iSelected = false;
-                                product.prod_qty = 1;
-                                delete product.ingredients;
-                            }
+                    if(k != -1){
+                        itemsToBeRemoved.splice(k,1);
+                        $scope.order.itemsInOrder.splice(k,1);
+
+                        if(product.prod_qty > 0){
+                            product.prod_qty--;
+                        }
+                        if(product.prod_qty == 0){
+                            product.selected = false;
+                            product.iSelected = false;
+                            delete product.ingredients;
                         }
                     }
+
                 }
 
             }, function() {
