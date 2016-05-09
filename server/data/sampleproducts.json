@@ -210,7 +210,7 @@
 	{
 		"prod_id":14,
 		"prod_category_id":6,
-		"prod_name":":Paneer Cheese Panini",
+		"prod_name":"Paneer Cheese Panini",
 		"prod_dispname":"paneer panini",
 		"prod_desc":"description",
 		"prod_ingredients":"",

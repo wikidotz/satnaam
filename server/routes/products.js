@@ -6,7 +6,8 @@ var Util = require('../util');
 //var ACTIVE_PRODS_GET = 'select * from product';
 var logger = require('../logger');
 var mongoose = require('mongoose');
-var sampleCat = [];//require('../data/samplecategories.json');
+var sampleCat = require('../data/samplecategories.json');
+var sampleItems = require('../data/sampleproducts_v2.json');
 
 var ItemSchema = new mongoose.Schema({
     prod_id: Number,
@@ -61,9 +62,21 @@ router.get('/category/:category_id', function(req, res, next) {
 	});
 })
 
+router.put('/', function(req, res, next) {
+	res.send('product added');
+});
+
+router.get('/:id', function(req, res, next) {
+	res.send('get product by id mukesh '+ req.params.id);
+});
+
+router.delete('/:id', function(req, res, next) {
+	res.send('delete product by id '+ req.params. id);
+});
 
 
 var indexCat = sampleCat.length-1;
+var indexItem = sampleItems.length-1;
 
 router.get('/addCategory', function(req, res, next){
 	console.dir(sampleCat)
@@ -88,19 +101,31 @@ function addCats(res){
 	  	}
 	});
 }
+router.get('/:id/addItem', function(req, res, next){
+  console.log("adding item......")
+	indexItem = sampleItems.length-1;
+	//console.dir(indexItem);
+	addItem();
+  res.send("add item result");
+})
 
 
-router.put('/', function(req, res, next) {
-	res.send('product added');
-});
 
-router.get('/:id', function(req, res, next) {
-	res.send('get product by id '+ req.params. id);
-});
+function addItem(){
+  var item = new Item(sampleItems[indexItem]);
+  //console.log("new item to add ["+JSON.parse(item)+"]");//pass item to add
+  item.save(function(err,res1){
+    if(err) return console.error(err);
+    console.log('item saved['+indexItem+']');
+    indexItem--;
+    if(indexItem>=0)
+    {
+       addItem();
+    }else{
+      res.send("Items are added.");
+    }
 
-router.delete('/:id', function(req, res, next) {
-	res.send('delete product by id '+ req.params. id);
-});
-
+  })
+}
 
 module.exports = router;
