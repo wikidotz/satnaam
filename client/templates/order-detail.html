@@ -17,8 +17,12 @@
 		      <button type="button" class="btn btn-default" ng-click="parcelOrder()"><i class="fa fa-gift"></i></button>
 		      <!--order items are for Dining table delivery-->
 		      <button type="button" class="btn btn-default" ng-click="dinningOrder()"><i class="fa fa-hand-o-down"></i></button>
-		      <button type="button" class="btn btn-default" ng-class="(showSchedulerElement==true)?'active':''" ng-click="showScheduler($event)"><i class="fa fa-clock-o"></i></button>
-		      <button type="button" class="btn btn-default"><i class="fa fa-print"></i></button>
+					<button type="button" class="btn btn-default" ng-class="(showDinningTableElement==true)?'active':''"  ng-click="assignDiningTableNo($event)"><i class="fa fa-table"></i></button>
+
+		      <button type="button" class="btn btn-default" ng-class="(showSchedulerElement==true)?'active':''"
+					ng-click="showScheduler($event)"><i class="fa fa-clock-o"></i></button>
+
+				  <button type="button" class="btn btn-default"><i class="fa fa-print"></i></button>
 
 		</div>
 
@@ -62,7 +66,17 @@
 		<button ng-click="scheduleOrder()" class="btn btn-primary sod-schedule-btn">Schedule</button>
 		</div>
 
-		<div class="orderBtnsContainer2" ng-hide="showSchedulerElement">
+		<div class="dinningTableSet" ng-show="showDinningTableElement">
+			<div class="row btn-group btn-sm" data-toggle="buttons" ng-repeat="table in tables">
+        <div class="col-xs-4 col-sm-1 col-sm-offset-1">
+            <button ng-click="selectTable(table)" class="btn btn-default">{{table.no}}</button>
+      	</div>
+    	</div>
+			<button ng-click="assignDiningTableNo()" class="btn btn-primary">Done</button>
+		</div>
+
+
+		<div class="orderBtnsContainer2" ng-hide="showSchedulerElement || showDinningTableElement">
 
 			<a ng-click="validateOrderSave('CREATE')" class="btn btn-success btn-lg btn-block" id="createOrderBtn">Create Order</a>
 			<a ng-click="propmptCancelOrder()" class="btn btn-danger btn-lg btn-block">Cancel</a>

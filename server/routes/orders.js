@@ -29,7 +29,8 @@ var OrderSchema = new mongoose.Schema({
 	scheduled_date_time:Date,
 	order_total_amt: Number,
 	order_total_qty: Number,
-	order_dlv_by:String
+	order_dlv_by:String,
+	tableNo:String
 });
 
 
@@ -63,7 +64,7 @@ router.post('/createOrder', function(req, res, next) {
 			console.log(order.customer);
 			//new code for generating customer code
 			var obj = order.customer;
-                   
+
             CustomerIDCounter.findOneAndUpdate(
                  {_id:'custID'},
                  {"$inc": { "seq": 1 }} ,
@@ -75,19 +76,19 @@ router.post('/createOrder', function(req, res, next) {
                     obj.custID = resc.seq+1 ;
                     console.log('orders.js->new customer custID'+obj.custID);
                     var user = new Customer(obj);
-           
+
                     user.save(function(err, user) {
                         if (err) return console.error(err);
                         //res.json(user);
                         console.log('orders.js-> new customer added');
 
-                    });   
+                    });
             });
 			//new code
 
 		}else{
 			console.log('-----------server-orders.js:customer record already exist------------');
-		}	
+		}
 	})
 	console.log('Server - Creating an order');
 	//console.log(order);
@@ -96,11 +97,11 @@ router.post('/createOrder', function(req, res, next) {
 	/*
 	Generate first token number before new order creation.
 	check last created order in db for the same day, if not found then token num = 1
-	if found then get number, increment it by 1 . if more than 100 then make it 1 */ 
+	if found then get number, increment it by 1 . if more than 100 then make it 1 */
 	generateTokenNumber(function(currentTokenNum){
-		  order.order_token_no = currentTokenNum;			
+		  order.order_token_no = currentTokenNum;
 		  order.save(function(err, records) {
-	  
+
 		  	if (err) {
 		  		//console.error(err);
 		  		res.send({msg:'Error in Order save',code:'ERROR',stack:err});
@@ -110,21 +111,21 @@ router.post('/createOrder', function(req, res, next) {
 		  	//console.log('order save results');
 		  	//console.log(records);
 		  	//console.log({msg:'Order saved successfully',code:'ORDER_CREATED',
-		  					//curr_token:currentTokenNum,order_id_str:order._id}); 
+		  					//curr_token:currentTokenNum,order_id_str:order._id});
 	  		res.send({msg:'Order saved successfully',code:'ORDER_CREATED',
-	  			curr_token:currentTokenNum,order_id_str:order._id});	
-		  			  	
+	  			curr_token:currentTokenNum,order_id_str:order._id});
+
 		});
 
 	});
-	  	
 
-	
+
+
 })
 
 
 router.get('/', function(req, res, next) {
-		
+
 	Order.find(function(err, result) {
 	 	if (err) return console.error(err);
 	 	res.send(result);
@@ -134,7 +135,7 @@ router.get('/', function(req, res, next) {
 
 
 router.get('/:status', function(req, res, next) {
-		
+
 	Order.find({ 'order_status': req.params.status }, function(err, result) {
 	  if (err) return console.error(err);
 	  res.send(result);
@@ -148,8 +149,8 @@ router.delete('/:id', function(req, res, next) {
 router.get('checkMobileExist/:mobilenumber',function(req,res,next){
 	Customer.find({mobile:mobilenumber},function(err,matchedCustomer){
 		if(err) return console.error(err);
-		res.send(matchedCustomer);	
-	})	
+		res.send(matchedCustomer);
+	})
 });
 
 /*router.get('/customersList',function(req,res)
@@ -165,9 +166,9 @@ router.get('checkMobileExist/:mobilenumber',function(req,res,next){
 		 }else
 		 {
 		 	console.log(records);
-		// 	res.json(records);	
+		// 	res.json(records);
 		 }
-		
+
 	}).sort('name',-1);
 	//res.send('Customers list');
 
@@ -175,19 +176,19 @@ router.get('checkMobileExist/:mobilenumber',function(req,res,next){
 */
 
 app.get("/products",function(req,res){
-	
+
 })
 
 function generateTokenNumber(callBack)
 {
 	/*The 1 will sort ascending (oldest to newest) and -1 will sort descending (newest to oldest.)
-	If you use the auto created _id field it has a date embedded in it ... 
+	If you use the auto created _id field it has a date embedded in it ...
 	so you can use that to order by ...*/
 	Order.find(function(err, result) {
 	 //console.log('get last order token number');
 	 if(result && result.length>0)
 	 {
-	 	 
+
 	 	 //console.log(result[0].order_token_no);
 	 	 if(callBack)
 	 	 {
@@ -195,17 +196,17 @@ function generateTokenNumber(callBack)
 	 	 		//lastOrderTokenNum = 99;
 
 	 	 		//if token number reached to max then restart it
-	 	 		callBack((lastOrderTokenNum==MAX_ORDER_TOKEN_NUM)?1:(lastOrderTokenNum+1));	
+	 	 		callBack((lastOrderTokenNum==MAX_ORDER_TOKEN_NUM)?1:(lastOrderTokenNum+1));
 	 	 }
-	 	 
+
 	 }else{
 	 	if(callBack)
 	 	 {
-	 	 		callBack(1);	
+	 	 		callBack(1);
 	 	 }
 
-	 }		
+	 }
 	}).sort({_id:-1}).limit(1)	;
-	
+
 }
 module.exports = router;

@@ -366,7 +366,7 @@ angular.module('hotelApp')
             modalInstance.result.then(function(itemsToBeRemoved) {
 
                 var itemsOrder = angular.copy($scope.order.itemsInOrder);
-                
+
                 for (var i = 0; i < itemsOrder.length; i++) {
                     var key = itemsOrder[i].prod_id + JSON.stringify(itemsOrder[i].ingredients).replace(/[{}"]/g, '');
                     var k = itemsToBeRemoved.indexOf(key);
@@ -584,6 +584,7 @@ angular.module('hotelApp')
 
 $scope.parcelOrder = function() {
     $scope.order.delivery_mode = 'PARCEL';
+    $scope.order.tableNo = $scope.tables[$scope.tables.length-1].no;
 }
 
 $scope.dinningOrder = function() {
@@ -662,6 +663,7 @@ $scope.initNewOrderObj = function() {
     $scope.order.scheduled_date_time = dt;
     //set it after order is delivered by
     $scope.order.order_dlv_by = "";
+    $scope.order.tableNo= "NO Table";
 }
 
 $scope.generateBill = function(orderData, callBack) {
@@ -716,9 +718,48 @@ $scope.propmptCancelOrder = function(){
     }
 }
 
+//code for assigning table nos
+$scope.showDinningTableElement = false;
 
+$scope.showDinningTableSetter = function(e){
+
+    if(!$scope.showDinningTableElement){
+        $scope.showOrderDetail = false;
+        $scope.showDinningTableElement = true;
+    }else{
+        $scope.showOrderDetail = true;
+        $scope.showDinningTableElement = false;
+    }
+}
+
+$scope.assignDiningTableNo = function(){
+  //  $scope.order.tableNo= 1;//hard code table no
+    $scope.order.tableNo = $scope.selectedTableObj.no;
+    $scope.showDinningTableSetter();
+}
+
+//hard code tables list
+$scope.tables = [
+						{no:1,available:true,tokenno:0,custCode:0},
+					  {no:2,available:true,tokenno:0,custCode:0},
+					  {no:3,available:true,tokenno:0,custCode:0},
+					  {no:4,available:true,tokenno:0,custCode:0},
+					  {no:5,available:true,tokenno:0,custCode:0},
+					  {no:6,available:true,tokenno:0,custCode:0},
+					  {no:7,available:true,tokenno:0,custCode:0},
+					  {no:8,available:true,tokenno:0,custCode:0},
+					  {no:9,available:true,tokenno:0,custCode:0},
+            {no:10,available:true,tokenno:0,custCode:0},
+            {no:11,available:true,tokenno:0,custCode:0},
+            {no:12,available:true,tokenno:0,custCode:0},
+            {no:13,available:true,tokenno:0,custCode:0},
+            {no:"NO Table",available:false,tokenno:0,custCode:0}];
+
+$scope.selectedTableObj = $scope.tables[$scope.tables.length-1];//last value no table
+$scope.selectTable = function(tableObj){
+  $scope.selectedTableObj = tableObj;
+}
 
 init();
-
 
 })//end of OrderCtrl
