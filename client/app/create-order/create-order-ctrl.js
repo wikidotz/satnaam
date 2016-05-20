@@ -68,7 +68,17 @@ angular.module('hotelApp')
     }
     return transaction;
 })
+.filter('parseJSONObj',function(){
+    return function(input,prop){
+       if(input==undefined)
+       {
+        return "";
+       }
 
+        console.log(JSON.parse(input));
+        return JSON.parse(input)[prop];
+    }
+})
 .controller('IngredientsModalCtrl', function($scope, $uibModalInstance, product, order, lessItem) {
 
     $scope.product = product;
@@ -759,6 +769,22 @@ $scope.selectedTableObj = $scope.tables[$scope.tables.length-1];//last value no 
 $scope.selectTable = function(tableObj){
   $scope.selectedTableObj = tableObj;
 }
+
+//show customer address
+$scope.showSelectedCustomerElement = false;
+
+$scope.showSelectedCustomerAddr = function(e){
+  console.log("selected customer["+$scope.order.customer+"]");
+
+    if(!$scope.showSelectedCustomerElement){
+        $scope.showOrderDetail = false;
+        $scope.showSelectedCustomerElement = true;
+    }else{
+        $scope.showOrderDetail = true;
+        $scope.showSelectedCustomerElement = false;
+    }
+}
+
 
 init();
 

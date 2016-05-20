@@ -1,9 +1,9 @@
 angular.module('hotelApp', [
-    'ui.router', 
-    'ngTouch', 
+    'ui.router',
+    'ngTouch',
     'ui.bootstrap',
-    'ui.slider', 
-    'ngMaterial', 
+    'ui.slider',
+    'ngMaterial',
     'angularMoment',
     'LocalForageModule',
     'usermgmt'
@@ -12,7 +12,7 @@ angular.module('hotelApp', [
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
 
     $stateProvider
-    
+
     .state('home', {
         url: '/home',
         templateUrl: 'app/create-order/create-order.html',
@@ -89,21 +89,19 @@ angular.module('hotelApp', [
 
 
 .controller('LoginCtrl', function($scope, $location, Login) {
-    
+
 
 
     $scope.login = function(e, loginInfo) {
         console.log(loginInfo);
-        
-        
+
+
         Login.login(loginInfo.uname, loginInfo.pass).then(function(response) {
             $location.path("/home");
         }, function(err){
-            $scope.errorMsg = err.data.message;    
+            $scope.errorMsg = err.data.message;
         });
     }
 
-    
+
 })
-
-

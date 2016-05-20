@@ -4,7 +4,7 @@
         <form role="form">
 
             <div class="form-group" ng-show="mode!='add'">
-                <label class="user-form-control-heading" for="name" >Customer ID:</label> 
+                <label class="user-form-control-heading" for="name" >Customer ID:</label>
                 <span  ng-disabled>{{user.custID}}</span>
             </div>
 
@@ -12,7 +12,7 @@
                 <label class="user-form-control-heading"  for="name">Name:</label> <span ng-show="mode=='view'">{{user.name}}</span>
                 <input ng-show="mode!='view'" type="text" ng-model="user.name" class="form-control" placeholder="Name">
             </div>
- 
+
              <div class="form-group">
                 <label class="user-form-control-heading"  for="name">Name to called:</label> <span ng-show="mode=='view'">{{user.nameCalled}}</span>
                 <input ng-show="mode!='view'" type="text" ng-model="user.nameCalled" class="form-control" placeholder="Enter name to be called">
@@ -34,7 +34,7 @@
                 <span ng-show="mode=='view'">{{user.bldg|parseJSONObj:'bldgName'}}</span>
                 <span class="hidden">{{user.bldg|parseJSONObj:'bldgAcr'}}</span>
                 <select ng-show="mode!='view'" ng-model="user.bldg" id="bldg" name="bldg" class="form-control">
-                    <option ng-repeat="eachBldg in allBldgs" value="{{eachBldg}}">{{eachBldg.bldgName}}</option>
+                    <option ng-repeat="eachBldg in allBldgs| orderBy:'bldgName'" value="{{eachBldg}}">{{eachBldg.bldgName}}</option>
                 </select>
             </div>
 
@@ -42,7 +42,7 @@
                 <label class="user-form-control-heading" >Wing/Plot</label>
                 <span ng-show="mode=='view'">{{user.bldgWing}}</span>
                 <input ng-show="mode!='view'" ng-model="user.bldgWing" class="form-control"
-                placeholder="Enter wing/plot no." type="text" 
+                placeholder="Enter wing/plot no." type="text"
                 >
             </div>
 
@@ -71,7 +71,7 @@
                 <label class="user-form-control-heading"  for="pwd">Address:</label> <span ng-show="mode=='view'">{{user.address}}</span>
                 <input ng-show="mode!='view'" type="text" ng-model="user.address" class="form-control" placeholder="Address" ng-disabled>
             </div>
-            
+
             <button type="button"  ng-click="reset(user)" class="btn btn-danger">Reset</button>
             <button ng-if="mode=='add'" type="button" ng-click="addUser(user)" class="btn btn-default">Add</button>
             <button ng-if="mode=='edit'" type="button" ng-click="updateUser(user)" class="btn btn-default">Update</button>

@@ -23,7 +23,7 @@ module.exports = (function() {
     router.route('/user')
         .post(function(req, res) {
             var obj = req.body.user;
-                   
+
             CustomerIDCounter.findOneAndUpdate(
                  {_id:'custID'},
                  {"$inc": { "seq": 1 }} ,
@@ -35,13 +35,13 @@ module.exports = (function() {
                     obj.custID = resc.seq+1 ;
                     console.log('customers.js->new customer custID'+obj.custID);
                     var user = new Customer(obj);
-           
+
                     user.save(function(err, user) {
                         if (err) return console.error(err);
                         res.json(user);
-                    });   
+                    });
             });
-        
+
         });
 
     //This method use to generate a unique id
@@ -98,11 +98,31 @@ module.exports = (function() {
     router.route('/bldgs').get(function(req,res){
         console.log('bldgs royte');
         var dummyData = [{bldgID:1,bldgAcr:'SKRI',bldgName:'Shree Krishna'},
-                         {bldgID:2,bldgAcr:'SKNJ',bldgName:'Shyam Kunj'}
+                         {bldgID:2,bldgAcr:'SKNJ',bldgName:'Shyam Kunj'},
+                         {bldgID:3,bldgAcr:'BTLP',bldgName:'Blue Tulip'},
+                         {bldgID:4,bldgAcr:'KVSC',bldgName:'Kamla Vihar'},
+                         {bldgID:5,bldgAcr:'RAJAC',bldgName:'Raj Arcade'},
+                         {bldgID:6,bldgAcr:'VSGM',bldgName:'Veena Sargam'},
+                         {bldgID:7,bldgAcr:'VRDT',bldgName:'Vrindavan Tower'},
+                         {bldgID:8,bldgAcr:'SHVS',bldgName:'ShivShrusti'},
+                         {bldgID:9,bldgAcr:'VSTR',bldgName:'Veena Sitar'},
+                         {bldgID:10,bldgAcr:'GURH',bldgName:'Guarav Height'},
+                         {bldgID:11,bldgAcr:'VKCL',bldgName:'Vikki Classic'},
+                         {bldgID:12,bldgAcr:'BLSM',bldgName:'Blossom'},
+                         {bldgID:13,bldgAcr:'PRJT',bldgName:'Parijat'},
+                         {bldgID:14,bldgAcr:'DVNG',bldgName:'Devnagar'},
+                         {bldgID:15,bldgAcr:'VSCX',bldgName:'Vasant Complex'},
+                         {bldgID:16,bldgAcr:'RTNK',bldgName:'Ratnakar'},
+                         {bldgID:17,bldgAcr:'KAS3',bldgName:'Kamla Ashish 3'},
+                         {bldgID:18,bldgAcr:'ORCH',bldgName:'Orchid Subarbia'},
+                         {bldgID:19,bldgAcr:'SSMT',bldgName:'Sai Sumit'},
+                         {bldgID:20,bldgAcr:'JST',bldgName:'JS Tower'},
+                         {bldgID:21,bldgAcr:'BLO1',bldgName:'Blue Oasis 1'},
+                         {bldgID:22,bldgAcr:'PRVD',bldgName:'Pranay Vidya'}
                         ];
         res.send(dummyData);
     });
-    
+
     router.route('/initCustomerIDCounter').get(function(req,res){
         console.log('initialising CustomerIDCounter collection');
 
