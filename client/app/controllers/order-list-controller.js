@@ -19,7 +19,12 @@ angular.module('hotelApp')
         'completed',
         'delivered',
         'cancelled'
-    ]
+    ];
+
+
+    $scope.editOrder = function(order){
+        console.log(order)
+    }
 
     $scope.showDate = function(dateStr){
         return new Date(dateStr).toTimeString().split(' ')[0];

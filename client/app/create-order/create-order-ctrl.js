@@ -1,6 +1,72 @@
 angular.module('hotelApp')
 
-.directive('sauces', function() {
+.directive('sauces', function($rootScope) {
+    return {
+        templateUrl: 'templates/sauces-directive.html',
+        link: function(scope, element, attrs) {
+
+            var valuesHash = {
+                0 : 'no',
+                1 : 'less',
+                2 : 'medium',
+                3 : 'more'
+            }
+
+            scope.$on('updateIngredients', function(e, data){
+                var classStr = '.'+valuesHash[data[scope.name.toLowerCase()]];
+                element.find('a').removeClass('active');
+                element.find(classStr).addClass('active')
+                //element.find('.'+).addClass('active');
+            })
+
+            scope.saucesUnits = {
+                'no' : {
+                    value : 0,
+                    label: 'No'
+                },
+                'less' : {
+                    value : 1,
+                    label: 'Less'
+                },
+                'medium' : {
+                    value : 2,
+                    label: 'Medium'
+                },
+                'more' : {
+                    value : 3,
+                    label: 'More'
+                }
+            }
+
+            scope.unitChange = function($event, key){
+                angular.element($event.target).parent().find('a').removeClass('active');
+                angular.element($event.target).addClass('active');
+                scope.sliderValue = key;
+                scope.updateFn()(scope.name, key);
+            }
+
+            scope.stringValue = function(){
+                return scope.saucesUnits[scope.sliderValue].value
+            }
+
+            scope.slider = {
+                options: {
+                    stop: function (event, ui) {
+                        scope.updateFn()(scope.name, scope.stringValue())
+                    }
+                }
+            }
+
+        },
+        scope: {
+            name: '@name',
+            sliderValue: '=',
+            updateFn: '&'
+        },
+    }
+})
+
+.directive('saucesOld', function() {
     return {
         templateUrl: 'templates/sauces-directive.html',
         link: function(scope, element, attrs) {
@@ -79,7 +145,7 @@ angular.module('hotelApp')
         return JSON.parse(input)[prop];
     }
 })
-.controller('IngredientsModalCtrl', function($scope, $uibModalInstance, product, order, lessItem) {
+.controller('IngredientsModalCtrl', function($scope, $uibModalInstance, $rootScope, product, order, lessItem) {
 
     $scope.product = product;
     $scope.order = order;
@@ -91,6 +157,7 @@ angular.module('hotelApp')
         'medium' : 2,
         'more' : 3
     }
+
 
     $scope.itemTypes = [{
         type: 'MIX',
@@ -141,7 +208,13 @@ angular.module('hotelApp')
                 $scope.garlicValue =
                 $scope.chilliValue = 2;
             }
+            var data = {
+                sweet : $scope.sweetValue,
+                garlic : $scope.garlicValue,
+                chilli : $scope.chilliValue 
+            }
 
+            $rootScope.$broadcast('updateIngredients', data);
             //console.log($scope.sweetValue, $scope.garlicValue, $scope.chilliValue)
         }else{
             angular.element('.item-type-btn').find('button').removeClass('active');
@@ -167,14 +240,11 @@ angular.module('hotelApp')
     }
 
     $scope.updateSauceges = function(name, value){
-
         for (var i = 0; i < $scope.order.itemsInOrder.filter(isSameProduct).length; i++) {
-
             if ($scope.order.itemsInOrder.filter(isSameProduct)[i].iSelected) {
                 $scope.order.itemsInOrder.filter(isSameProduct)[i].ingredients[name.toLowerCase()] = value;
                 $scope.order.itemsInOrder.filter(isSameProduct)[i].ingredients.isMedium = (value == 'medium')
                 $scope.order.itemsInOrder.filter(isSameProduct)[i].isModified = true;
-
                 $scope[name.toLowerCase()+'Value'] = value;
             }
         };
@@ -192,6 +262,12 @@ angular.module('hotelApp')
     }
 
     $scope.ok = function() {
+
+        for (var i = 0; i < $scope.order.itemsInOrder.length; i++) {
+            $scope.order.itemsInOrder[i].iSelected = false;
+        }
+
+
         if(!lessItem){
             $uibModalInstance.close($scope.product);
         }else{
