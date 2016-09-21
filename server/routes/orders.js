@@ -142,6 +142,18 @@ router.get('/:status', function(req, res, next) {
 	});
 });
 
+router.get('/order/:id', function(req, res, next) {
+	Order.findOne({
+        _id: req.params.id
+    }, function(err, order) {
+    	if(err){
+    		res.send(err);
+    		//return err;
+    	}
+    	res.send(order);
+    })
+});
+
 router.delete('/:id', function(req, res, next) {
 	res.send('delete order by id '+ req.params.id);
 });
