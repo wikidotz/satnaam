@@ -55,14 +55,10 @@ router.post('/createOrder', function(req, res, next) {
 
 	var order = new Order(req.body.orderObj);
 	var customer = new Customer(order.customer);
-	console.log('--------server-orders.js:checking for customer-----------');
 	Customer.find({mobile:customer.mobile},function(err,matchedCustomer){
 		if(err) return console.error(err);
 		if(matchedCustomer !=undefined && matchedCustomer.length==0)
 		{
-			console.log('-----------server-orders.js:saving new customer record-----');
-			console.log(order.customer);
-			//new code for generating customer code
 			var obj = order.customer;
 
             CustomerIDCounter.findOneAndUpdate(
@@ -74,7 +70,6 @@ router.post('/createOrder', function(req, res, next) {
                         console.error(errc);
                     //returnNewDocuemnt is not working as it is returning old seq
                     obj.custID = resc.seq+1 ;
-                    console.log('orders.js->new customer custID'+obj.custID);
                     var user = new Customer(obj);
 
                     user.save(function(err, user) {
@@ -123,7 +118,6 @@ router.post('/createOrder', function(req, res, next) {
 
 })
 
-
 router.get('/', function(req, res, next) {
 
 	Order.find(function(err, result) {
@@ -142,12 +136,26 @@ router.get('/:status', function(req, res, next) {
 	});
 });
 
-router.get('/order/:id', function(req, res, next) {
+router.put('/order/:id', function(req, res){
+
+	Order.findOneAndUpdate({
+		_id : req.params.id,
+	}, req.body.order, 
+	function(err, order){
+		if(err){
+			res.send(err)
+		}
+
+		res.send(order);
+	})
+})
+
+router.get('/order/:id', function(req, res) {
 	Order.findOne({
         _id: req.params.id
     }, function(err, order) {
     	if(err){
-    		res.send(err);
+    		res.send(err.message);
     		//return err;
     	}
     	res.send(order);
