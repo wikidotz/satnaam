@@ -64,6 +64,8 @@ angular.module('hotelApp')
     $scope.expandFooter = function (){
         isFooterOpen = !isFooterOpen;
     }
+
+
 })
 
 .controller('OrderListCtrl', function($scope, OrderService) {

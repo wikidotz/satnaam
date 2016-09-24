@@ -13,7 +13,6 @@ angular.module('hotelApp')
     }
 
 
-
     this.getLatestOrder = function(status){
 
 		return $http.get('/orders/'+status).then(function(response){
@@ -55,6 +54,15 @@ angular.module('hotelApp')
             function(err) {
                 return err;
             })
+    }
+
+    this.getTransactionDetail = function(){
+            return $http.get('orders/customersList').then(function(response) {
+                return response.data;
+            },
+            function(err) {
+                return err;
+            })   
     }
 
 

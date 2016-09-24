@@ -20,6 +20,10 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
             controller: 'AddEditUserCtrl',
             templateUrl: 'app/users/add-edit-view-user.html'
         })
+
+        .state('app.home', {
+            url: "/home"
+        })
     })
 
 

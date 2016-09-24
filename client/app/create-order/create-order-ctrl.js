@@ -321,6 +321,8 @@ angular.module('hotelApp')
         $scope.source = "machine-id";
         Product.getProducts().then(function(data) {
             $scope.products = data;
+            //to refresh product list in 
+            $scope.$apply();
         })
 
         if ($scope.isDrawerOpen) {

@@ -32,7 +32,7 @@
             <div class="form-group">
                 <label class="user-form-control-heading"  for="bldg">Bldg:</label>
                 <span ng-show="mode=='view'">{{user.bldg|parseJSONObj:'bldgName'}}</span>
-                <span class="hidden">{{user.bldg|parseJSONObj:'bldgAcr'}}</span>
+                <span class="hidden">{{user.bldg|parseJSONObj:'bldgID'}}</span>
                 <select ng-show="mode!='view'" ng-model="user.bldg" id="bldg" name="bldg" class="form-control">
                     <option ng-repeat="eachBldg in allBldgs| orderBy:'bldgName'" value="{{eachBldg}}">{{eachBldg.bldgName}}</option>
                 </select>
