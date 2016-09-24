@@ -9,7 +9,7 @@ angular.module('hotelApp')
     }
 })
 
-.controller('OrderGridCtrl', function($scope) {
+.controller('OrderGridCtrl', function($scope, $location, OrderService) {
 
     var isFooterOpen = false;
     var statusClasses = [
@@ -19,7 +19,13 @@ angular.module('hotelApp')
         'completed',
         'delivered',
         'cancelled'
-    ]
+    ];
+
+
+    $scope.editOrder = function(order){
+        OrderService.setOrderToEdit(order);
+        $location.path('/edit-order/'+order._id)
+    }
 
     $scope.showDate = function(dateStr){
         return new Date(dateStr).toTimeString().split(' ')[0];

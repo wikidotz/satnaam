@@ -1,3 +1,9 @@
-<div class="col-md-12 ssd-main">
+<!--div class="col-md-12 ssd-main">
 	<div class="sim-slider" ui-slider="slider.options" min="0" step="1" max="3"  ng-model="sliderValue"> {{stringValue()}} {{name}}</div>
+</div-->
+<div class="col-md-12 ssd-main">
+	<div class="btn-group sauces-btn-group" role="group" name="{{name}}" aria-label="...">
+	    <a ng-repeat="(key, value) in saucesUnits" ng-click="unitChange($event, key)" href="javascript:void(0);" class="btn btn-default sauces-btn {{key}}">{{value.label}}</a>
+	</div>
+
 </div>

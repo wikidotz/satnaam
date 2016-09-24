@@ -5,7 +5,7 @@ angular.module('hotelApp')
     $scope.login = function(e, loginInfo) {
         console.log(loginInfo);
         Login.login(loginInfo.uname, loginInfo.pass).then(function(response) {
-            $location.path("/home");
+            $location.path('/create-order');
         }, function(err){
             $scope.errorMsg = err.data.message;    
         });

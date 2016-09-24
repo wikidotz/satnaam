@@ -1,37 +1,5 @@
 angular.module('hotelApp')
 
-.directive('sauces', function() {
-    return {
-        templateUrl: 'templates/sauces-directive.html',
-        link: function(scope, element, attrs) {
-
-            var valuesHash = {
-                0 : 'no',
-                1 : 'less',
-                2 : 'medium',
-                3 : 'more'
-            }
-
-            scope.stringValue = function(){
-                return valuesHash[scope.sliderValue]
-            }
-
-            scope.slider = {
-                options: {
-                    stop: function (event, ui) {
-                        scope.updateFn()(scope.name, scope.stringValue())
-                    }
-                }
-            }
-
-        },
-        scope: {
-            name: '@name',
-            sliderValue: '=',
-            updateFn: '&'
-        },
-    }
-})
 
 .factory('SubProduct', function() {
 
@@ -79,138 +47,19 @@ angular.module('hotelApp')
         return JSON.parse(input)[prop];
     }
 })
-.controller('IngredientsModalCtrl', function($scope, $uibModalInstance, product, order, lessItem) {
 
-    $scope.product = product;
-    $scope.order = order;
-    $scope.selecteds = [];
-
-    var sliderValueMap = {
-        'no' : 0,
-        'less' : 1,
-        'medium' : 2,
-        'more' : 3
-    }
-
-    $scope.itemTypes = [{
-        type: 'MIX',
-        label: 'Mix',
-        abbr: 'M'
-    }, {
-        type: 'HALFJAIN',
-        label: 'Half Jain',
-        abbr: 'HJ'
-    }, {
-        type: 'JAIN',
-        label: 'Jain',
-        abbr: 'J'
-    }]
-
-    function isSameProduct(item) {
-        return item.prod_id == product.prod_id;
-    }
-
-    function isSelected(item) {
-        return item.iSelected;
-    }
-
-    $scope.productFilter = function(item) {
-        return item.prod_id == product.prod_id;
-    }
-
-    $scope.itemClick = function(item){
-        item.iSelected = !item.iSelected;
-        $scope.isAllSelected = false;
-
-        updateIngredients(item);
-    }
-
-    function updateIngredients(item){
-        var itemType = item.ingredients.type;
-
-        if(item.iSelected) {
-            angular.element('.item-type-btn').find('button').removeClass('active');
-            angular.element('.'+itemType.toLowerCase()).addClass('active');
-
-            if(item.isModified){
-                $scope.sweetValue = sliderValueMap[item.ingredients.sweet];
-                $scope.garlicValue = sliderValueMap[item.ingredients.garlic];
-                $scope.chilliValue = sliderValueMap[item.ingredients.chilli];
-            }else{
-                $scope.sweetValue =
-                $scope.garlicValue =
-                $scope.chilliValue = 2;
-            }
-
-            //console.log($scope.sweetValue, $scope.garlicValue, $scope.chilliValue)
-        }else{
-            angular.element('.item-type-btn').find('button').removeClass('active');
-        }
-    }
-
-
-    $scope.toggleItemType = function($event, type) {
-
-        angular.element($event.target).parent().find('button').removeClass('active');
-        angular.element($event.target).addClass('active');
-
-        for (var i = 0; i < $scope.order.itemsInOrder.filter(isSameProduct).length; i++) {
-
-            if ($scope.order.itemsInOrder.filter(isSameProduct)[i].iSelected) {
-                $scope.order.itemsInOrder.filter(isSameProduct)[i].ingredients.type = type.type;
-                $scope.order.itemsInOrder.filter(isSameProduct)[i].ingredients.abbr = type.abbr;
-                $scope.order.itemsInOrder.filter(isSameProduct)[i].isModified = true;
-            }
-        };
-
-        $scope.isAllSelected = false;
-    }
-
-    $scope.updateSauceges = function(name, value){
-
-        for (var i = 0; i < $scope.order.itemsInOrder.filter(isSameProduct).length; i++) {
-
-            if ($scope.order.itemsInOrder.filter(isSameProduct)[i].iSelected) {
-                $scope.order.itemsInOrder.filter(isSameProduct)[i].ingredients[name.toLowerCase()] = value;
-                $scope.order.itemsInOrder.filter(isSameProduct)[i].ingredients.isMedium = (value == 'medium')
-                $scope.order.itemsInOrder.filter(isSameProduct)[i].isModified = true;
-
-                $scope[name.toLowerCase()+'Value'] = value;
-            }
-        };
-    }
-
-    $scope.showCloseBtn = lessItem;
-
-    var itemTobeRemoved = [];
-
-    $scope.removeItem = function(e, theItem){
-        e.stopPropagation();
-        var keys = theItem.prod_id + JSON.stringify(theItem.ingredients).replace(/[{}"]/g, '');
-        angular.element(e.target).parent().remove();
-        itemTobeRemoved.push(keys);
-    }
-
-    $scope.ok = function() {
-        if(!lessItem){
-            $uibModalInstance.close($scope.product);
-        }else{
-            $uibModalInstance.close(itemTobeRemoved);
-        }
-    };
-
-    $scope.cancel = function() {
-        $uibModalInstance.dismiss('cancel');
-    };
-})
-
-.controller('OrderCtrl', function($scope, $window, $uibModal, SubProduct, Product, Customer, OrderService, TransactionFactory) {
+.controller('OrderCtrl', function($scope, $location, $timeout, $window, $uibModal, $stateParams, SubProduct, Product, Customer, OrderService, TransactionFactory) {
 
     $scope.isProductsLoaded = false;
     $scope.products = [];
     $scope.customers = [];
     $scope.showOrderDetail = true;
     $scope.sideBarOrderDetailOpen = false;
+    $scope.editMode = $stateParams.hasOwnProperty('id');
+
+    if($scope.editMode && !OrderService.isOrderEdit()){
+        $location.path('/create-order')
+    }
 
 
     //new code
@@ -225,10 +74,35 @@ angular.module('hotelApp')
         $('#orderDateTime').datetimepicker();
         $("[name='order-paid']").bootstrapSwitch();
 
+        console.log('init')
+
         Product.getProducts().then(function(data) {
             $scope.products = data;
             $scope.isProductsLoaded = true;
-            new Clipboard('.copy-btn');
+            console.log('products loaded');
+            if($scope.editMode){
+                $timeout(function(){
+                    $scope.order = OrderService.getOrderToEdit();
+
+                    for (var i = 0; i < $scope.products.length; i++) {
+                        var key = $scope.products[i].prod_id
+                        for (var j = 0; j < $scope.order.itemsInOrder.length; j++) {
+                            if($scope.order.itemsInOrder[j].prod_id == key){
+                                $scope.products[i] = angular.copy($scope.order.itemsInOrder[j]);    
+                                $scope.products[i].selected = true;
+                            }
+                        }
+
+
+                    }
+                    console.log($scope.products)
+                },100)
+            }
+
+            if($scope.editMode) {
+                
+            }
+            
         })
 
         $scope.token = $window.sessionStorage.token;
@@ -470,6 +344,7 @@ angular.module('hotelApp')
     }
 
     $scope.$watch('order.itemsInOrder', function(orderItemsNew, orderItemsOld){
+        if(!$scope.order) return;
         $scope.order.itemsInOrderMap = {};
 
         for (var i = 0; i < orderItemsNew.length; i++) {
@@ -509,9 +384,16 @@ angular.module('hotelApp')
     }
 
     $scope.validateOrderSave = function(mode) {
-        if (mode.toLowerCase() == 'create') {
-           $("#createOrderBtn").html('Saving........');
-            $scope.createOrder();
+
+        if(!$scope.editMode) {
+
+            if (mode.toLowerCase() == 'create') {
+               $("#createOrderBtn").html('Saving........');
+                $scope.createOrder();
+            }
+        }
+        else{
+            OrderService.updateOrder($stateParams.id, $scope.order)
         }
 
 
@@ -591,203 +473,203 @@ angular.module('hotelApp')
     /*$scope.onCustomerSelect = function($item, $model, $label) {
     Customer.getCustomerInfoByCustomerCode($item.cust_id).then(function(response) {
     $scope.order.customer = response;
-});
-}*/
+    });
+    }*/
 
-$scope.parcelOrder = function() {
-    $scope.order.delivery_mode = 'PARCEL';
-    $scope.order.tableNo = $scope.tables[$scope.tables.length-1].no;
-}
-
-$scope.dinningOrder = function() {
-    $scope.order.delivery_mode = 'DINE';
-}
-
-$scope.showSchedulerElement = false;
-
-$scope.showScheduler = function(e){
-
-    if(!$scope.showSchedulerElement){
-        $scope.showOrderDetail = false;
-        $scope.showSchedulerElement = true
-    }else{
-        $scope.showOrderDetail = true;
-        $scope.showSchedulerElement = false
+    $scope.parcelOrder = function() {
+        $scope.order.delivery_mode = 'PARCEL';
+        $scope.order.tableNo = $scope.tables[$scope.tables.length-1].no;
     }
-}
 
-$scope.scheduleOrder = function(){
-    $scope.order.is_scheduled = 1;
-    $scope.showScheduler();
-}
+    $scope.dinningOrder = function() {
+        $scope.order.delivery_mode = 'DINE';
+    }
 
-function onOrderSubmitError() {
-    alert("Error in order submit");
-}
+    $scope.showSchedulerElement = false;
 
-function calcCurrentDateTime() {
-    var d = new Date();
-    var month = d.getMonth() + 1;
-    var day = d.getDate();
-    var year = d.getFullYear();
-    return {
-        year: year,
-        month: month,
-        day: day,
-        date: d,
-        hr: d.getHours(),
-        min: d.getMinutes()
-    };
-}
+    $scope.showScheduler = function(e){
 
-function formatDateTime(targetDateObj) {
-    var formattedDate = targetDateObj.year + '/' + targetDateObj.month + '/' + targetDateObj.day + ' ';
-    formattedDate += targetDateObj.hr + ':' + targetDateObj.min + ':0';
-    return formattedDate;
-}
-
-function showCurrentDateTime() {
-    var currentDateTimeObj = calcCurrentDateTime();
-    $("#orderDateTime").val(+"" + currentDateTimeObj.day + "/" + currentDateTimeObj.month + "/" + currentDateTimeObj.year + " | " + "" + currentDateTimeObj.hr + ":" + currentDateTimeObj.min);
-
-}
-
-//transaction code
-
-$scope.initNewOrderObj = function() {
-    $scope.order = {};
-    $scope.order.customer = {};
-    $scope.order.itemsInOrder = [];
-    $scope.order.itemsInOrderMap = {};
-    $scope.order.order_total_amt = 0.00;
-    $scope.order.order_token_no = 0;
-    $scope.order.order_id_str = "";
-    $scope.order.order_date_time = new Date();
-    //1-> order pending, 2-> order in process ,3-> completed,4-> order delivered,5-> order cancelled
-    $scope.order.order_status = 1;
-    $scope.order.modified_by = 'admin';
-    $scope.order.last_modified_date_time = new Date();
-    $scope.order.delivery_mode = 'DINE';
-    $scope.order.is_scheduled = 0;
-    var dt = new Date();
-    dt.setMinutes((Math.round(dt.getMinutes()/5) * 5) % 60);
-    dt.setSeconds(0);
-    $scope.order.scheduled_date_time = dt;
-    //set it after order is delivered by
-    $scope.order.order_dlv_by = "";
-    $scope.order.tableNo= "NO Table";
-}
-
-$scope.generateBill = function(orderData, callBack) {
-
-    var bill = TransactionFactory.createOrderBill(orderData);
-
-    OrderService.addBill(bill).then(function(response) {
-        if (response.code == 'TRANS_ADDED') {
-            callBack.call();
-
-        } else if (response.code == 'ERROR') {
-            alert(response.msg + '[Code=' + response.code + ']');
-            console.log(response.stack);
+        if(!$scope.showSchedulerElement){
+            $scope.showOrderDetail = false;
+            $scope.showSchedulerElement = true
+        }else{
+            $scope.showOrderDetail = true;
+            $scope.showSchedulerElement = false
         }
-
-    })
-}
-
-$scope.refreshCustomerList = function(){
-    Customer.getAllCustomersRemote().then(function(data) {
-        $scope.customers = data;
-    })
-
-}
-
-$scope.balanceAmt = function(){
-    var balAmt = 0;
-    balAmt = $scope.order.order_total_amt - $scope.order.paid_amt;
-    $scope.order.bal_amt = balAmt;
-    return balAmt ;
-}
-
-$scope.playOrderSound = function(type){
-    var audio ;
-    switch(type.toLowerCase())
-    {
-        case 'order_created':
-        audio = document.getElementById("order_created_audio");
-        break;
-        case 'error':
-        audio = document.getElementById("error_audio");
-        break;
     }
-    audio.play();
-}
 
-$scope.propmptCancelOrder = function(){
-    //prompt for cancel order
-    if(confirm("Cancel Order?")==true)
-    {
-        $scope.newOrder();
+    $scope.scheduleOrder = function(){
+        $scope.order.is_scheduled = 1;
+        $scope.showScheduler();
     }
-}
 
-//code for assigning table nos
-$scope.showDinningTableElement = false;
-
-$scope.showDinningTableSetter = function(e){
-
-    if(!$scope.showDinningTableElement){
-        $scope.showOrderDetail = false;
-        $scope.showDinningTableElement = true;
-    }else{
-        $scope.showOrderDetail = true;
-        $scope.showDinningTableElement = false;
+    function onOrderSubmitError() {
+        alert("Error in order submit");
     }
-}
 
-$scope.assignDiningTableNo = function(){
-  //  $scope.order.tableNo= 1;//hard code table no
-    $scope.order.tableNo = $scope.selectedTableObj.no;
-    $scope.showDinningTableSetter();
-}
-
-//hard code tables list
-$scope.tables = [
-						{no:1,available:true,tokenno:0,custCode:0},
-					  {no:2,available:true,tokenno:0,custCode:0},
-					  {no:3,available:true,tokenno:0,custCode:0},
-					  {no:4,available:true,tokenno:0,custCode:0},
-					  {no:5,available:true,tokenno:0,custCode:0},
-					  {no:6,available:true,tokenno:0,custCode:0},
-					  {no:7,available:true,tokenno:0,custCode:0},
-					  {no:8,available:true,tokenno:0,custCode:0},
-					  {no:9,available:true,tokenno:0,custCode:0},
-            {no:10,available:true,tokenno:0,custCode:0},
-            {no:11,available:true,tokenno:0,custCode:0},
-            {no:12,available:true,tokenno:0,custCode:0},
-            {no:13,available:true,tokenno:0,custCode:0},
-            {no:"NO Table",available:false,tokenno:0,custCode:0}];
-
-$scope.selectedTableObj = $scope.tables[$scope.tables.length-1];//last value no table
-$scope.selectTable = function(tableObj){
-  $scope.selectedTableObj = tableObj;
-}
-
-//show customer address
-$scope.showSelectedCustomerElement = false;
-
-$scope.showSelectedCustomerAddr = function(e){
-  console.log("selected customer["+$scope.order.customer+"]");
-
-    if(!$scope.showSelectedCustomerElement){
-        $scope.showOrderDetail = false;
-        $scope.showSelectedCustomerElement = true;
-    }else{
-        $scope.showOrderDetail = true;
-        $scope.showSelectedCustomerElement = false;
+    function calcCurrentDateTime() {
+        var d = new Date();
+        var month = d.getMonth() + 1;
+        var day = d.getDate();
+        var year = d.getFullYear();
+        return {
+            year: year,
+            month: month,
+            day: day,
+            date: d,
+            hr: d.getHours(),
+            min: d.getMinutes()
+        };
     }
-}
+
+    function formatDateTime(targetDateObj) {
+        var formattedDate = targetDateObj.year + '/' + targetDateObj.month + '/' + targetDateObj.day + ' ';
+        formattedDate += targetDateObj.hr + ':' + targetDateObj.min + ':0';
+        return formattedDate;
+    }
+
+    function showCurrentDateTime() {
+        var currentDateTimeObj = calcCurrentDateTime();
+        $("#orderDateTime").val(+"" + currentDateTimeObj.day + "/" + currentDateTimeObj.month + "/" + currentDateTimeObj.year + " | " + "" + currentDateTimeObj.hr + ":" + currentDateTimeObj.min);
+
+    }
+
+    //transaction code
+
+    $scope.initNewOrderObj = function() {
+        $scope.order = {};
+        $scope.order.customer = {};
+        $scope.order.itemsInOrder = [];
+        $scope.order.itemsInOrderMap = {};
+        $scope.order.order_total_amt = 0.00;
+        $scope.order.order_token_no = 0;
+        $scope.order.order_id_str = "";
+        $scope.order.order_date_time = new Date();
+        //1-> order pending, 2-> order in process ,3-> completed,4-> order delivered,5-> order cancelled
+        $scope.order.order_status = 1;
+        $scope.order.modified_by = 'admin';
+        $scope.order.last_modified_date_time = new Date();
+        $scope.order.delivery_mode = 'DINE';
+        $scope.order.is_scheduled = 0;
+        var dt = new Date();
+        dt.setMinutes((Math.round(dt.getMinutes()/5) * 5) % 60);
+        dt.setSeconds(0);
+        $scope.order.scheduled_date_time = dt;
+        //set it after order is delivered by
+        $scope.order.order_dlv_by = "";
+        $scope.order.tableNo= "NO Table";
+    }
+
+    $scope.generateBill = function(orderData, callBack) {
+
+        var bill = TransactionFactory.createOrderBill(orderData);
+
+        OrderService.addBill(bill).then(function(response) {
+            if (response.code == 'TRANS_ADDED') {
+                callBack.call();
+
+            } else if (response.code == 'ERROR') {
+                alert(response.msg + '[Code=' + response.code + ']');
+                console.log(response.stack);
+            }
+
+        })
+    }
+
+    $scope.refreshCustomerList = function(){
+        Customer.getAllCustomersRemote().then(function(data) {
+            $scope.customers = data;
+        })
+
+    }
+
+    $scope.balanceAmt = function(){
+        var balAmt = 0;
+        balAmt = $scope.order.order_total_amt - $scope.order.paid_amt;
+        $scope.order.bal_amt = balAmt;
+        return balAmt ;
+    }
+
+    $scope.playOrderSound = function(type){
+        var audio ;
+        switch(type.toLowerCase())
+        {
+            case 'order_created':
+            audio = document.getElementById("order_created_audio");
+            break;
+            case 'error':
+            audio = document.getElementById("error_audio");
+            break;
+        }
+        audio.play();
+    }
+
+    $scope.propmptCancelOrder = function(){
+        //prompt for cancel order
+        if(confirm("Cancel Order?")==true)
+        {
+            $scope.newOrder();
+        }
+    }
+
+    //code for assigning table nos
+    $scope.showDinningTableElement = false;
+
+    $scope.showDinningTableSetter = function(e){
+
+        if(!$scope.showDinningTableElement){
+            $scope.showOrderDetail = false;
+            $scope.showDinningTableElement = true;
+        }else{
+            $scope.showOrderDetail = true;
+            $scope.showDinningTableElement = false;
+        }
+    }
+
+    $scope.assignDiningTableNo = function(){
+      //  $scope.order.tableNo= 1;//hard code table no
+        $scope.order.tableNo = $scope.selectedTableObj.no;
+        $scope.showDinningTableSetter();
+    }
+
+    //hard code tables list
+    $scope.tables = [
+    						{no:1,available:true,tokenno:0,custCode:0},
+    					  {no:2,available:true,tokenno:0,custCode:0},
+    					  {no:3,available:true,tokenno:0,custCode:0},
+    					  {no:4,available:true,tokenno:0,custCode:0},
+    					  {no:5,available:true,tokenno:0,custCode:0},
+    					  {no:6,available:true,tokenno:0,custCode:0},
+    					  {no:7,available:true,tokenno:0,custCode:0},
+    					  {no:8,available:true,tokenno:0,custCode:0},
+    					  {no:9,available:true,tokenno:0,custCode:0},
+                {no:10,available:true,tokenno:0,custCode:0},
+                {no:11,available:true,tokenno:0,custCode:0},
+                {no:12,available:true,tokenno:0,custCode:0},
+                {no:13,available:true,tokenno:0,custCode:0},
+                {no:"NO Table",available:false,tokenno:0,custCode:0}];
+
+    $scope.selectedTableObj = $scope.tables[$scope.tables.length-1];//last value no table
+    $scope.selectTable = function(tableObj){
+      $scope.selectedTableObj = tableObj;
+    }
+
+    //show customer address
+    $scope.showSelectedCustomerElement = false;
+
+    $scope.showSelectedCustomerAddr = function(e){
+      console.log("selected customer["+$scope.order.customer+"]");
+
+        if(!$scope.showSelectedCustomerElement){
+            $scope.showOrderDetail = false;
+            $scope.showSelectedCustomerElement = true;
+        }else{
+            $scope.showOrderDetail = true;
+            $scope.showSelectedCustomerElement = false;
+        }
+    }
 
 
-init();
+    init();
 
 })//end of OrderCtrl

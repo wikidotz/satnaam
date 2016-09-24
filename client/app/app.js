@@ -13,8 +13,14 @@ angular.module('hotelApp', [
 
     $stateProvider
 
-    .state('home', {
-        url: '/home',
+    .state('createOrder', {
+        url: '/create-order',
+        templateUrl: 'app/create-order/create-order.html',
+        controller: 'OrderCtrl'
+    })
+
+    .state('editOrder', {
+        url: '/edit-order/:id',
         templateUrl: 'app/create-order/create-order.html',
         controller: 'OrderCtrl'
     })
@@ -97,7 +103,7 @@ angular.module('hotelApp', [
 
 
         Login.login(loginInfo.uname, loginInfo.pass).then(function(response) {
-            $location.path("/home");
+            $location.path("/create-order");
         }, function(err){
             $scope.errorMsg = err.data.message;
         });

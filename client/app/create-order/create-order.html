@@ -15,7 +15,9 @@
     </header>
 
     <div class="s-content">
-        <button class="btn copy-btn btn-default" data-clipboard-text="{{token}}">Copy Token</button>
+        Edit Mode : {{editMode}}
+        <!--button class="btn copy-btn btn-default" data-clipboard-text="{{token}}">Copy Token</button-->
+        <h3 class="category-name">{{categories[catid-1].category_name}}</h3>
 
         <div ng-show="!isProductsLoaded" class="center-block text-center">
             <i class="fa fa-spinner fa-spin fa-4x"></i>
