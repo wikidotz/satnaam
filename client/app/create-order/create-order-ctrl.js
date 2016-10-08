@@ -133,7 +133,7 @@ angular.module('hotelApp')
     $scope.openIngredientsModal = function(p) {
         var modalInstance = $uibModal.open({
             animation: 'true',
-            templateUrl: 'templates/modals/ingredients-modal.html',
+            templateUrl: 'app/create-order/ingredients-modal/ingredients-modal.html',
             controller: 'IngredientsModalCtrl',
             size: 'md',
             resolve: {

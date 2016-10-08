@@ -2,7 +2,7 @@ angular.module('hotelApp')
 
 .directive('sauces', function($rootScope) {
     return {
-        templateUrl: 'templates/sauces-directive.html',
+        templateUrl: 'app/components/sauces/sauces-directive.html',
         link: function(scope, element, attrs) {
 
             var valuesHash = {
