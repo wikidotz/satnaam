@@ -43,7 +43,6 @@ angular.module('hotelApp')
         return "";
        }
 
-        console.log(JSON.parse(input));
         return JSON.parse(input)[prop];
     }
 })
@@ -74,12 +73,10 @@ angular.module('hotelApp')
         $('#orderDateTime').datetimepicker();
         $("[name='order-paid']").bootstrapSwitch();
 
-        console.log('init')
-
         Product.getProducts().then(function(data) {
+            $scope.productsUnchanged = angular.copy(data);
             $scope.products = data;
             $scope.isProductsLoaded = true;
-            console.log('products loaded');
             if($scope.editMode){
                 $timeout(function(){
                     $scope.order = OrderService.getOrderToEdit();
@@ -95,7 +92,6 @@ angular.module('hotelApp')
 
 
                     }
-                    console.log($scope.products)
                 },100)
             }
 
@@ -193,10 +189,7 @@ angular.module('hotelApp')
         $scope.order.itemsInOrderMap = {};
         $scope.initNewOrderObj();
         $scope.source = "machine-id";
-        Product.getProducts().then(function(data) {
-            $scope.products = data;
-        })
-
+        $scope.products = angular.copy($scope.productsUnchanged);
         if ($scope.isDrawerOpen) {
             $scope.toggleDrawer()
         }
@@ -656,8 +649,7 @@ angular.module('hotelApp')
     $scope.showSelectedCustomerElement = false;
 
     $scope.showSelectedCustomerAddr = function(e){
-      console.log("selected customer["+$scope.order.customer+"]");
-
+      
         if(!$scope.showSelectedCustomerElement){
             $scope.showOrderDetail = false;
             $scope.showSelectedCustomerElement = true;
