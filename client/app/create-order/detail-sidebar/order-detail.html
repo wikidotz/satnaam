@@ -17,19 +17,11 @@
 
 
 		<div class="buttons btn-group">
-					<button type="button" class="btn btn-default" ng-click="showSelectedCustomerAddr()"><i class="fa fa-home"></i></button>
-		      <button type="button" class="cancelOrder btn btn-default"><i class="fa fa-trash"></i></button>
-		      <!--order items are for parcel delivery-->
-		      <button type="button" class="btn btn-default" ng-click="parcelOrder()"><i class="fa fa-gift"></i></button>
-		      <!--order items are for Dining table delivery-->
-		      <button type="button" class="btn btn-default" ng-click="dinningOrder()"><i class="fa fa-hand-o-down"></i></button>
-					<button type="button" class="btn btn-default" ng-class="(showDinningTableElement==true)?'active':''"
-						ng-click="assignDiningTableNo($event)"><i class="fa fa-table"></i></button>
-
-		      <button type="button" class="btn btn-default" ng-class="(showSchedulerElement==true)?'active':''"
+		    <button type="button" class="btn btn-default" ng-click="parcelOrder()"><i class="fa fa-gift"></i></button>
+			<button type="button" class="btn btn-default" ng-class="(showDinningTableElement==true)?'active':''" ng-click="assignDiningTableNo($event)"><i class="fa fa-table"></i></button>
+			<button type="button" class="btn btn-default" ng-class="(showSchedulerElement==true)?'active':''"
 					ng-click="showScheduler($event)"><i class="fa fa-clock-o"></i></button>
-
-				  <button type="button" class="btn btn-default"><i class="fa fa-print"></i></button>
+			<button type="button" class="btn btn-default"><i class="fa fa-print"></i></button>
 
 		</div>
 
@@ -75,13 +67,18 @@
 		</div>
 
 		<!--set table no in case of order delivery mode is dinning-->
-		<div class="dinningTableSet" ng-show="showDinningTableElement && !showOrderDetail">
-			<div class="row btn-group btn-sm" data-toggle="buttons" ng-repeat="table in tables">
-        <div class="col-xs-4 col-sm-1 col-sm-offset-1">
-            <button ng-click="selectTable(table)" class="btn btn-default">{{table.no}}</button>
-      	</div>
-    	</div>
-			<button ng-click="assignDiningTableNo()" class="btn btn-primary">Done</button>
+		<div class="dinning-table-set" ng-show="showDinningTableElement && !showOrderDetail">
+
+	    	<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups"> 
+	    		<div class="btn-group" role="group" aria-label="First group"> 
+	    			<button ng-click="selectTable(table)" type="button" class="btn btn-default table-btn" ng-repeat="table in tables">{{table.no}}</button>
+	    		</div>
+	    	</div>
+	    	<div class="row">
+	    		<button type="button" class="btn btn-default sod-schedule-btn">No Table</button>
+				<button ng-click="assignDiningTableNo()" class="btn btn-primary sod-schedule-btn">Done</button>	
+	    	</div>
+	    	
 		</div>
 
 		<!--show selected customer address details--->

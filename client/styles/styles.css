@@ -777,4 +777,16 @@ table.ol-table tbody tr.completed td:first-child .remove-btn {
     float: none !important;
 }
 
+.table-btn{
+    width: 25%;
+}
+
+.dinning-table-set{
+    margin: 10px 0;    
+}
+
+.dinning-table-set  > .row{
+    margin: 10px 0;
+}
+
 

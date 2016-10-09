@@ -69,16 +69,18 @@ angular.module('hotelApp')
     $scope.catid = 2;
 
     function init() {
-
         $('#orderDateTime').datetimepicker();
         $("[name='order-paid']").bootstrapSwitch();
 
         Product.getProducts().then(function(data) {
+            
             $scope.productsUnchanged = angular.copy(data);
-            $scope.products = data;
+            $scope.products = angular.copy(data);
             $scope.isProductsLoaded = true;
-            if($scope.editMode){
-                $timeout(function(){
+
+            $timeout(function(){
+                if($scope.editMode){
+                
                     $scope.order = OrderService.getOrderToEdit();
 
                     for (var i = 0; i < $scope.products.length; i++) {
@@ -90,14 +92,9 @@ angular.module('hotelApp')
                             }
                         }
 
-
                     }
-                },100)
-            }
-
-            if($scope.editMode) {
-                
-            }
+                }
+            },100)
             
         })
 
@@ -105,12 +102,9 @@ angular.module('hotelApp')
 
         showCurrentDateTime();
         $scope.initNewOrderObj();
-        //$scope.initNewTransactionObj();
 
-        //fetch all customers record from online db
         $scope.refreshCustomerList();
         Product.getCategories().then(function(response) {
-
             $scope.categories = response;
         })
     }
@@ -438,7 +432,6 @@ angular.module('hotelApp')
         })
     }
 
-
     /**
     use safrApply instead of apply to prevent error
     */
@@ -469,7 +462,7 @@ angular.module('hotelApp')
 
     $scope.parcelOrder = function() {
         $scope.order.delivery_mode = 'PARCEL';
-        $scope.order.tableNo = $scope.tables[$scope.tables.length-1].no;
+        $scope.order.tableNo = selectedTableObj.no;
     }
 
     $scope.dinningOrder = function() {
@@ -548,7 +541,7 @@ angular.module('hotelApp')
         $scope.order.scheduled_date_time = dt;
         //set it after order is delivered by
         $scope.order.order_dlv_by = "";
-        $scope.order.tableNo= "NO Table";
+        $scope.order.tableNo= selectedTableObj.no
     }
 
     $scope.generateBill = function(orderData, callBack) {
@@ -619,30 +612,36 @@ angular.module('hotelApp')
 
     $scope.assignDiningTableNo = function(){
       //  $scope.order.tableNo= 1;//hard code table no
-        $scope.order.tableNo = $scope.selectedTableObj.no;
+        $scope.order.tableNo = selectedTableObj.no;
         $scope.showDinningTableSetter();
     }
 
     //hard code tables list
     $scope.tables = [
-    						{no:1,available:true,tokenno:0,custCode:0},
-    					  {no:2,available:true,tokenno:0,custCode:0},
-    					  {no:3,available:true,tokenno:0,custCode:0},
-    					  {no:4,available:true,tokenno:0,custCode:0},
-    					  {no:5,available:true,tokenno:0,custCode:0},
-    					  {no:6,available:true,tokenno:0,custCode:0},
-    					  {no:7,available:true,tokenno:0,custCode:0},
-    					  {no:8,available:true,tokenno:0,custCode:0},
-    					  {no:9,available:true,tokenno:0,custCode:0},
-                {no:10,available:true,tokenno:0,custCode:0},
-                {no:11,available:true,tokenno:0,custCode:0},
-                {no:12,available:true,tokenno:0,custCode:0},
-                {no:13,available:true,tokenno:0,custCode:0},
-                {no:"NO Table",available:false,tokenno:0,custCode:0}];
+        {no:1,available:true,tokenno:0,custCode:0},
+        {no:2,available:true,tokenno:0,custCode:0},
+        {no:3,available:true,tokenno:0,custCode:0},
+        {no:4,available:true,tokenno:0,custCode:0},
+        {no:5,available:true,tokenno:0,custCode:0},
+        {no:6,available:true,tokenno:0,custCode:0},
+        {no:7,available:true,tokenno:0,custCode:0},
+        {no:8,available:true,tokenno:0,custCode:0},
+        {no:9,available:true,tokenno:0,custCode:0},
+        {no:10,available:true,tokenno:0,custCode:0},
+        {no:11,available:true,tokenno:0,custCode:0},
+        {no:12,available:true,tokenno:0,custCode:0},
+        {no:13,available:true,tokenno:0,custCode:0}
+    ];
 
-    $scope.selectedTableObj = $scope.tables[$scope.tables.length-1];//last value no table
+    var selectedTableObj = {
+        no:'No Table',
+        available:false,
+        tokenno:0,
+        custCode:0
+    }
+    
     $scope.selectTable = function(tableObj){
-      $scope.selectedTableObj = tableObj;
+      selectedTableObj = tableObj;
     }
 
     //show customer address
