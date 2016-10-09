@@ -50,14 +50,14 @@ angular.module('hotelApp', [
         return {
             // optional method
             request: function(config) {
-                config.headers['x-access-token'] = $window.sessionStorage.token;
+                config.headers['Authorization'] = 'Bearer '+$window.sessionStorage.token;
                 return config;
             },
             response: function(response) {
                 return response;
             },
             responseError: function(response) {
-                if (response.status === 401) $location.url('/login');
+                if (response.status === 401) $location.path('/login');
                 return $q.reject(response);
             }
         };
