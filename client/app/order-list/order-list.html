@@ -12,6 +12,13 @@
             <md-switch ng-change="showCompletedChange()" class="s-toggle-switch" ng-model="includeCompletedOrders" aria-label="Finished?">Show completed</md-switch>
         </div>
 
+        <div>
+            filter by
+            <select>
+                
+            </select>
+        </div>
+
 
         <div class="pull-right">
             <a class="sh-buttons sh-parcel" href=""><i class="fa fa-gift"></i></a>
@@ -75,8 +82,8 @@
                                                 <tr>
                                                     <td>Paid Amount</td>
                                                     <td>
-                                                        <span ng-if="!payBal">{{order.paid_amt}}</span>
-                                                        <input ng-if="payBal" class="form-control col-xs-3 paid-amt" ng-model="order.paid_amt" ng-change="payOrderChange(order)" type="number" name="pay_bal" >
+                                                        <span ng-hide="payBal">{{order.paid_amt}}</span>
+                                                        <input ng-show="payBal" class="form-control col-xs-3 paid-amt" ng-model="order.paid_amt" ng-change="payOrderChange(order)" type="number" name="pay_bal" >
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -84,11 +91,11 @@
                                                     <td>{{order.bal_amt}}</td>
                                                 </tr>
                                             </table>
-                                            <div ng-if="!payBal">
-                                                <button ng-click="makeBalPayment()" class="btn btn-danger pull-right">Make Payment</button>
+                                            <div ng-show="!payBal">
+                                                <button ng-click="makeBalPayment(event)" class="btn btn-danger pull-right">Make Payment</button>
                                             </div>
-                                            <div ng-if="payBal">
-                                                <button ng-click="makeBalPaymentPay()" class="btn btn-danger pull-right">Pay</button>
+                                            <div ng-show="payBal">
+                                                <button ng-click="makeBalPaymentPay()" class="col-xs-offset-1 btn btn-success pull-right">Pay</button>
                                                 <button ng-click="makeBalPaymentCancel()" class="btn btn-danger pull-right">Cancel</button>
                                             </div>
                                             

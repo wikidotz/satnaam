@@ -9,7 +9,7 @@ angular.module('hotelApp')
     }
 })
 
-.controller('OrderGridCtrl', function($scope, $location, OrderService) {
+.controller('OrderGridCtrl', function($scope, $location, $timeout, OrderService) {
 
     var isFooterOpen = false;
     var statusClasses = [
@@ -33,8 +33,14 @@ angular.module('hotelApp')
 
     $scope.payBal = false;
 
-    $scope.makeBalPayment = function(){
+    $scope.makeBalPayment = function(e){
+
         $scope.payBal = true;
+        var target = event.target;
+        
+        $timeout(function(){
+            angular.element(target).closest('.sol-additional-opts').find('.paid-amt')[0].focus();    
+        },30)
     }
 
     $scope.makeBalPaymentCancel = function(){
@@ -54,8 +60,8 @@ angular.module('hotelApp')
         item.status++;
         item.status = item.status % 4;
         if(item.status==0){
-            item.status++;
-        }
+            item.status++;    
+        }     
     }
 
     $scope.getStatus = function (item) {
