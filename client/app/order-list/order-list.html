@@ -12,10 +12,13 @@
             <md-switch ng-change="showCompletedChange()" class="s-toggle-switch" ng-model="includeCompletedOrders" aria-label="Finished?">Show completed</md-switch>
         </div>
 
-        <div>
-            filter by
-            <select>
-                
+        <div class="col-md-4 col-xs-6">
+            <input type="checkbox" name="" checked="isFilterSelected">Filter by
+            <select ng-change="filterCatChanged()" ng-model="selectedFilterCat" ng-options="cat as cat.category_name for cat in categories track by cat.category_id">
+            </select>
+            <select ng-change="filterOptionChanged()" ng-model="selectedFilterOpt" ng-options="opt as opt for opt in ['OR','AND']">
+            </select>
+            <select ng-change="filterItemChanged()" ng-model="selectedFilteritem" ng-options="prod as prod.prod_dispname for prod in products track by prod.prod_id">
             </select>
         </div>
 

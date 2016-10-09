@@ -31,6 +31,7 @@ header.s-header {
     right: 0;
     height: 50px;
     z-index: 3;
+    color: #fff;
 }
 
 footer.s-footer {
@@ -814,5 +815,3 @@ table.ol-table tbody tr.completed td:first-child .remove-btn {
 .dinning-table-set  > .row{
     margin: 10px 0;
 }
-
-
