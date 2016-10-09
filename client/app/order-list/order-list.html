@@ -27,16 +27,16 @@
                             <md-grid-tile ng-repeat="order in orderlist" ng-class="(order.delivery_mode=='PARCEL')?'parcel': (order.is_scheduled==1)?'scheduled':''"  md-colspan-gt-sm="3" md-rowspan-gt-sm="3">
                                 <div class="ol-grid-tile-main" ng-controller="OrderGridCtrl">
 
-                                    <header class="row no-gutters">
+                                    <div class="row no-gutters grid-header">
                                         <span class="col-xs-1 ol-order-token">{{order.order_token_no}}</span>
-                                        <span class="col-xs-7 ol-order-name">{{order.customer.name}}</span>
+                                        <span class="col-xs-6 ol-order-name">{{order.customer.name}}</span>
 
                                         <span class="col-xs-1" ng-click="editOrder(order)"><i class="fa fa-pencil"></i></span>
                                         <span class="col-xs-1">{{order.order_total_qty}}</span>
                                         <span ng-click="showParcel()" ng-if="order.delivery_mode=='PARCEL'" class="col-xs-1">
                                           <i class="fa fa-gift"></i></span>
-                                          <span ng-if="order.delivery_mode=='DINE'" class="col-xs-1">T-{{order.tableNo!='NO Table'?order.tableNo:''}}</span>
-                                    </header>
+                                        <span ng-if="order.delivery_mode=='DINE'" class="col-xs-2 table-no">{{(order.tableNo>0)?'T-'+order.tableNo:''}}</span>
+                                    </div>
                                     <div class="ol-tile-content">
                                         <table class="table table-condensed ol-table">
                                             <tr ng-repeat="(key, item) in order.itemsInOrderMap" ng-dblclick="changeStatus(item)" ng-class="getStatus(item)" ng-style="getRowStyle(item)">
@@ -54,29 +54,47 @@
                                             </tr>
                                         </table>
                                     </div>
-                                    <footer ng-class="isFooterExpanded()">
+                                    <div ng-class="isFooterExpanded(order)" class="grid-footer">
 
                                         <div>
                                             <span><i class="fa fa-clock-o"></i></span>
                                             <span am-time-ago="order.time"></span>
-                                            <span ng-click="expandFooter()" class="sol-up-angle">
-                                                <i class="fa fa-angle-up"></i>
-                                                <i class="fa fa-angle-down"></i>
+                                            <span class="sol-up-angle">
+                                                <i ng-click="expandFooter()" class="fa fa-angle-up"></i>
+                                                <i ng-click="expandFooter()" class="fa fa-angle-down"></i>
                                             </span>
                                             <span class="pull-right">111</span>
                                         </div>
 
                                         <div class="sol-additional-opts">
-                                            <ul class="col-xs-6">
-                                                <li><input type="checkbox"> Show All</li>
-                                            </ul>
-
-                                            <ul class="col-xs-6">
-                                                <li><input type="checkbox"> Show All</li>
-                                            </ul>
+                                            <table class="table payment-table">
+                                                <tr>
+                                                    <td width="75%">Total Amount</td>
+                                                    <td width="25%">{{order.order_total_amt}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Paid Amount</td>
+                                                    <td>
+                                                        <span ng-if="!payBal">{{order.paid_amt}}</span>
+                                                        <input ng-if="payBal" class="form-control col-xs-3 paid-amt" ng-model="order.paid_amt" ng-change="payOrderChange(order)" type="number" name="pay_bal" >
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Balance Amount</td>
+                                                    <td>{{order.bal_amt}}</td>
+                                                </tr>
+                                            </table>
+                                            <div ng-if="!payBal">
+                                                <button ng-click="makeBalPayment()" class="btn btn-danger pull-right">Make Payment</button>
+                                            </div>
+                                            <div ng-if="payBal">
+                                                <button ng-click="makeBalPaymentPay()" class="btn btn-danger pull-right">Pay</button>
+                                                <button ng-click="makeBalPaymentCancel()" class="btn btn-danger pull-right">Cancel</button>
+                                            </div>
+                                            
                                         </div>
 
-                                    </footer>
+                                    </div>
                                 </div>
                             </md-grid-tile>
                         </md-grid-list>

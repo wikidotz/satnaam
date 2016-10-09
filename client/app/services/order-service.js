@@ -29,6 +29,7 @@ angular.module('hotelApp')
     }
 
     this.createOrder = function(data){
+        console.log('service',data)
         return $http.post('orders/createOrder', {orderObj:data}).then(function(response){
             Customer.addCustomerInLocalForage(data.customer);
             return response.data;

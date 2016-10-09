@@ -31,6 +31,25 @@ angular.module('hotelApp')
         return new Date(dateStr).toTimeString().split(' ')[0];
     }
 
+    $scope.payBal = false;
+
+    $scope.makeBalPayment = function(){
+        $scope.payBal = true;
+    }
+
+    $scope.makeBalPaymentCancel = function(){
+        $scope.payBal = false;
+    }
+
+    $scope.makeBalPaymentPay = function(){
+        //add service call here
+        $scope.payBal = false;
+    }
+
+    $scope.payOrderChange = function(order){        
+        order.bal_amt = (order.paid_amt <= order.order_total_amt) ? order.order_total_amt - order.paid_amt : 0;
+    }
+
     $scope.changeStatus = function(item){
         item.status++;
         item.status = item.status % 4;
@@ -55,7 +74,7 @@ angular.module('hotelApp')
             'background-color': color
         }
     }
-    $scope.isFooterExpanded = function(){
+    $scope.isFooterExpanded = function(order){
         return (isFooterOpen) ? 'isOpen' : '';
     }
 

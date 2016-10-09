@@ -30,7 +30,9 @@ var OrderSchema = new mongoose.Schema({
 	order_total_amt: Number,
 	order_total_qty: Number,
 	order_dlv_by:String,
-	tableNo:String
+	tableNo:Number,
+	paid_amt:Number,
+	bal_amt:Number
 });
 
 

@@ -398,7 +398,7 @@ angular.module('hotelApp')
         }else if(parseFloat($scope.order.paid_amt) == 0){
             $scope.order.order_pay_status = 'none';
         }
-
+        console.log($scope.order)
         OrderService.createOrder($scope.order).then(function(response) {
 
             $scope.playOrderSound(response.code);
@@ -634,7 +634,7 @@ angular.module('hotelApp')
     ];
 
     var selectedTableObj = {
-        no:'No Table',
+        no:-1,
         available:false,
         tokenno:0,
         custCode:0
