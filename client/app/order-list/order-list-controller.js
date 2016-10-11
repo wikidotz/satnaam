@@ -113,9 +113,9 @@ angular.module('hotelApp')
     $scope.selectedFilteritem = '';
 
     var timeSlotMins = 5;
-
     var getOrderWithStatus = '1';
     var socket = io();
+    var wasFiltered = false;
 
     $scope.filterItems = function(item){
         return item
@@ -139,8 +139,7 @@ angular.module('hotelApp')
 
         loadOrders();
         loadProducts();
-        loadCategory()
-        //WSService.init();
+        loadCategory();
 
         socket.on('order-created', function(){
             $scope.playOrderSound('order_created');
@@ -158,10 +157,28 @@ angular.module('hotelApp')
             
         })
     }
+
+    $scope.getFilterOptionsArray = function(){
+        return ($scope.selectedFilterCat == '') ? ['OR'] : ['OR','AND'];
+            
+    }
+    
     function loadProducts(){
         Product.getProducts().then(function(data){
             $scope.products = data;
         })
+    }
+
+    $scope.filterSelectionChange = function(){
+        if($scope.isFilterSelected){
+            localFilter()
+        }else{
+            if(wasFiltered){
+                
+                loadOrders();    
+            }
+            
+        }
     }
 
     $scope.filterCatChanged = function(){
@@ -186,28 +203,29 @@ angular.module('hotelApp')
 
     function localFilter(){
 
-        if($scope.isFilterSelected){
-            $scope.orderlist = []
-            for(var i=0;i<orderBackBuffer.length;i++)
-            {
-                var order = orderBackBuffer[i];
-                var exists = false;
-                for (var j = 0; j < order.itemsInOrder.length; j++) {
-                    if($scope.selectedFilterOpt.trim() == 'OR') {
-                        if(order.itemsInOrder[j].prod_category_id == $scope.selectedFilterCat.category_id || 
-                        order.itemsInOrder[j].prod_id == $scope.selectedFilteritem.prod_id){
-                            exists = true;
-                        }    
-                    }else if($scope.selectedFilterOpt.trim() == 'AND') {
-                        if(order.itemsInOrder[j].prod_category_id == $scope.selectedFilterCat.category_id &&
-                        order.itemsInOrder[j].prod_id == $scope.selectedFilteritem.prod_id){
-                            exists = true;
-                        }
+        if ($scope.selectedFilterCat == '') return;
+
+        $scope.orderlist = []
+        for(var i=0;i<orderBackBuffer.length;i++)
+        {
+            var order = orderBackBuffer[i];
+            var exists = false;
+            for (var j = 0; j < order.itemsInOrder.length; j++) {
+                if($scope.selectedFilterOpt.trim() == 'OR') {
+                    if(order.itemsInOrder[j].prod_category_id == $scope.selectedFilterCat.category_id || 
+                    order.itemsInOrder[j].prod_id == $scope.selectedFilteritem.prod_id){
+                        exists = true;
+                    }    
+                }else if($scope.selectedFilterOpt.trim() == 'AND') {
+                    if(order.itemsInOrder[j].prod_category_id == $scope.selectedFilterCat.category_id &&
+                    order.itemsInOrder[j].prod_id == $scope.selectedFilteritem.prod_id){
+                        exists = true;
                     }
                 }
-                if(exists){
-                    $scope.orderlist.push(angular.copy(order))
-                }
+            }
+            if(exists){
+                wasFiltered = true;
+                $scope.orderlist.push(angular.copy(order))
             }
         }
     }

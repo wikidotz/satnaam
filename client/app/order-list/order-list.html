@@ -13,10 +13,10 @@
         </div>
 
         <div class="col-md-4 col-xs-6">
-            <input type="checkbox" name="" checked="isFilterSelected">Filter by
+            <input type="checkbox" name="" ng-change="filterSelectionChange()" ng-model="isFilterSelected">Filter by
             <select ng-change="filterCatChanged()" ng-model="selectedFilterCat" ng-options="cat as cat.category_name for cat in categories track by cat.category_id">
             </select>
-            <select ng-change="filterOptionChanged()" ng-model="selectedFilterOpt" ng-options="opt as opt for opt in ['OR','AND']">
+            <select ng-change="filterOptionChanged()" ng-model="selectedFilterOpt" ng-options="opt as opt for opt in getFilterOptionsArray()">
             </select>
             <select ng-change="filterItemChanged()" ng-model="selectedFilteritem" ng-options="prod as prod.prod_dispname for prod in products track by prod.prod_id">
             </select>
@@ -95,7 +95,7 @@
                                                 </tr>
                                             </table>
                                             <div ng-show="!payBal">
-                                                <button ng-click="makeBalPayment(event)" class="btn btn-danger pull-right">Make Payment</button>
+                                                <button ng-disabled="order.bal_amt==0" ng-click="makeBalPayment(event)" class="btn btn-danger pull-right">Make Payment</button>
                                             </div>
                                             <div ng-show="payBal">
                                                 <button ng-click="makeBalPaymentPay()" class="col-xs-offset-1 btn btn-success pull-right">Pay</button>
