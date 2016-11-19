@@ -14,8 +14,7 @@
     <link rel="stylesheet" type="text/css" href="lib/jquery-ui/themes/smoothness/jquery-ui.css">
 
     <link rel="stylesheet" type="text/css" href="styles/styles.css" />
-    <link rel="stylesheet" type="text/css" href="app/media-queries.css" />
-    <link rel="stylesheet" type="text/css" href="styles/sass-styles.css" />
+    <link rel="stylesheet" type="text/css" href="styles/media-queries.css" />
 
 </head>
 <!-- apply our angular app to our site -->
@@ -54,12 +53,14 @@
 
 
     <script src="app/app.js"></script>
-    <script src="app/login/phone-login-controller.js"></script>
+    <!--script src="app/login/phone-login-controller.js"></script-->
+    <script src="app/login/login-ctrl.js"></script>
+    <script src="app/login/login-service.js"></script>
     <script src="app/create-order/create-order-ctrl.js"></script>
-    <script src="app/controllers/ingredients-modal-ctrl.js"></script>
-    <script src="app/controllers/order-list-controller.js"></script>
+    <script src="app/create-order/ingredients-modal/ingredients-modal-ctrl.js"></script>
+    <script src="app/order-list/order-list-controller.js"></script>
 
-    <script src="app/create-order/sauces-directive.js"></script>
+    <script src="app/components/sauces/sauces-directive.js"></script>
 
     <script src="app/services/product-service.js"></script>
     <script src="app/services/ws-service.js"></script>
@@ -70,13 +71,13 @@
     <script src="app/users/user-module.js"></script>
 
     <audio id="order_created_audio">
-      <source src="app/audio/CHINA_1.mp3">
-    Your browser does not support the audio element.
+        <source src="app/audio/order_created.mp3">
+        Your browser does not support the audio element.
     </audio>
 
     <audio id="error_audio">
-      <source src="app/audio/wrewolf2.wav">
-    Your browser does not support the audio element.
+        <source src="app/audio/error_audio.wav">
+        Your browser does not support the audio element.
     </audio>
 </body>
 

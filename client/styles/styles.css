@@ -1,3 +1,10 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
 .row.no-gutters {
     margin-right: 0 !important;
     margin-left: 0 !important;
@@ -24,6 +31,7 @@ header.s-header {
     right: 0;
     height: 50px;
     z-index: 3;
+    color: #fff;
 }
 
 footer.s-footer {
@@ -475,7 +483,7 @@ tr.summary {
     bottom: 0;
 }
 
-.ol-grid-tile-main > header {
+.ol-grid-tile-main > .grid-header {
     position: absolute;
     top: 0;
     left: 0;
@@ -485,11 +493,17 @@ tr.summary {
     background-color: #FDE;
 }
 
-md-grid-tile.parcel .ol-grid-tile-main > header {
+.grid-header .table-no{
+    float: right;
+    width: auto;
+    padding-right: 2px;
+}
+
+md-grid-tile.parcel .ol-grid-tile-main > .grid-header {
     background-color: #C4D2C3;
 }
 
-md-grid-tile.scheduled .ol-grid-tile-main > header {
+md-grid-tile.scheduled .ol-grid-tile-main > .grid-header {
     background-color: burlywood;
 }
 
@@ -503,7 +517,7 @@ md-grid-tile.scheduled .ol-grid-tile-main > header {
     overflow-x: hidden;
 }
 
-.ol-grid-tile-main > footer {
+.ol-grid-tile-main > .grid-footer {
     position: absolute;
     bottom: 0;
     height: 25px;
@@ -514,11 +528,11 @@ md-grid-tile.scheduled .ol-grid-tile-main > header {
     border-top: 1px solid grey;
 }
 
-md-grid-tile.parcel .ol-grid-tile-main > footer {
+md-grid-tile.parcel .ol-grid-tile-main > .grid-footer {
     background-color: #C4D2C3;
 }
 
-.ol-grid-tile-main > footer.isOpen {
+.ol-grid-tile-main > .grid-footer.isOpen {
     height: auto !important;
     top: 0;
     border-top: none;
@@ -580,7 +594,6 @@ md-grid-tile.parcel .ol-grid-tile-main > footer {
     display: inline-block;
     position: absolute;
     left: 0;
-    bottom: 0;
     right: 0;
     top: 0;
     text-align: center;
@@ -595,23 +608,23 @@ md-grid-tile.parcel .ol-grid-tile-main > footer {
     /* margin-top: -3px !important; */
 }
 
-.ol-grid-tile-main > footer .sol-up-angle .fa.fa-angle-down {
+.ol-grid-tile-main > .grid-footer .sol-up-angle .fa.fa-angle-down {
     display: none;
 }
 
-.ol-grid-tile-main > footer.isOpen .sol-up-angle .fa.fa-angle-down {
+.ol-grid-tile-main > .grid-footer.isOpen .sol-up-angle .fa.fa-angle-down {
     display: block;
 }
 
-.ol-grid-tile-main > footer.isOpen .sol-up-angle .fa.fa-angle-up {
+.ol-grid-tile-main > .grid-footer.isOpen .sol-up-angle .fa.fa-angle-up {
     display: none;
 }
 
-.ol-grid-tile-main > footer .sol-additional-opts {
+.ol-grid-tile-main > .grid-footer .sol-additional-opts {
     display: none;
 }
 
-.ol-grid-tile-main > footer.isOpen .sol-additional-opts {
+.ol-grid-tile-main > .grid-footer.isOpen .sol-additional-opts {
     display: block;
 }
 
@@ -619,6 +632,19 @@ md-grid-tile.parcel .ol-grid-tile-main > footer {
     margin-top: 10px;
 }
 
+.sol-additional-opts > table.payment-table{
+    margin-top: 10px;
+}
+
+.sol-additional-opts > table.payment-table tr > td + td{
+    text-align: right;
+}
+
+.sol-additional-opts > table.payment-table input.paid-amt{
+    padding: 0;
+    text-align: right;
+    height: auto;
+}
 
 .sol-additional-opts ul li, .sol-additional-opts ul{
     padding: 0;
@@ -634,6 +660,7 @@ tbody.scrollable > tr{
 
 .sod-cutomer-id{
     width: 20%;
+    padding: 5px;
 }
 
 .sod-cutomer-mobile{
@@ -777,4 +804,14 @@ table.ol-table tbody tr.completed td:first-child .remove-btn {
     float: none !important;
 }
 
+.table-btn{
+    width: 25%;
+}
 
+.dinning-table-set{
+    margin: 10px 0;    
+}
+
+.dinning-table-set  > .row{
+    margin: 10px 0;
+}

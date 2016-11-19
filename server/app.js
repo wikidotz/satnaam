@@ -84,11 +84,12 @@ app.post('/login', function(req, res) {
 
 
 // route middleware to verify a token
-apiRoutes.use(function(req, res, next) {
+function isLoggedIn(req, res, next) {
 
     // check header or url parameters or post parameters for token
-    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    var token = req.headers['Authorization'] || req.headers['authorization'];
 
+    token = token.split('Bearer ')[1]
     // decode token
     if (token) {
         // verifies secret and checks exp
@@ -106,7 +107,6 @@ apiRoutes.use(function(req, res, next) {
         });
 
     } else {
-
         // if there is no token
         // return an error
         return res.status(401).send({
@@ -115,7 +115,7 @@ apiRoutes.use(function(req, res, next) {
         });
 
     }
-});
+}
 
 var unless = function(path, middleware) {
     return function(req, res, next) {
@@ -165,11 +165,11 @@ app.get('/setup', function(req, res) {
 //console.log(dbConnection);
 //console.log(dbConnection.bookshelf);
 
-app.use('/products', productsRoutes);
-app.use('/categories', categoriesRoutes);
-app.use('/customers', customersRoutes);
-app.use('/orders', orderRoutes);
-app.use('/transactions',transactionRoutes);
+app.use('/products', isLoggedIn, productsRoutes);
+app.use('/categories', isLoggedIn, categoriesRoutes);
+app.use('/customers', isLoggedIn, customersRoutes);
+app.use('/orders', isLoggedIn, orderRoutes);
+app.use('/transactions', isLoggedIn, transactionRoutes);
 
 
 app.get('/logout', function(req, res) {

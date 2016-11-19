@@ -9,7 +9,7 @@ angular.module('hotelApp')
     }
 })
 
-.controller('OrderGridCtrl', function($scope, $location, OrderService) {
+.controller('OrderGridCtrl', function($scope, $location, $timeout, OrderService) {
 
     var isFooterOpen = false;
     var statusClasses = [
@@ -31,12 +31,37 @@ angular.module('hotelApp')
         return new Date(dateStr).toTimeString().split(' ')[0];
     }
 
+    $scope.payBal = false;
+
+    $scope.makeBalPayment = function(e){
+
+        $scope.payBal = true;
+        var target = event.target;
+        
+        $timeout(function(){
+            angular.element(target).closest('.sol-additional-opts').find('.paid-amt')[0].focus();    
+        },30)
+    }
+
+    $scope.makeBalPaymentCancel = function(){
+        $scope.payBal = false;
+    }
+
+    $scope.makeBalPaymentPay = function(){
+        //add service call here
+        $scope.payBal = false;
+    }
+
+    $scope.payOrderChange = function(order){        
+        order.bal_amt = (order.paid_amt <= order.order_total_amt) ? order.order_total_amt - order.paid_amt : 0;
+    }
+
     $scope.changeStatus = function(item){
         item.status++;
         item.status = item.status % 4;
         if(item.status==0){
-            item.status++;
-        }
+            item.status++;    
+        }     
     }
 
     $scope.getStatus = function (item) {
@@ -55,7 +80,7 @@ angular.module('hotelApp')
             'background-color': color
         }
     }
-    $scope.isFooterExpanded = function(){
+    $scope.isFooterExpanded = function(order){
         return (isFooterOpen) ? 'isOpen' : '';
     }
 
@@ -74,16 +99,25 @@ angular.module('hotelApp')
 
 })
 
-.controller('OrderListCtrl', function($scope, OrderService) {
+.controller('OrderListCtrl', function($scope, $timeout, OrderService, Product) {
 
     $scope.orderlist = [];
+    $scope.orderlistFiltered = [];
     $scope.includeCompletedOrders = false;
     $scope.displayItemGrouped = true;
 
-    var timeSlotMins = 5;
+    $scope.products = [];
+    $scope.categories = [];
 
+    $scope.isFilterSelected = false;
+    $scope.selectedFilterCat = '';
+    $scope.selectedFilterOpt = 'OR';
+    $scope.selectedFilteritem = '';
+
+    var timeSlotMins = 5;
     var getOrderWithStatus = '1';
     var socket = io();
+    var wasFiltered = false;
 
     $scope.filterItems = function(item){
         return item
@@ -105,9 +139,9 @@ angular.module('hotelApp')
 
     function init() {
 
-
         loadOrders();
-        //WSService.init();
+        loadProducts();
+        loadCategory();
 
         socket.on('order-created', function(){
             $scope.playOrderSound('order_created');
@@ -116,6 +150,87 @@ angular.module('hotelApp')
     }
 
     var intervalID;
+
+    function loadCategory(){
+        Product.getCategories().then(function(data){
+            $timeout(function(){
+                $scope.categories = data;    
+            },10)
+            
+        })
+    }
+
+    $scope.getFilterOptionsArray = function(){
+        return ($scope.selectedFilterCat == '') ? ['OR'] : ['OR','AND'];
+            
+    }
+    
+    function loadProducts(){
+        Product.getProducts().then(function(data){
+            $scope.products = data;
+        })
+    }
+
+    $scope.filterSelectionChange = function(){
+        if($scope.isFilterSelected){
+            localFilter()
+        }else{
+            if(wasFiltered){
+                
+                loadOrders();    
+            }
+            
+        }
+    }
+
+    $scope.filterCatChanged = function(){
+        $scope.isFilterSelected = true;
+        localFilter()
+    }
+
+    $scope.filterOptionChanged = function(){
+        $scope.isFilterSelected = true;
+
+        for (var i = 0; i < Things.length; i++) {
+            Things[i]
+        }
+        localFilter()
+
+    }
+    
+    $scope.filterItemChanged = function(){
+        $scope.isFilterSelected = true;
+        localFilter()
+    }
+
+    function localFilter(){
+
+        if ($scope.selectedFilterCat == '') return;
+
+        $scope.orderlist = []
+        for(var i=0;i<orderBackBuffer.length;i++)
+        {
+            var order = orderBackBuffer[i];
+            var exists = false;
+            for (var j = 0; j < order.itemsInOrder.length; j++) {
+                if($scope.selectedFilterOpt.trim() == 'OR') {
+                    if(order.itemsInOrder[j].prod_category_id == $scope.selectedFilterCat.category_id || 
+                    order.itemsInOrder[j].prod_id == $scope.selectedFilteritem.prod_id){
+                        exists = true;
+                    }    
+                }else if($scope.selectedFilterOpt.trim() == 'AND') {
+                    if(order.itemsInOrder[j].prod_category_id == $scope.selectedFilterCat.category_id &&
+                    order.itemsInOrder[j].prod_id == $scope.selectedFilteritem.prod_id){
+                        exists = true;
+                    }
+                }
+            }
+            if(exists){
+                wasFiltered = true;
+                $scope.orderlist.push(angular.copy(order))
+            }
+        }
+    }
 
     function createTimer() {
 
