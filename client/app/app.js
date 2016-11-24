@@ -1,12 +1,15 @@
 angular.module('hotelApp', [
-    'ui.router',
+    //'ui.router',
+    'usermgmt',
+    'productsmgmnt',
+
     'ngTouch',
     'ui.bootstrap',
     'ui.slider',
     'ngMaterial',
     'angularMoment',
     'LocalForageModule',
-    'usermgmt'
+
 ])
 
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
@@ -41,8 +44,9 @@ angular.module('hotelApp', [
             url: '/phonelogin',
             templateUrl: 'app/login/phone-login.html',
             controller: 'PhoneLoginCtrl'
-        })  
+        });
 
+       
     $urlRouterProvider.otherwise('/login');
 
     //$httpProvider.interceptors.push('TokenInterceptor');

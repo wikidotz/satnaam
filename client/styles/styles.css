@@ -764,10 +764,6 @@ input.search
   border: 1px solid #bbb;
 }
 
-label.user-form-control-heading
-{
-    width: 140px;
-}
 
 table.ol-table tbody tr.pending td:first-child {
     background-color: #B9833B !important;
