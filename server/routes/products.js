@@ -9,33 +9,52 @@ var mongoose = require('mongoose');
 var sampleCat = require('../data/samplecategories.json');
 var sampleItems = require('../data/sampleproducts_v2.json');
 
+autoIncrement = require('mongoose-auto-increment');
+var db = mongoose.connection;
+autoIncrement.initialize(db);
+
 var ItemSchema = new mongoose.Schema({
-    prod_id: Number,
-    prod_category_id: Number,
+	prod_id: Number,
+    prod_category_id: { type: Number},
+    prod_category_name: String,
     prod_name: String,
     prod_dispname: String,
     prod_desc: String,
     prod_ingredients: String,
     prod_rate: Number,
-    prod_available: Number,
+    prod_available: Boolean,
     prod_size: String,
     prod_weight: String,
     prod_veg_nonveg: String,
-    prod_pre_max_time_sec: Number,
-    prod_modified_by: String,
-    prod_modified_date: Date
+    prod_pre_max_time_sec: Number
+});
+
+
+var Item = mongoose.model('items', ItemSchema);
+
+ItemSchema.plugin(autoIncrement.plugin, { 
+	model: 'items', 
+	field: 'prod_id', 
+	startAt:1,
+	incrementBy:1
 });
 
 
 var ItemCategorySchema = new mongoose.Schema({
-	category_id: Number,
-    category_name: String,
-    modified_by: String,
-    modified_date: Date
+	category_id: {type:Number},
+    category_name: String
 });
 
-var Item = mongoose.model('items', ItemSchema);
 var ItemCategory = mongoose.model('itemcategories', ItemCategorySchema);
+
+
+ItemCategorySchema.plugin(autoIncrement.plugin, { 
+	model: 'itemcategories', 
+	field: 'category_id', 
+	startAt:1,
+	incrementBy:1
+});
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -51,6 +70,16 @@ router.get('/categories', function(req, res, next) {
 	ItemCategory.find(function(err, result) {
 	  if (err) return console.error(err);
 	  res.send(result);
+	});
+})
+
+router.post('/categories/category', function(req, res) {
+	var itemCategory = new ItemCategory(req.body);
+	itemCategory.save(function(err, result) {
+		if (err) {
+			res.status(500).send(err.message)
+		}
+		res.send(result);
 	});
 })
 
@@ -110,7 +139,6 @@ router.get('/:id/addItem', function(req, res, next){
 })
 
 
-
 function addItem(){
   var item = new Item(sampleItems[indexItem]);
   //console.log("new item to add ["+JSON.parse(item)+"]");//pass item to add
@@ -127,5 +155,21 @@ function addItem(){
 
   })
 }
+
+/* dhiraj */
+
+router.post('/product', function(req, res) {
+	console.log(req.body.product);
+	var item = new Item(req.body.product);
+	item.save(function(err, itemRes){
+		if(err) {
+			res.status(500).send(err.message)
+		}
+		res.send(itemRes)
+	})
+})
+
+
+
 
 module.exports = router;

@@ -16,6 +16,8 @@
     "express.io": "^1.1.13",
     "gulp": "^3.9.0",
     "jsonwebtoken": "^5.0.2",
+    "mongoose": "https://registry.npmjs.org/mongoose/-/mongoose-4.1.7.tgz",
+    "mongoose-auto-increment": "^5.0.1",
     "q": "^1.4.1",
     "serve-favicon": "~2.2.1",
     "socket.io": "^1.4.5"

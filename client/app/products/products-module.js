@@ -32,28 +32,36 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
         })
     }
 
-    this.getUsers = function() {
-        return $http.get('/customers').then(function(response) {
+    this.getCategories = function() {
+        return $http.get('/products/categories').then(function(response) {
             return response.data;
         })
     }
 
-    this.addUser = function(User) {
-        return $http.post('customers/user', {
-            user: User
+    this.addCategory = function(name){
+        return $http.post('/products/categories/category', {
+            category_name: name
+        }).then(function(response) {
+            return response.data;
+        })   
+    }
+
+    this.addProduct = function(product) {
+        return $http.post('products/product', {
+            product: product
         }).then(function(response) {
             return response.data;
         })
     }
 
-    this.deleteUser = function(id) {
-        return $http.delete('customers/user/' + id).then(function(response) {
+    this.deleteProduct = function(id) {
+        return $http.delete('products/product/' + id).then(function(response) {
             return response.data;
         })
     }
 
-    this.updateUser = function(id, User) {
-        return $http.put('customers/user/' + id, {
+    this.updateProduct = function(id, User) {
+        return $http.put('products/product/' + id, {
             user: User
         }).then(function(response) {
             return response.data;
@@ -61,15 +69,9 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
     }
 
     this.getUser = function(id) {
-        return $http.get('customers/user/' + id).then(function(response) {
+        return $http.get('products/product/' + id).then(function(response) {
             return response.data;
         })
-    }
-
-    this.getAllBldgs = function(){
-        return $http.get('customers/bldgs/').then(function(response){
-            return response.data;
-        })   
     }
 
     this.defaultCity = function(){
@@ -106,7 +108,11 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
 
         if (($scope.mode == 'edit' || $scope.mode == 'view') && ProductService.productEdit) {
             $scope.product = angular.copy(ProductService.productEdit);
-        }/* else if (!ProductService.productEdit) {
+        }else{
+            $scope.product = {};
+        }
+
+        /* else if (!ProductService.productEdit) {
             $location.path('/app/users');
         }else{
 
@@ -115,16 +121,44 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
         ProductService.getAllBldgs().then(function(data){
             $scope.allBldgs = data;
         });*/
+
+        $scope.product.prod_available = true;
+
+        ProductService.getCategories().then(function(data){
+            $scope.categories = data;
+        });
     }
+
+
 
     init();
 
-    $scope.addUser = function(user) {
-        user.address = $scope.userAddress(user);
-        ProductService.addUser(angular.copy(user)).then(function(user) {
-            console.log('addUser');
-            $scope.user = {};
-            $location.path('/app/users');
+    $scope.addingCategory = false;
+
+    $scope.addCategory = function(){
+
+        if($scope.addingCategory){
+            if($scope.newCategory != ''){
+                ProductService.addCategory($scope.newCategory).then(function(data){
+                    $scope.addingCategory = false;
+                    $scope.categories.push(data);
+                    $scope.category = data;
+                })
+            }
+        }else{
+            $scope.addingCategory = true;
+        }
+        
+    }
+
+    $scope.addProduct = function(product) {
+        product.prod_category_name = $scope.category.category_name;
+        product.prod_category_id = $scope.category.category_id;
+        
+
+        ProductService.addProduct(angular.copy(product)).then(function(response) {
+            $scope.product = {};
+            $location.path('/products/list');
         });
     }
 
@@ -136,35 +170,11 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
         });
     }
 
-    $scope.userAddress = function(user){
-        var tempArr = [];
-
-        tempArr.push("Bldg:"+JSON.parse(user.bldg).bldgName+"("+JSON.parse(user.bldg).bldgAcr+")"||'NA');
-        tempArr.push("Wing:"+user.bldgWing||'NA');
-        tempArr.push("Room:"+user.bldgRoomNo||'NA');
-        tempArr.push("Near:"+user.landmark||'NA');
-        tempArr.push("city:"+ProductService.defaultCity()||'NA');
-        tempArr.push("state:"+ProductService.defaultState()||'NA');
-        tempArr.push("country:"+ProductService.defaultCountry()||'NA');
-
-        return tempArr.join(',');
-    }
 
 
-    $scope.reset = function(user)
+    $scope.reset = function(obj)
     {
-        //mukesh - check for optimised code
-        user.custID = (user.custID>0)?user.custID:-1;
-        user.name = "";
-        user.nameCalled = "";
-        user.mobile="";
-        user.email="";
-        user.bldgName ="";
-        user.address = "";
-        user.city = "";
-        user.landmark = "";
-        user.bldgRoomNo = "";
-        user.bldgWing = "";
+        obj = {};
     }
 })
 
@@ -178,10 +188,6 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
         console.log(data)
         $scope.products = data;
     })
-
-    ProductService.getAllBldgs().then(function(data){
-            $scope.allBldgs = data;
-    });
 
     $scope.gotoAddUser = function() {
         //$location.path('/app/users/add');
