@@ -126,6 +126,10 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
 
         ProductService.getCategories().then(function(data){
             $scope.categories = data;
+            $scope.category = {
+                category_name: 'Select Category',
+                category_id: -1
+            }
         });
     }
 
@@ -205,8 +209,8 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
     }
 
     $scope.deleteProduct = function(id, index) {
-        ProductService.deleteUser(id).then(function(res) {
-            $scope.users.splice(index, 1);
+        ProductService.deleteProduct(id).then(function(res) {
+            $scope.products.splice(index, 1);
         })
     }
 

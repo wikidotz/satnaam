@@ -169,6 +169,16 @@ router.post('/product', function(req, res) {
 	})
 })
 
+router.delete('/product/:id', function(req, res) {
+	
+	Item.find({
+        prod_id: req.params.id
+    }).remove().exec();
+    res.send({
+        message: 'ok'
+    });
+})
+
 
 
 

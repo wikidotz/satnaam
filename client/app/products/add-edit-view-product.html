@@ -9,12 +9,12 @@
             </div>
 
             <div class="form-group">
-                <label class="user-form-control-heading"  for="name">Product Category:</label> <span ng-show="mode=='view'"></span>
-                <select ng-options="cat as cat.category_name for cat in categories track by cat.category_id" ng-model="category" ng-change="categoryChange(event)">
+                <label class="user-form-control-heading"  for="name">Product Category:</label> <span ng-show="mode=='view'">{{product.prod_category_name}}</span>
+                <select ng-hide="mode=='view'" ng-options="cat as cat.category_name for cat in categories track by cat.category_id" ng-model="category" ng-change="categoryChange(event)">
                 </select>
 
-                <input type="text" ng-show="addingCategory" ng-model="newCategory">
-                <button ng-click="addCategory()">{{addingCategory ? 'save' : 'Add new'}}</button>
+                <input ng-hide="mode=='view'"type="text" ng-show="addingCategory" ng-model="newCategory">
+                <button ng-hide="mode=='view'" ng-click="addCategory()">{{addingCategory ? 'save' : 'Add new'}}</button>
             </div>
 
             <div class="form-group">
