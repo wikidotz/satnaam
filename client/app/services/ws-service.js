@@ -1,6 +1,6 @@
 angular.module('hotelApp')
 
-.service('WSService', function($websocket) {
+.service('WSService', ['$websocket', function($websocket) {
 
     this.init = function() {
         var dataStream = $websocket('ws://localhost:3001/hello');
@@ -16,4 +16,4 @@ angular.module('hotelApp')
     }
 
 
-})
+}])

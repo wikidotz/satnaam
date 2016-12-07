@@ -9,7 +9,7 @@ angular.module('hotelApp')
     }
 })
 
-.controller('OrderGridCtrl', function($scope, $location, $timeout, OrderService) {
+.controller('OrderGridCtrl', ['$scope', '$location', '$timeout', 'OrderService', function($scope, $location, $timeout, OrderService) {
 
     var isFooterOpen = false;
     var statusClasses = [
@@ -97,9 +97,9 @@ angular.module('hotelApp')
     }
 
 
-})
+}])
 
-.controller('OrderListCtrl', function($scope, $timeout, OrderService, Product) {
+.controller('OrderListCtrl', ['$scope', '$timeout', 'OrderService', 'Product', function($scope, $timeout, OrderService, Product) {
 
     $scope.orderlist = [];
     $scope.orderlistFiltered = [];
@@ -326,4 +326,4 @@ angular.module('hotelApp')
 
     init()
 
-})
+}])

@@ -47,7 +47,7 @@ angular.module('hotelApp')
     }
 })
 
-.controller('OrderCtrl', function($scope, $location, $timeout, $window, $uibModal, $stateParams, SubProduct, Product, Customer, OrderService, TransactionFactory) {
+.controller('OrderCtrl', ['$scope', '$location', '$timeout', '$window', '$uibModal', '$stateParams', 'SubProduct', 'Product', 'Customer', 'OrderService', 'TransactionFactory', function($scope, $location, $timeout, $window, $uibModal, $stateParams, SubProduct, Product, Customer, OrderService, TransactionFactory) {
 
     $scope.isProductsLoaded = false;
     $scope.products = [];
@@ -661,4 +661,4 @@ angular.module('hotelApp')
 
     init();
 
-})//end of OrderCtrl
+}])//end of OrderCtrl

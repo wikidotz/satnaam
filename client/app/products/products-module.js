@@ -1,5 +1,5 @@
 angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
-    .config(function($stateProvider, $urlRouterProvider) {
+    .config([ '$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
         $stateProvider
 
@@ -19,10 +19,10 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
             controller: 'AddEditProductCtrl',
             templateUrl: 'app/products/add-edit-view-product.html'
         })
-    })
+    }])
 
 
-.service('ProductService', function($http, $q) {
+.service('ProductService', ['$http', '$q', function($http, $q) {
 
     this.productEdit = null;
 
@@ -86,7 +86,8 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
         return 'Maharashtra';
     }
 
-})
+}])
+
 .filter('parseJSONObj',function(){
     return function(input,prop){
        if(input==undefined)
@@ -100,7 +101,7 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
 })
 
 
-.controller('AddEditProductCtrl', function($scope, $stateParams, $location, ProductService) {
+.controller('AddEditProductCtrl', ['$scope', '$stateParams', '$location', 'ProductService', function($scope, $stateParams, $location, ProductService) {
 
     $scope.mode = $stateParams.mode;
 
@@ -180,9 +181,9 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
     {
         obj = {};
     }
-})
+}])
 
-.controller('ProductsCtrl', function($scope, $location,$filter, ProductService) {
+.controller('ProductsCtrl', ['$scope', '$location', '$filter', 'ProductService', function($scope, $location,$filter, ProductService) {
 
 
     $scope.users = [];
@@ -214,4 +215,4 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
         })
     }
 
-})
+}])

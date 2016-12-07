@@ -1,5 +1,5 @@
 angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
-    .config(function($stateProvider, $urlRouterProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
         $stateProvider
 
@@ -24,10 +24,10 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
         .state('app.home', {
             url: "/home"
         })
-    })
+    }])
 
 
-.service('UserService', function($http, $q) {
+.service('UserService', ['$http', '$q', function($http, $q) {
 
     this.userEdit = null;
 
@@ -84,7 +84,8 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
         return 'Maharashtra';
     }
 
-})
+}])
+
 .filter('parseJSONObj',function(){
     return function(input,prop){
        if(input==undefined)
@@ -97,12 +98,12 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
     }
 })
 
-.controller('AppCtrl', function($scope) {
+.controller('AppCtrl', ['$scope', function($scope) {
     
-})
+}])
 
 
-.controller('AddEditUserCtrl', function($scope, $stateParams, $location, UserService) {
+.controller('AddEditUserCtrl', ['$scope', '$stateParams', '$location', 'UserService', function($scope, $stateParams, $location, UserService) {
 
     $scope.mode = $stateParams.mode;
 
@@ -168,9 +169,9 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
         user.bldgRoomNo = "";
         user.bldgWing = "";
     }
-})
+}])
 
-.controller('UsersCtrl', function($scope, $location,$filter, UserService) {
+.controller('UsersCtrl', ['$scope', '$location', '$filter', 'UserService', function($scope, $location,$filter, UserService) {
 
 
     $scope.users = [];
@@ -205,4 +206,4 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
         })
     }
 
-})
+}])

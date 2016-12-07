@@ -38,7 +38,15 @@ gulp.task('bundle', ['copy'], function() {
 });
 
 gulp.task('copy', function(){
-	return gulp.src(['./client/lib/**/*','./client/app/**/*.html','./server/**/*', './bin/**/*', './package.json', './bower.json','./.bowerrc'])
+	return gulp.src([
+        './client/lib/**/*',
+        './client/app/**/*.html',
+        './client/app/audio/**/*',
+        './server/**/*', 
+        './bin/**/*', 
+        './package.json',
+        './bower.json',
+        './.bowerrc'])
   		.pipe(copy('./build'));
 })
 
@@ -81,4 +89,4 @@ gulp.task('htmlreplace', function() {
     
 });
 
-gulp.task('build', gulpSequence('clean', 'bundle', 'htmlreplace', 'archive'));
+gulp.task('build', gulpSequence('clean', 'bundle', 'htmlreplace', 'archive2'));

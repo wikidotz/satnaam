@@ -1,6 +1,6 @@
 
 angular.module('hotelApp')
-.controller('PhoneLoginCtrl', function($scope, $location, Login) {
+.controller('PhoneLoginCtrl', ['$scope', '$location', 'Login', function($scope, $location, Login) {
     
     $scope.login = function(e, loginInfo) {
         console.log(loginInfo);
@@ -10,4 +10,4 @@ angular.module('hotelApp')
             $scope.errorMsg = err.data.message;    
         });
     }
-})
+}])
