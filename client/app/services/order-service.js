@@ -1,6 +1,6 @@
 angular.module('hotelApp')
 
-.service('OrderService', function($http, Customer){
+.service('OrderService', ['$http', 'Customer', function($http, Customer){
 
     var orderToedit = null;
 
@@ -102,4 +102,4 @@ angular.module('hotelApp')
 
 
     
-});
+}]);

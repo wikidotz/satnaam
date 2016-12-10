@@ -1,15 +1,18 @@
 angular.module('hotelApp', [
-    'ui.router',
+    //'ui.router',
+    'usermgmt',
+    'productsmgmnt',
+
     'ngTouch',
     'ui.bootstrap',
     'ui.slider',
     'ngMaterial',
     'angularMoment',
     'LocalForageModule',
-    'usermgmt'
+
 ])
 
-.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
+.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function($stateProvider, $urlRouterProvider, $httpProvider) {
 
     $stateProvider
 
@@ -41,33 +44,35 @@ angular.module('hotelApp', [
             url: '/phonelogin',
             templateUrl: 'app/login/phone-login.html',
             controller: 'PhoneLoginCtrl'
-        })  
+        });
 
+       
     $urlRouterProvider.otherwise('/login');
 
     //$httpProvider.interceptors.push('TokenInterceptor');
-    $httpProvider.interceptors.push(function($q, $location, $window) {
-        return {
-            // optional method
-            request: function(config) {
-                config.headers['Authorization'] = 'Bearer '+$window.sessionStorage.token;
-                return config;
-            },
-            response: function(response) {
-                return response;
-            },
-            responseError: function(response) {
-                if (response.status === 401) $location.path('/login');
-                return $q.reject(response);
-            }
-        };
-    });
-})
+    $httpProvider.interceptors.push(['$q', '$location', '$window', function($q, $location, $window) {
+            return {
+                // optional method
+                request: function(config) {
+                    config.headers['Authorization'] = 'Bearer '+$window.sessionStorage.token;
+                    return config;
+                },
+                response: function(response) {
+                    return response;
+                },
+                responseError: function(response) {
+                    if (response.status === 401) $location.path('/login');
+                    return $q.reject(response);
+                }
+            };
+        }]);
+}])
 
-.run(function($location, $window){
+.run(['$location', '$window', function($location, $window){
     if($window.sessionStorage.token){
         $location.path($location.path())
     }else{
         $location.path('/login');
     }
-})
+}])
+

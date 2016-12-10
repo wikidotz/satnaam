@@ -1,5 +1,5 @@
 angular.module('hotelApp')
-.service('Product', function($http, $q){
+.service('Product', ['$http', '$q', function($http, $q){
 
 	var products = [];
 	var categories = [];
@@ -33,4 +33,4 @@ angular.module('hotelApp')
 	}
 
 	
-})
+}])

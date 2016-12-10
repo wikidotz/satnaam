@@ -1,6 +1,6 @@
 angular.module('hotelApp')
 
-.controller('IngredientsModalCtrl', function($scope, $uibModalInstance, $rootScope, product, order, lessItem) {
+.controller('IngredientsModalCtrl', ['$scope', '$uibModalInstance', '$rootScope', 'product', 'order', 'lessItem', function($scope, $uibModalInstance, $rootScope, product, order, lessItem) {
 
     $scope.product = product;
     $scope.order = order;
@@ -133,4 +133,4 @@ angular.module('hotelApp')
     $scope.cancel = function() {
         $uibModalInstance.dismiss('cancel');
     };
-})
+}])

@@ -1,6 +1,6 @@
 angular.module('hotelApp')
 
-.directive('sauces', function($rootScope) {
+.directive('sauces', ['$rootScope', function($rootScope) {
     return {
         templateUrl: 'app/components/sauces/sauces-directive.html',
         link: function(scope, element, attrs) {
@@ -64,7 +64,7 @@ angular.module('hotelApp')
             updateFn: '&'
         },
     }
-})
+}])
 
 // .directive('saucesOld', function() {
 //     return {

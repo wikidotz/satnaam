@@ -1,4 +1,6 @@
-angular.module('hotelApp').service('Customer', function($http, $localForage) {
+angular.module('hotelApp')
+
+.service('Customer', ['$http', '$localForage', function($http, $localForage) {
     var self = this;
     self.getAllCustomersRemote = function() {
         return $http.get('customers').then(function(response) {
@@ -99,4 +101,4 @@ angular.module('hotelApp').service('Customer', function($http, $localForage) {
                 return err;
             })
     }
-});
+}]);

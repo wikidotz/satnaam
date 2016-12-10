@@ -1,6 +1,6 @@
 angular.module('hotelApp')
 
-.service('Login', function($location, $window, $http) {
+.service('Login', ['$location', '$window', '$http', function($location, $window, $http) {
 
     this.login = function(username, password) {
         return $http.post('/login', {
@@ -19,4 +19,4 @@ angular.module('hotelApp')
             $location.path("/");
         }
     }
-})
+}])

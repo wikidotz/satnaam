@@ -1,6 +1,6 @@
 angular.module('hotelApp')
 
-.service('AccountService', function($http, Customer){
+.service('AccountService', ['$http', 'Customer', function($http, Customer){
 
     this.addBill = function(data)
     {
@@ -20,4 +20,4 @@ angular.module('hotelApp')
         })
     }
     
-})
+}])
