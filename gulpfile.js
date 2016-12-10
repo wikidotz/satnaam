@@ -50,23 +50,16 @@ gulp.task('copy', function(){
   		.pipe(copy('./build'));
 })
 
-gulp.task('archive-again', function() {
-	del(['./tmp/bundle.result.json']).then(function(){
-		return gulp.src('./build/**/*')
+gulp.task('archive2', function() {
+	del(['./tmp']).then(function(){
+		return gulp.src('./build/**/*',{
+                dot: true
+            })
 	        .pipe(zip('build.zip'))
 
 	        .pipe(gulp.dest('./build'));
 
 
-	})
-});
-
-gulp.task('archive2', function() {
-	del(['./makesurre.that she is not']).then(function(){
-		return gulp.src('./build/**/*')
-	        .pipe(zip('build.zip'))
-	        .pipe(gulp.dest('./build'));	
-	        
 	})
 });
 
