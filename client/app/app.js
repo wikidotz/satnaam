@@ -5,14 +5,12 @@ angular.module('hotelApp', [
 
     'ngTouch',
     'ui.bootstrap',
-    'ui.slider',
     'ngMaterial',
-    'angularMoment',
-    'LocalForageModule',
+    'angularMoment'
 
 ])
 
-.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function($stateProvider, $urlRouterProvider, $httpProvider) {
+.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider) {
 
     $stateProvider
 
@@ -46,9 +44,8 @@ angular.module('hotelApp', [
             controller: 'PhoneLoginCtrl'
         });
 
-       
-    $urlRouterProvider.otherwise('/login');
-
+    
+    $locationProvider.hashPrefix('');
     //$httpProvider.interceptors.push('TokenInterceptor');
     $httpProvider.interceptors.push(['$q', '$location', '$window', function($q, $location, $window) {
             return {
@@ -66,6 +63,9 @@ angular.module('hotelApp', [
                 }
             };
         }]);
+    
+    $urlRouterProvider.otherwise('/login');
+    
 }])
 
 .run(['$location', '$window', function($location, $window){
