@@ -39,7 +39,7 @@ gulp.task('bundle', ['copy'], function() {
 
 gulp.task('copy', function(){
 	return gulp.src([
-        './client/lib/**/*',
+//        './client/lib/**/*',
         './client/app/**/*.html',
         './client/app/audio/**/*',
         './server/**/*', 
