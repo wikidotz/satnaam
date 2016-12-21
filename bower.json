@@ -18,7 +18,8 @@
     "font-awesome": "fontawesome#^4.7.0",
     "bootstrap-switch": "^3.3.2",
     "socket.io-client": "^1.7.1",
-    "eonasdan-bootstrap-datetimepicker": "^4.17.43"
+    "eonasdan-bootstrap-datetimepicker": "^4.17.43",
+    "localforage": "^1.4.3"
   },
   "devDependencies": {},
   "ignore": [
