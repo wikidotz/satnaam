@@ -40,8 +40,8 @@
 
             <div class="form-group">
                 <label class="user-form-control-heading" >Product Prep. Time (sec)</label>
-                <span ng-show="mode=='view'">{{product.prod_pre_max_time_sec}}</span>
-                <input ng-show="mode!='view'" ng-model="product.prod_pre_max_time_sec" class="form-control" placeholder="Product Prep. Time (sec)" type="number">
+                <span ng-if="mode=='view'">{{product.prod_pre_max_time_sec}}</span>
+                <input ng-if="mode!='view'" ng-init="product.prod_pre_max_time_sec=(product.prod_pre_max_time_sec)? product.prod_pre_max_time_sec : 600" ng-model="product.prod_pre_max_time_sec" class="form-control" placeholder="Product Prep. Time (sec)" type="number">
             </div>
 
             <div class="form-group">
@@ -54,15 +54,19 @@
             <div class="form-group">
                 <label class="user-form-control-heading" >Product Size:</label>
                 <span ng-show="mode=='view'">{{product.prod_size}}</span>
-                <input ng-show="mode!='view'" ng-model="product.prod_size" class="form-control"
+                <input ng-show="mode!='view'" ng-init="product.prod_size=(product.prod_size)?product.prod_size:'small'" ng-model="product.prod_size" class="form-control"
                 type="text" placeholder="Product Size" type="text">
             </div>
 
             <div class="form-group">
                 <label class="user-form-control-heading" >Veg/ Non-veg:</label>
-                <span ng-show="mode=='view'">{{product.prod_veg_nonveg}}</span>
-                <input ng-show="mode!='view'" ng-model="product.prod_veg_nonveg" class="form-control"
-                type="text" placeholder="Veg/ Non-veg:">
+                <span ng-if="mode=='view'">{{product.prod_veg_nonveg}}</span>
+                <select ng-if="mode!='view'" ng-init="product.prod_veg_nonveg=(product.prod_veg_nonveg)?product.prod_veg_nonveg:'veg'" ng-model="product.prod_veg_nonveg">
+                    <option value="VEG" selected>Veg</option>
+                    <option value="NON-VEG" >Non-veg</option>
+                </select>
+                <!-- <input  ng-model="product.prod_veg_nonveg" class="form-control"
+                type="text" placeholder="Veg/ Non-veg:"> -->
             </div>
 
             <div class="form-group">
