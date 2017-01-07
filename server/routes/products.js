@@ -157,11 +157,9 @@ function addItem(){
 
 router.put('/product/:id', function(req, res) {
 
-	console.log(typeof req.params.id)
-
 	Item.update({
-        prod_id: parseInt(req.params.id)
-    }, { $set: req.body.product}, { multi: false }, function(err, doc){
+        _id: req.params.id
+    }, req.body.product, { multi: false }, function(err, doc){
     	if(err) {
 			res.status(500).send(err.message)
 		}
@@ -170,7 +168,7 @@ router.put('/product/:id', function(req, res) {
 })
 
 router.post('/product', function(req, res) {
-	console.log(req.body.product);
+	
 	var item = new Item(req.body.product);
 	item.save(function(err, itemRes){
 		if(err) {

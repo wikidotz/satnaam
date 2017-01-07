@@ -171,7 +171,7 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
         //user.address = $scope.userAddress(user);
         ProductService.updateProduct(user._id, angular.copy(user)).then(function(user) {
             $scope.user = {};
-            $location.path('/products');
+            $location.path('/products/list');
         });
     }
 

@@ -10,7 +10,8 @@
 
             <div class="form-group">
                 <label class="user-form-control-heading"  for="name">Product Category:</label> <span ng-show="mode=='view'">{{product.prod_category_name}}</span>
-                <select ng-hide="mode=='view'" ng-options="cat as cat.category_name for cat in categories track by cat.category_id" ng-model="category" ng-change="categoryChange(event)">
+
+                <select ng-hide="mode=='view'" ng-options="cat as cat.category_name for cat in categories track by cat.category_id" ng-model="product.prod_category_id" ng-change="categoryChange(event)">
                 </select>
 
                 <input ng-hide="mode=='view'"type="text" ng-show="addingCategory" ng-model="newCategory">

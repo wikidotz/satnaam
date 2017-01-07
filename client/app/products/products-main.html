@@ -1,6 +1,10 @@
-<div>
-    <a class="btn btn-default" ui-sref="products.mode({ mode: 'add' })">Add Products</a>
-    <a class="btn btn-default" ui-sref="products.list" >Products</a>
+<div class="container-fluid">
+	<nav class="navbar navbar-default">
+        <ul class="nav navbar-nav">
+            <li><a ui-sref="products.mode({ mode: 'add' })">Add Products</a></li>
+            <li><a ui-sref="products.list" >Products</a></li>
+        </ul>
+    </nav>
 </div>
 <div>
     <div ui-view>
