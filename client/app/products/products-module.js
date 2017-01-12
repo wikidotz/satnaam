@@ -62,7 +62,7 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
 
     this.updateProduct = function(id, User) {
         return $http.put('products/product/' + id, {
-            user: User
+            product: User
         }).then(function(response) {
             return response.data;
         })
@@ -168,10 +168,10 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
     }
 
     $scope.updateUser = function(user) {
-        user.address = $scope.userAddress(user);
-        ProductService.updateUser(user._id, angular.copy(user)).then(function(user) {
+        //user.address = $scope.userAddress(user);
+        ProductService.updateProduct(user._id, angular.copy(user)).then(function(user) {
             $scope.user = {};
-            $location.path('/app/users');
+            $location.path('/products/list');
         });
     }
 

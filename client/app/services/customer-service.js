@@ -1,12 +1,12 @@
 angular.module('hotelApp')
 
-.service('Customer', ['$http', '$localForage', function($http, $localForage) {
+.service('Customer', ['$http', function($http) {
     var self = this;
     self.getAllCustomersRemote = function() {
         return $http.get('customers').then(function(response) {
                 if(response.data!=undefined|| response.data!=null)
                 {
-                    $localForage.setItem('customers', response.data);    
+                    localforage.setItem('customers', response.data);    
                 }
                 
                 return response.data;
@@ -17,7 +17,7 @@ angular.module('hotelApp')
     }
 
     self.getAllCustomers = function() {
-        return $localForage.getItem('customers').then(function(data) {
+        return localforage.getItem('customers').then(function(data) {
             return data || [];
         })
     }
@@ -44,7 +44,7 @@ angular.module('hotelApp')
     }
 
     self.addCustomerIfNotExist = function(newCustomer) {
-         $localForage.getItem('customers').then(function(data) {
+         localforage.getItem('customers').then(function(data) {
             var existingCustomers = data || [];
             //var tempObj ;
             var mobileNoExist = false;
@@ -66,7 +66,7 @@ angular.module('hotelApp')
     }
 
     self.addCustomerInLocalForage = function(newCustomer){
-        $localForage.getItem('customers').then(function(data) {
+        localforage.getItem('customers').then(function(data) {
             var existingCustomers = data || [];
             var mobileNoExist = false;
             angular.forEach(existingCustomers,function(tempObj){
@@ -81,7 +81,7 @@ angular.module('hotelApp')
             if(!mobileNoExist)
             {
                 existingCustomers.push(newCustomer)
-                $localForage.setItem('customers', existingCustomers);
+                localforage.setItem('customers', existingCustomers);
             }
             
         })

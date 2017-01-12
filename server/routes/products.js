@@ -91,9 +91,6 @@ router.get('/category/:category_id', function(req, res, next) {
 	});
 })
 
-router.put('/', function(req, res, next) {
-	res.send('product added');
-});
 
 router.get('/:id', function(req, res, next) {
 	res.send('get product by id mukesh '+ req.params.id);
@@ -158,8 +155,20 @@ function addItem(){
 
 /* dhiraj */
 
+router.put('/product/:id', function(req, res) {
+
+	Item.update({
+        _id: req.params.id
+    }, req.body.product, { multi: false }, function(err, doc){
+    	if(err) {
+			res.status(500).send(err.message)
+		}
+		res.send(doc)
+    })
+})
+
 router.post('/product', function(req, res) {
-	console.log(req.body.product);
+	
 	var item = new Item(req.body.product);
 	item.save(function(err, itemRes){
 		if(err) {
