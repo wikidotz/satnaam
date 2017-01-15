@@ -1,8 +1,12 @@
 <div class="container">
-    <div>
-        <span>Search Customer:</span>
-        <input type="text" id="search" class="search"
-        placeholder="Enter customer code, name, mobile." ng-model="userSearchStr">
+    <div class="row">
+        <div class="col-md-2">
+            <span>Search Product:</span>    
+        </div>
+        <div class="col-md-10">
+            <input type="text" id="search" class="search form-control" placeholder="Enter customer code, name, mobile." ng-model="userSearchStr">    
+        </div>
+        
        <!-- <button type="button btn-default">Advanced Search</button>--><!--ng-click="searchUser(userSearchStr)"-->
     </div>
     <table class="table table-striped table-hover">

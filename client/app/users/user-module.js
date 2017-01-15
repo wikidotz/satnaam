@@ -3,27 +3,26 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
 
         $stateProvider
 
-        .state('app', {
-            url: "/app",
+        .state('users', {
+            url: "/users",
             templateUrl: 'app/users/user-main.html',
-            controller: 'AppCtrl'
+            controller: 'AppCtrl',
+            redirectTo: 'users.list',
         })
 
-        .state('app.users', {
-            url: "/users",
+        .state('users.list', {
+            url: "/list",
             controller: 'UsersCtrl',
             templateUrl: 'app/users/users.html'
         })
 
-        .state('app.mode', {
+        .state('users.mode', {
             url: "/:mode",
             controller: 'AddEditUserCtrl',
             templateUrl: 'app/users/add-edit-view-user.html'
         })
 
-        .state('app.home', {
-            url: "/home"
-        })
+        
     }])
 
 
