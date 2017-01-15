@@ -125,7 +125,6 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
     $scope.addUser = function(user) {
         user.address = $scope.userAddress(user);
         UserService.addUser(angular.copy(user)).then(function(user) {
-            console.log('addUser');
             $scope.user = {};
             $location.path('/app/users');
         });
