@@ -31,7 +31,7 @@
     <div class="s-content order-list-content">
         <div class="ol-main">
             <div class="ol-order-listing">
-                <div class="gridListdemoBasicUsage">
+                <!--div class="gridListdemoBasicUsage">
                     <md-content>
                         <md-grid-list md-cols-gt-md="12" md-cols-sm="1" md-cols-md="9" md-row-height-gt-md="1:1" md-row-height="4:3" md-gutter-gt-md="16px" md-gutter-gt-sm="16px" md-gutter="16px">
                             <md-grid-tile ng-repeat="order in orderlist" ng-class="(order.delivery_mode=='PARCEL')?'parcel': (order.is_scheduled==1)?'scheduled':''"  md-colspan-gt-sm="3" md-rowspan-gt-sm="3">
@@ -109,7 +109,83 @@
                             </md-grid-tile>
                         </md-grid-list>
                     </md-content>
+                </div-->
+                <div class="gridListdemoBasicUsage">
+                    <div class="ol-order-tile col-xs-12 col-sm-6 col-md-4 col-lg-3" ng-repeat="order in orderlist" ng-class="(order.delivery_mode=='PARCEL')?'parcel': (order.is_scheduled==1)?'scheduled':''"  md-colspan-gt-sm="3" md-rowspan-gt-sm="3">
+                        <div class="ol-grid-tile-main" ng-controller="OrderGridCtrl">
+
+                            <div class="row no-gutters grid-header">
+                                <span class="col-xs-1 ol-order-token">{{order.order_token_no}}</span>
+                                <span class="col-xs-6 ol-order-name">{{order.customer.name}}</span>
+
+                                <span class="col-xs-1" ng-click="editOrder(order)"><i class="fa fa-pencil"></i></span>
+                                <span class="col-xs-1">{{order.order_total_qty}}</span>
+                                <span ng-click="showParcel()" ng-if="order.delivery_mode=='PARCEL'" class="col-xs-1">
+                                  <i class="fa fa-gift"></i></span>
+                                <span ng-if="order.delivery_mode=='DINE'" class="col-xs-2 table-no">{{(order.tableNo>0)?'T-'+order.tableNo:''}}</span>
+                            </div>
+                            <div class="ol-tile-content">
+                                <table class="table table-condensed ol-table">
+                                    <tr ng-repeat="(key, item) in order.itemsInOrderMap" ng-dblclick="changeStatus(item)" ng-class="getStatus(item)" ng-style="getRowStyle(item)">
+                                        <td>{{item.prod_qty}} <i class="remove-btn fa fa-minus"></i></td>
+                                        <td class="ol-item-name"><div>{{item.prod_name}}</div>
+                                            <span   class="label label-primary">{{item.ingredients.type}}</span>
+                                            <span ng-if="item.ingredients.isMedium">
+                                                <span class="label label-info">Medium</span>
+                                            </span>
+                                            <span ng-if="!item.ingredients.isMedium">
+                                                <span class="label label-info">{{item.ingredients.sweet}} Sweet</span> <span class="label label-warning">{{item.ingredients.garlic}} Garlic</span> <span class="label label-danger">{{item.ingredients.chilli}} Chilli</span>
+                                             </span>
+                                        </td>
+                                        <td>{{item.prod_rate}}/-</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div ng-class="isFooterExpanded(order)" class="grid-footer">
+
+                                <div>
+                                    <span><i class="fa fa-clock-o"></i></span>
+                                    <span am-time-ago="order.time"></span>
+                                    <span class="sol-up-angle">
+                                        <i ng-click="expandFooter()" class="fa fa-angle-up"></i>
+                                        <i ng-click="expandFooter()" class="fa fa-angle-down"></i>
+                                    </span>
+                                    <span class="pull-right">111</span>
+                                </div>
+
+                                <div class="sol-additional-opts">
+                                    <table class="table payment-table">
+                                        <tr>
+                                            <td width="75%">Total Amount</td>
+                                            <td width="25%">{{order.order_total_amt}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Paid Amount</td>
+                                            <td>
+                                                <span ng-hide="payBal">{{order.paid_amt}}</span>
+                                                <input ng-show="payBal" class="form-control col-xs-3 paid-amt" ng-model="order.paid_amt" ng-change="payOrderChange(order)" type="number" name="pay_bal" >
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Balance Amount</td>
+                                            <td>{{order.bal_amt}}</td>
+                                        </tr>
+                                    </table>
+                                    <div ng-show="!payBal">
+                                        <button ng-disabled="order.bal_amt==0" ng-click="makeBalPayment(event)" class="btn btn-danger pull-right">Make Payment</button>
+                                    </div>
+                                    <div ng-show="payBal">
+                                        <button ng-click="makeBalPaymentPay()" class="col-xs-offset-1 btn btn-success pull-right">Pay</button>
+                                        <button ng-click="makeBalPaymentCancel()" class="btn btn-danger pull-right">Cancel</button>
+                                    </div>
+                                    
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>                    
                 </div>
+
             </div>
         </div>
     </div>

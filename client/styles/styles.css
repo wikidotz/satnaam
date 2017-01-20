@@ -478,12 +478,18 @@ tr.summary {
     border: 1px solid blue;
 }
 
+.ol-order-tile {
+    position: relative;
+    min-height: 250px;
+}
+
 .ol-grid-tile-main {
     position: absolute;
     top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    left: 5px;
+    right: 5px;
+    border: 1px solid #f00;
+    bottom: 10px;
 }
 
 .ol-grid-tile-main > .grid-header {
@@ -815,3 +821,9 @@ table.ol-table tbody tr.completed td:first-child .remove-btn {
     padding: 10px 0;
     border-radius: 5px;
 }
+
+.anchor-btn{
+    padding: 10px;
+}
+
+

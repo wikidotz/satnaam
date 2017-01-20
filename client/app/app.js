@@ -1,12 +1,15 @@
+agGrid.initialiseAgGridWithAngular1(angular);
+
 angular.module('hotelApp', [
     //'ui.router',
     'usermgmt',
     'productsmgmnt',
-
+    'agGrid',
     'ngTouch',
     'ui.bootstrap',
-    'ngMaterial',
+    //'ngMaterial', TO DO :  remove ng material from package.json /bower.json
     'angularMoment'
+
 
 ])
 

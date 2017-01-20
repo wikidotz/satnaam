@@ -189,10 +189,54 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
     $scope.users = [];
     $scope.userSearchStr;
 
+    var allProducts = [];
+    var columnDefs = [
+        {headerName: "ID", field: "prod_id"},
+        {headerName: "Display Name", field: "prod_dispname"},
+        {headerName: "Category Name", field: "prod_category_name"},
+        {headerName: "Rate", field: "prod_rate"},
+        {headerName: "Ingredients", field: "prod_ingredients"},
+        {headerName: "Desc", field: "prod_desc"},
+        {headerName: "Pre Max Time (sec)", field: "prod_pre_max_time_sec"},
+        {headerName: "Size", field: "prod_size"},
+        {headerName: "Veg/Nonveg", field: "prod_veg_nonveg"},
+        {headerName: "Weight", field: "prod_weight"}
+    ];
+
+    ProductService.getCategories().then(function(data){
+        $scope.categories = data;
+        $scope.selected_cat = {
+            category_name: 'Select Category',
+            category_id: -1
+        }
+    });
+
+    $scope.categoryChange = function(){
+
+        $scope.products = [];
+        allProducts.map(function(product){
+            
+            if(product.prod_category_id == $scope.selected_cat.category_id){
+                $scope.products.push(product)    
+            }
+        })
+    }
+
+    $scope.gridOptions = {
+        columnDefs: columnDefs
+    };
+
     ProductService.getProducts().then(function(data) {
-        console.log(data)
+        allProducts = angular.copy(data);
         $scope.products = data;
+
+        console.log($scope.products)
+        $scope.gridOptions.api.setRowData(data);
     })
+
+    function createRowData(){
+        return $scope.products
+    }
 
     $scope.gotoAddUser = function() {
         //$location.path('/app/users/add');
@@ -214,5 +258,7 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
             $scope.products.splice(index, 1);
         })
     }
+
+    
 
 }])
