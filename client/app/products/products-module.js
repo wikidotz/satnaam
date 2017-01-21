@@ -26,10 +26,19 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
 
     this.productEdit = null;
 
+    var productsMap = {};
+
     this.getProducts = function() {
         return $http.get('/products').then(function(response) {
+            for (var i = 0; i < response.data.length; i++) {
+                productsMap[response.data[i].prod_id] = response.data[i];
+            }
             return response.data;
         })
+    }
+
+    this.getProductsByIdSync = function(id) {
+        return productsMap[id];
     }
 
     this.getCategories = function() {
@@ -86,6 +95,10 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
         return 'Maharashtra';
     }
 
+    this.productEditView = function(id){
+        this.productEdit = this.getProductsByIdSync(id);
+    }
+
 }])
 
 .filter('parseJSONObj',function(){
@@ -95,7 +108,6 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
         return "";
        }
        
-        console.log(JSON.parse(input));
         return JSON.parse(input)[prop];
     }
 })
@@ -107,19 +119,18 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
 
     function init() {
 
+        if (ProductService.productEdit == null) {
+            $location.path('/products/list');
+            return
+        }
+
         if (($scope.mode == 'edit' || $scope.mode == 'view') && ProductService.productEdit) {
             $scope.product = angular.copy(ProductService.productEdit);
         }else{
             $scope.product = {};
         }
 
-        /* else if (!ProductService.productEdit) {
-            $location.path('/app/users');
-        }else{
-
-        }
-
-        ProductService.getAllBldgs().then(function(data){
+        /*ProductService.getAllBldgs().then(function(data){
             $scope.allBldgs = data;
         });*/
 
@@ -189,19 +200,32 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
     $scope.users = [];
     $scope.userSearchStr;
 
+
+
     var allProducts = [];
     var columnDefs = [
-        {headerName: "ID", field: "prod_id"},
-        {headerName: "Display Name", field: "prod_dispname"},
+        {headerName: "ID", field: "prod_id", width:50},
+        {headerName: "Display Name", field: "prod_dispname", filter: 'text'},
         {headerName: "Category Name", field: "prod_category_name"},
-        {headerName: "Rate", field: "prod_rate"},
-        {headerName: "Ingredients", field: "prod_ingredients"},
-        {headerName: "Desc", field: "prod_desc"},
-        {headerName: "Pre Max Time (sec)", field: "prod_pre_max_time_sec"},
-        {headerName: "Size", field: "prod_size"},
-        {headerName: "Veg/Nonveg", field: "prod_veg_nonveg"},
-        {headerName: "Weight", field: "prod_weight"}
+        {headerName: "Rate", field: "prod_rate", width:80},
+        {headerName: "Ingredients", field: "prod_ingredients", width:100},
+        //{headerName: "Desc", field: "prod_desc"},
+        {headerName: "Pre Max Time (sec)", field: "prod_pre_max_time_sec", width:80},
+        {headerName: "Size", field: "prod_size", width:100},
+        {headerName: "Veg/Nonveg", field: "prod_veg_nonveg", width:100},
+        {headerName: "Weight", field: "prod_weight", width:100},
+        {headerName: "Edit/Delete",  width: 100, 
+            cellRenderer: function (params) {      // Function cell renderer
+                return createButtons (params);
+            }
+        }
     ];
+
+    function createButtons(params){
+        //console.log()
+        return '<a ng-click="viewProduct('+params.data.prod_id+')" class="anchor-btn" href=""><i class="fa fa-eye" aria-hidden="true"></i></a>'+
+                '<a ng-click="editProduct('+params.data.prod_id+')" class="anchor-btn" href=""><i class="fa fa-pencil" aria-hidden="true"></i></a>';
+    }
 
     ProductService.getCategories().then(function(data){
         $scope.categories = data;
@@ -223,14 +247,17 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
     }
 
     $scope.gridOptions = {
-        columnDefs: columnDefs
+        columnDefs: columnDefs,
+        angularCompileRows: true,
+        enableFilter: true,
+        enableSorting: true
+
     };
 
     ProductService.getProducts().then(function(data) {
         allProducts = angular.copy(data);
         $scope.products = data;
 
-        console.log($scope.products)
         $scope.gridOptions.api.setRowData(data);
     })
 
@@ -242,14 +269,14 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
         //$location.path('/app/users/add');
     }
 
-    $scope.viewProduct = function(user, index) {
-        ProductService.productEdit = angular.copy(user);
+    $scope.viewProduct = function(id) {
+        ProductService.productEditView(id);// = getProductsByIdSync(id)
         $location.path('/products/view');
     }
 
-    $scope.editProduct = function(user, index) {
-
-        ProductService.productEdit = angular.copy(user);
+    $scope.editProduct = function(id) {
+        //ProductService.productEdit = getProductsByIdSync(id)
+        ProductService.productEditView(id);
         $location.path('/products/edit');
     }
 

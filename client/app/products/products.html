@@ -1,5 +1,5 @@
 <div class="container">
-    <div class="row">
+    <!--div class="row">
         <div class="col-md-2">
             <span>Search Product:</span>    
         </div>
@@ -9,13 +9,13 @@
         <div class="col-md-4">
             <select class="form-control"  ng-options="cat as cat.category_name for cat in categories track by cat.category_id" ng-model="selected_cat" ng-change="categoryChange(event)">
             </select>
-        </div>
+        </div-->
 
         
        <!-- <button type="button btn-default">Advanced Search</button>--><!--ng-click="searchUser(userSearchStr)"-->
-    </div>
+    <!-- </div> -->
     <div ag-grid="gridOptions" class="ag-fresh" style="height: 400px;"></div>
-    <table class="table table-striped table-hover">
+    <!--table class="table table-striped table-hover">
         <thead>
             <tr>
                 <th>ID</th>
@@ -48,8 +48,8 @@
                     
                     <a ng-click="editProduct(product, $index)" class="anchor-btn" href=""><i class="fa fa-pencil" aria-hidden="true"></i></a>
                     <!-- <button class="btn btn-danger" ng-click="deleteProduct(product.prod_id, $index)">Delete</button> -->
-                </td>
+                <!--/td>
             </tr>
         </tbody>
-    </table>
+    </table-->
 </div>
