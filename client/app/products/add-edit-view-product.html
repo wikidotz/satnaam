@@ -4,6 +4,11 @@
         <form role="form">
 
             <div class="form-group">
+                <label class="user-form-control-heading" >Product ID:</label>
+                <label>{{product.prod_id}}</label>
+            </div>
+
+            <div class="form-group">
                 <label class="user-form-control-heading" >Available:</label>
                 <input ng-disabled="mode=='view'" type="checkbox" checked ng-model="product.prod_available">
             </div>
@@ -17,8 +22,8 @@
                     <span >{{product.prod_category_name}}</span>
                 </div>
 
-                <div class="col-md-6" ng-hide="mode=='view'  || addingCategory">
-                    <select class="form-control"  ng-options="cat as cat.category_name for cat in categories track by cat.category_id" ng-model="product.prod_category_id" ng-change="categoryChange(event)">
+                <div class="col-md-6" ng-hide="mode=='view' || addingCategory">
+                    <select class="form-control" ng-options="cat as cat.category_name for cat in categories track by cat.category_id" ng-model="category" ng-change="categoryChange(event)">
                     </select>
                 </div>
 
@@ -34,55 +39,45 @@
             </div>
 
             <div class="form-group">
-                <label class="user-form-control-heading"  for="email">Name :</label>
+                <label class="user-form-control-heading"  for="email">Name : <span ng-if="mode!='view'" class="red">*</span></label>
                 <span ng-show="mode=='view'">{{product.prod_name}}</span>
-                <input type="text" name="name" ng-model="product.prod_name" ng-show="mode!='view'" class="form-control" placeholder="Name">
+                <input type="text" name="name" maxlength="200" ng-model="product.prod_name" ng-show="mode!='view'" class="form-control" placeholder="Name">
             </div>
 
             <div class="form-group">
                 <label class="user-form-control-heading"  for="name">Display Name:</label> <span ng-show="mode=='view'">{{product.prod_dispname}}</span>
-                <input ng-show="mode!='view'" type="text" ng-model="product.prod_dispname" class="form-control" placeholder="Display Name">
+                <input ng-show="mode!='view'" type="text" maxlength="200" ng-model="product.prod_dispname" class="form-control" placeholder="Display Name">
             </div>
 
             <div class="form-group">
                 <label class="user-form-control-heading" >Ingredients:</label> <span ng-show="mode=='view'">{{product.prod_ingredients}}</span>
-                <input ng-show="mode!='view'" type="text" ng-model="product.prod_ingredients" class="form-control" placeholder="Ingredients">
+                <input ng-show="mode!='view'" type="text" maxlength="200" ng-model="product.prod_ingredients" class="form-control" placeholder="Ingredients">
             </div>
 
             <div class="form-group">
-                <label class="user-form-control-heading" >Rate :</label>
+                <label class="user-form-control-heading" >Rate : <span  ng-if="mode!='view'" class="red">*</span></label>
                 <span ng-show="mode=='view'">{{product.prod_rate}}</span>
-                <input ng-show="mode!='view'" ng-model="product.prod_rate" class="form-control"
+                <input ng-show="mode!='view'" maxlength="12" ng-model="product.prod_rate" class="form-control"
                 placeholder="Product Rate" type="number">
             </div>
 
             <div class="form-group">
                 <label class="user-form-control-heading" >Size:</label>
                 <span ng-show="mode=='view'">{{product.prod_size}}</span>
-                <input ng-show="mode!='view'" ng-init="product.prod_size=(product.prod_size)?product.prod_size:'SMALL'" ng-model="product.prod_size" class="form-control"
+                <input ng-show="mode!='view'" ng-init="product.prod_size=(product.prod_size)?product.prod_size:'SMALL'" maxlength="100" ng-model="product.prod_size" class="form-control"
                 type="text" placeholder="Size" type="text">
             </div>
 
-            
-
             <div class="form-group">
                 <label class="user-form-control-heading"  for="name">Product Description:</label> <span ng-show="mode=='view'">{{product.prod_desc}}</span>
-                <input ng-show="mode!='view'" type="text" ng-model="product.prod_desc" class="form-control" placeholder="Product Description">
+                <input ng-show="mode!='view'" type="text" maxlength="500" ng-model="product.prod_desc" class="form-control" placeholder="Product Description">
             </div>
-
-             
-
-            
-
-            
 
             <div class="form-group">
                 <label class="user-form-control-heading" >Product Prep. Time (sec)</label>
                 <span ng-if="mode=='view'">{{product.prod_pre_max_time_sec}}</span>
                 <input ng-if="mode!='view'" ng-init="product.prod_pre_max_time_sec=(product.prod_pre_max_time_sec)? product.prod_pre_max_time_sec : 600" ng-model="product.prod_pre_max_time_sec" class="form-control" placeholder="Product Prep. Time (sec)" type="number">
             </div>
-
-            
 
             <div class="form-group">
                 <label class="user-form-control-heading" >Veg/ Non-veg:</label>
@@ -97,7 +92,7 @@
 
             <div class="form-group">
                 <label class="user-form-control-heading">Weight:</label> <span ng-show="mode=='view'">{{product.prod_weight}}</span>
-                <input ng-show="mode!='view'" type="text" ng-model="product.prod_weight" class="form-control" placeholder="Weight">
+                <input ng-show="mode!='view'" type="text" maxlength="100" ng-model="product.prod_weight" class="form-control" placeholder="Weight">
             </div>
 
             <button type="button"  ng-click="reset(product)" class="btn btn-danger">Reset</button>

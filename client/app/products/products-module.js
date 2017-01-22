@@ -126,22 +126,32 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
 
         if (($scope.mode == 'edit' || $scope.mode == 'view') && ProductService.productEdit) {
             $scope.product = angular.copy(ProductService.productEdit);
+            $scope.category = {
+                category_name: $scope.product.prod_category_name,
+                category_id: $scope.product.prod_category_id
+            }
         }else{
             $scope.product = {};
+            $scope.category = null
         }
+
+
 
         /*ProductService.getAllBldgs().then(function(data){
             $scope.allBldgs = data;
         });*/
-
+        console.log()
         $scope.product.prod_available = true;
 
         ProductService.getCategories().then(function(data){
             $scope.categories = data;
-            $scope.category = {
-                category_name: 'Select Category',
-                category_id: -1
+            if($scope.category){
+                $scope.category = {
+                    category_name: 'Select Category',
+                    category_id: -1
+                }    
             }
+            
         });
     }
 
@@ -250,7 +260,8 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
         columnDefs: columnDefs,
         angularCompileRows: true,
         enableFilter: true,
-        enableSorting: true
+        enableSorting: true,
+        animateRows: true
 
     };
 

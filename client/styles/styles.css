@@ -826,4 +826,6 @@ table.ol-table tbody tr.completed td:first-child .remove-btn {
     padding: 10px;
 }
 
-
+.red{
+    color: #f00;
+}
