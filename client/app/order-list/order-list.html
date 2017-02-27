@@ -28,7 +28,12 @@
             <span class="sh-buttons sh-count">{{itemsInOrder.length}}</span>
         </div>
     </header>
+
+
     <div class="s-content order-list-content">
+
+        <div uib-alert ng-show="orderEdit" ng-class="'alert-' + (alert.type)">{{alert.msg}}</div>
+
         <div class="ol-main">
             <div class="ol-order-listing">
                 <!--div class="gridListdemoBasicUsage">
@@ -101,7 +106,7 @@
                                                 <button ng-click="makeBalPaymentPay()" class="col-xs-offset-1 btn btn-success pull-right">Pay</button>
                                                 <button ng-click="makeBalPaymentCancel()" class="btn btn-danger pull-right">Cancel</button>
                                             </div>
-                                            
+
                                         </div>
 
                                     </div>
@@ -178,12 +183,12 @@
                                         <button ng-click="makeBalPaymentPay()" class="col-xs-offset-1 btn btn-success pull-right">Pay</button>
                                         <button ng-click="makeBalPaymentCancel()" class="btn btn-danger pull-right">Cancel</button>
                                     </div>
-                                    
+
                                 </div>
 
                             </div>
                         </div>
-                    </div>                    
+                    </div>
                 </div>
 
             </div>

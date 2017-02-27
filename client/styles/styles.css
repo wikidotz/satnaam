@@ -129,15 +129,11 @@ footer.s-footer {
 .s-content {
     position: absolute;
     top: 60px;
-    bottom: 0px;
+    bottom: 60px;
     right: 10px;
     left: 10px;
     overflow-y: auto;
     z-index: 1;
-}
-
-.order-list-content {
-    top: -30px;
 }
 
 ul.s-product-list {
@@ -458,7 +454,7 @@ tr.summary {
     bottom: 0;
     left: 0;
     right: 0;
-    top: 90px;
+    top: 0;
 }
 
 .ol-search-order {
@@ -808,7 +804,7 @@ table.ol-table tbody tr.completed td:first-child .remove-btn {
 }
 
 .dinning-table-set{
-    margin: 10px 0;    
+    margin: 10px 0;
 }
 
 .dinning-table-set  > .row{

@@ -37,9 +37,9 @@ angular.module('hotelApp')
 
         $scope.payBal = true;
         var target = event.target;
-        
+
         $timeout(function(){
-            angular.element(target).closest('.sol-additional-opts').find('.paid-amt')[0].focus();    
+            angular.element(target).closest('.sol-additional-opts').find('.paid-amt')[0].focus();
         },30)
     }
 
@@ -52,7 +52,7 @@ angular.module('hotelApp')
         $scope.payBal = false;
     }
 
-    $scope.payOrderChange = function(order){        
+    $scope.payOrderChange = function(order){
         order.bal_amt = (order.paid_amt <= order.order_total_amt) ? order.order_total_amt - order.paid_amt : 0;
     }
 
@@ -60,8 +60,8 @@ angular.module('hotelApp')
         item.status++;
         item.status = item.status % 4;
         if(item.status==0){
-            item.status++;    
-        }     
+            item.status++;
+        }
     }
 
     $scope.getStatus = function (item) {
@@ -99,7 +99,7 @@ angular.module('hotelApp')
 
 }])
 
-.controller('OrderListCtrl', ['$scope', '$timeout', 'OrderService', 'Product', function($scope, $timeout, OrderService, Product) {
+.controller('OrderListCtrl', ['$scope', '$location', '$stateParams', '$timeout', 'OrderService', 'Product', function($scope, $location, $stateParams, $timeout, OrderService, Product) {
 
     $scope.orderlist = [];
     $scope.orderlistFiltered = [];
@@ -123,6 +123,14 @@ angular.module('hotelApp')
         return item
     }
 
+    $scope.orderEdit = false;
+    $scope.alert = null;
+
+    var alerts = [
+        { type: 'danger', msg: 'Oh snap! unable to update order, Please try again.' },
+        { type: 'success', msg: 'Well done! You successfully updated the Order' }
+    ];
+
     $scope.playOrderSound = function(type){
         var audio ;
         switch(type.toLowerCase())
@@ -143,6 +151,22 @@ angular.module('hotelApp')
         loadProducts();
         loadCategory();
 
+        if($location.search().hasOwnProperty('orderEditSuccess')) {
+            console.log($location.search().orderEditSuccess)
+            $scope.orderEdit = true;
+            debugger;
+            if($location.search().orderEditSuccess == true){
+                $scope.alert = alerts[1]
+            }else{
+                $scope.alert = alerts[0]
+            }
+            initiateAutoHide()
+        }else{
+            $scope.orderEdit = false;
+        }
+
+
+
         socket.on('order-created', function(){
             $scope.playOrderSound('order_created');
             loadOrders();
@@ -151,20 +175,28 @@ angular.module('hotelApp')
 
     var intervalID;
 
+
+    function initiateAutoHide(){
+        $timeout(function(){
+            $scope.orderEdit = false;
+            $scope.alert = null
+        }, 5000)
+    }
+
     function loadCategory(){
         Product.getCategories().then(function(data){
             $timeout(function(){
-                $scope.categories = data;    
+                $scope.categories = data;
             },10)
-            
+
         })
     }
 
     $scope.getFilterOptionsArray = function(){
         return ($scope.selectedFilterCat == '') ? ['OR'] : ['OR','AND'];
-            
+
     }
-    
+
     function loadProducts(){
         Product.getProducts().then(function(data){
             $scope.products = data;
@@ -176,10 +208,10 @@ angular.module('hotelApp')
             localFilter()
         }else{
             if(wasFiltered){
-                
-                loadOrders();    
+
+                loadOrders();
             }
-            
+
         }
     }
 
@@ -197,7 +229,7 @@ angular.module('hotelApp')
         localFilter()
 
     }
-    
+
     $scope.filterItemChanged = function(){
         $scope.isFilterSelected = true;
         localFilter()
@@ -214,10 +246,10 @@ angular.module('hotelApp')
             var exists = false;
             for (var j = 0; j < order.itemsInOrder.length; j++) {
                 if($scope.selectedFilterOpt.trim() == 'OR') {
-                    if(order.itemsInOrder[j].prod_category_id == $scope.selectedFilterCat.category_id || 
+                    if(order.itemsInOrder[j].prod_category_id == $scope.selectedFilterCat.category_id ||
                     order.itemsInOrder[j].prod_id == $scope.selectedFilteritem.prod_id){
                         exists = true;
-                    }    
+                    }
                 }else if($scope.selectedFilterOpt.trim() == 'AND') {
                     if(order.itemsInOrder[j].prod_category_id == $scope.selectedFilterCat.category_id &&
                     order.itemsInOrder[j].prod_id == $scope.selectedFilteritem.prod_id){

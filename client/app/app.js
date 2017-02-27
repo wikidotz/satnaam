@@ -1,5 +1,19 @@
 agGrid.initialiseAgGridWithAngular1(angular);
 
+var onlyLoggedIn = function ($location,$q,Login) {
+    var deferred = $q.defer();
+    if (Login.isLogin()) {
+        console.log('sasa')
+        deferred.resolve();
+    } else {
+        console.log('no')
+
+        deferred.reject();
+        $location.url('/login');
+    }
+    return deferred.promise;
+};
+
 angular.module('hotelApp', [
     //'ui.router',
     'usermgmt',
@@ -10,8 +24,9 @@ angular.module('hotelApp', [
     //'ngMaterial', TO DO :  remove ng material from package.json /bower.json
     'angularMoment'
 
-
 ])
+
+
 
 .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider) {
 
@@ -20,7 +35,8 @@ angular.module('hotelApp', [
         .state('createOrder', {
             url: '/create-order',
             templateUrl: 'app/create-order/create-order.html',
-            controller: 'OrderCtrl'
+            controller: 'OrderCtrl',
+            resolve:{loggedIn:onlyLoggedIn}
         })
 
         .state('editOrder', {
@@ -67,7 +83,7 @@ angular.module('hotelApp', [
             };
         }]);
     
-    $urlRouterProvider.otherwise('/login');
+    $urlRouterProvider.otherwise('/create-order');
     
 }])
 

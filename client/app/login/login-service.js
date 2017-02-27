@@ -1,6 +1,6 @@
 angular.module('hotelApp')
 
-.service('Login', ['$location', '$window', '$http', function($location, $window, $http) {
+.service('Login', ['$location', '$window', '$http', '$q', function($location, $window, $http, $q) {
 
     this.login = function(username, password) {
         return $http.post('/login', {
@@ -18,5 +18,9 @@ angular.module('hotelApp')
             delete $window.sessionStorage.token;
             $location.path("/");
         }
+    }
+
+    this.isLogin = function (){
+        return !!$window.sessionStorage.token;
     }
 }])

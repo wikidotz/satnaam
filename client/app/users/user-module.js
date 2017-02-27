@@ -6,8 +6,6 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
         .state('users', {
             url: "/users",
             templateUrl: 'app/users/user-main.html',
-            controller: 'AppCtrl',
-            redirectTo: 'users.list',
         })
 
         .state('users.list', {
@@ -29,12 +27,30 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
 .service('UserService', ['$http', '$q', function($http, $q) {
 
     this.userEdit = null;
-
+    var userMap = {};
 
     this.getUsers = function() {
         return $http.get('/customers').then(function(response) {
+            console.log(response.data.length)
+
+            for (var i = 0; i < response.data.length; i++) {
+                userMap[response.data[i].custID] = response.data[i];
+                //console.log(response.data[i])
+            }
+            // for (var i = 0; i < response.data.length; i++) {
+            //     this.userMap[response.data[i].custID] = response.data[i];
+            // }            
+
             return response.data;
         })
+    }
+
+    this.getCustByIdSync = function(id) {
+        return userMap[id];
+    }
+
+    this.custEditView = function(id){
+        this.userEdit = this.getCustByIdSync(id);
     }
 
     this.addUser = function(User) {
@@ -97,10 +113,6 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
     }
 })
 
-.controller('AppCtrl', ['$scope', function($scope) {
-    
-}])
-
 
 .controller('AddEditUserCtrl', ['$scope', '$stateParams', '$location', 'UserService', function($scope, $stateParams, $location, UserService) {
 
@@ -108,10 +120,15 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
 
     function init() {
 
+        console.log($scope.mode)
+        console.log(UserService.userEdit)
+
         if (($scope.mode == 'edit' || $scope.mode == 'view') && UserService.userEdit) {
             $scope.user = angular.copy(UserService.userEdit);
-        } else if (!UserService.userEdit) {
-            $location.path('/app/users');
+        } 
+
+        if (!UserService.userEdit) {
+            $location.path('/users/list');
         }
 
         UserService.getAllBldgs().then(function(data){
@@ -125,7 +142,7 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
         user.address = $scope.userAddress(user);
         UserService.addUser(angular.copy(user)).then(function(user) {
             $scope.user = {};
-            $location.path('/app/users');
+            $location.path('/users/list');
         });
     }
 
@@ -133,7 +150,7 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
         user.address = $scope.userAddress(user);
         UserService.updateUser(user._id, angular.copy(user)).then(function(user) {
             $scope.user = {};
-            $location.path('/app/users');
+            $location.path('/users/list');
         });
     }
 
@@ -175,8 +192,41 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
     $scope.users = [];
     $scope.userSearchStr;
 
+    var columnDefs = [
+        {headerName: "ID", field: "custID", width:50},
+        {headerName: "Name", field: "name", filter: 'text'},
+        {headerName: "Mobile", field: "mobile"},
+        {headerName: "Wing", field: "bldgWing", width:100},
+        //{headerName: "Desc", field: "prod_desc"},
+        {headerName: "Room No. / Shop No.", field: "bldgRoomNo", width:80},
+        {headerName: "Building", field: "bldg", width:100},
+        {headerName: "Address", field: "address", width:250},
+
+        {headerName: "Edit/Delete",  width: 100, 
+            cellRenderer: function (params) {      // Function cell renderer
+                return createButtons (params);
+            }
+        }
+    ];
+
+    function createButtons(params){
+        //console.log()
+        return '<a ng-click="viewUser('+params.data.custID+')" class="anchor-btn" href=""><i class="fa fa-eye" aria-hidden="true"></i></a>'+
+                '<a ng-click="editUser('+params.data.custID+')" class="anchor-btn" href=""><i class="fa fa-pencil" aria-hidden="true"></i></a>';
+    }
+
+    $scope.gridOptions = {
+        columnDefs: columnDefs,
+        angularCompileRows: true,
+        enableFilter: true,
+        enableSorting: true,
+        animateRows: true
+
+    };
+
     UserService.getUsers().then(function(data) {
         $scope.users = data;
+        $scope.gridOptions.api.setRowData(data);
     })
 
     UserService.getAllBldgs().then(function(data){
@@ -187,15 +237,14 @@ angular.module('usermgmt', ['ui.router', 'ui.bootstrap'])
         //$location.path('/app/users/add');
     }
 
-    $scope.viewUser = function(user, index) {
-        UserService.userEdit = angular.copy(user);
-        $location.path('/app/view');
+    $scope.viewUser = function(id) { //custEditView
+        UserService.custEditView(id)
+        $location.path('/users/view/');
     }
 
-    $scope.editUser = function(user, index) {
-
-        UserService.userEdit = angular.copy(user);
-        $location.path('/app/edit');
+    $scope.editUser = function(id) {
+        UserService.custEditView(id)
+        $location.path('/users/edit');
     }
 
     $scope.deleteUser = function(id, index) {
