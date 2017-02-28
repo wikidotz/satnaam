@@ -152,9 +152,7 @@ angular.module('hotelApp')
         loadCategory();
 
         if($location.search().hasOwnProperty('orderEditSuccess')) {
-            console.log($location.search().orderEditSuccess)
             $scope.orderEdit = true;
-            debugger;
             if($location.search().orderEditSuccess == true){
                 $scope.alert = alerts[1]
             }else{
