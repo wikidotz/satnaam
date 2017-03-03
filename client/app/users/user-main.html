@@ -1,8 +1,10 @@
-<div>
-    <a class="btn btn-default" ui-sref="app.users" >Home</a>
-    <a class="btn btn-default" ui-sref="app.mode({ mode: 'add' })">Add Users</a>
-    <a class="btn btn-default" ui-sref="app.users" >Users</a>
-
+<div class="container-fluid">
+	<nav class="navbar navbar-default">
+        <ul class="nav navbar-nav">
+            <li><a ui-sref="users.mode({ mode: 'add' })">Add Users</a></li>
+		    <li><a ui-sref="users.list" >Users</a></li>
+        </ul>
+    </nav>
 </div>
 <div>
     <div ui-view>

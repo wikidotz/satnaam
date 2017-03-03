@@ -129,15 +129,11 @@ footer.s-footer {
 .s-content {
     position: absolute;
     top: 60px;
-    bottom: 0px;
+    bottom: 60px;
     right: 10px;
     left: 10px;
     overflow-y: auto;
     z-index: 1;
-}
-
-.order-list-content {
-    top: -30px;
 }
 
 ul.s-product-list {
@@ -458,7 +454,7 @@ tr.summary {
     bottom: 0;
     left: 0;
     right: 0;
-    top: 90px;
+    top: 0;
 }
 
 .ol-search-order {
@@ -478,12 +474,18 @@ tr.summary {
     border: 1px solid blue;
 }
 
+.ol-order-tile {
+    position: relative;
+    min-height: 250px;
+}
+
 .ol-grid-tile-main {
     position: absolute;
     top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    left: 5px;
+    right: 5px;
+    border: 1px solid #f00;
+    bottom: 10px;
 }
 
 .ol-grid-tile-main > .grid-header {
@@ -758,13 +760,7 @@ tbody.scrollable > tr{
 
 input.search
 {
-  display: block;
-  margin: 0;
-  width: 90%;
-  max-width: 400px;
-  height: 40px;
-  line-height: 40px; font-size: 17px;
-  border: 1px solid #bbb;
+  text-align: center;
 }
 
 
@@ -808,9 +804,24 @@ table.ol-table tbody tr.completed td:first-child .remove-btn {
 }
 
 .dinning-table-set{
-    margin: 10px 0;    
+    margin: 10px 0;
 }
 
 .dinning-table-set  > .row{
     margin: 10px 0;
+}
+
+
+.rounder-border{
+    border: 1px solid #3d3d3d;
+    padding: 10px 0;
+    border-radius: 5px;
+}
+
+.anchor-btn{
+    padding: 10px;
+}
+
+.red{
+    color: #f00;
 }

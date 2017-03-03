@@ -47,7 +47,9 @@ angular.module('hotelApp')
     }
 })
 
-.controller('OrderCtrl', ['$scope', '$location', '$timeout', '$window', '$uibModal', '$stateParams', 'SubProduct', 'Product', 'Customer', 'OrderService', 'TransactionFactory', function($scope, $location, $timeout, $window, $uibModal, $stateParams, SubProduct, Product, Customer, OrderService, TransactionFactory) {
+.controller('OrderCtrl', ['$scope','$state', '$location', '$timeout', '$window', '$uibModal', '$stateParams', 'SubProduct', 'Product', 'Customer', 'OrderService', 'TransactionFactory', function($scope, $state, $location, $timeout, $window, $uibModal, $stateParams, SubProduct, Product, Customer, OrderService, TransactionFactory) {
+
+
 
     $scope.isProductsLoaded = false;
     $scope.products = [];
@@ -73,21 +75,21 @@ angular.module('hotelApp')
         $("[name='order-paid']").bootstrapSwitch();
 
         Product.getProducts().then(function(data) {
-            
+
             $scope.productsUnchanged = angular.copy(data);
             $scope.products = angular.copy(data);
             $scope.isProductsLoaded = true;
 
             $timeout(function(){
                 if($scope.editMode){
-                
+
                     $scope.order = OrderService.getOrderToEdit();
 
                     for (var i = 0; i < $scope.products.length; i++) {
                         var key = $scope.products[i].prod_id
                         for (var j = 0; j < $scope.order.itemsInOrder.length; j++) {
                             if($scope.order.itemsInOrder[j].prod_id == key){
-                                $scope.products[i] = angular.copy($scope.order.itemsInOrder[j]);    
+                                $scope.products[i] = angular.copy($scope.order.itemsInOrder[j]);
                                 $scope.products[i].selected = true;
                             }
                         }
@@ -95,7 +97,7 @@ angular.module('hotelApp')
                     }
                 }
             },100)
-            
+
         })
 
         $scope.token = $window.sessionStorage.token;
@@ -378,7 +380,12 @@ angular.module('hotelApp')
             }
         }
         else{
-            OrderService.updateOrder($stateParams.id, $scope.order)
+            $("#createOrderBtn").html('Updating........');
+            OrderService.updateOrder($stateParams.id, $scope.order).then(function(){
+                $location.path('/orders').search({orderEditSuccess: 'true'});
+            }, function(){
+                $location.path('/orders').search({orderEditSuccess: 'false'});
+            })
         }
 
 
@@ -639,7 +646,7 @@ angular.module('hotelApp')
         tokenno:0,
         custCode:0
     }
-    
+
     $scope.selectTable = function(tableObj){
       selectedTableObj = tableObj;
     }
@@ -648,7 +655,7 @@ angular.module('hotelApp')
     $scope.showSelectedCustomerElement = false;
 
     $scope.showSelectedCustomerAddr = function(e){
-      
+
         if(!$scope.showSelectedCustomerElement){
             $scope.showOrderDetail = false;
             $scope.showSelectedCustomerElement = true;

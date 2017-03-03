@@ -1,22 +1,21 @@
 var express = require('express');
 
 var bodyParser = require('body-parser');
-var expressSession = require('express-session');
+var path = require('path')
+
 var productsRoutes = require('./routes/products')
 var categoriesRoutes = require('./routes/categories');
 var customersRoutes = require('./routes/customers');
 var orderRoutes = require('./routes/orders');
 var transactionRoutes = require('./routes/transactions');
 var config = require('./config');
+require('./mongoose-connect');
 var mongoose = require('mongoose');
-var morgan = require('morgan');
+
+
 var jwt = require('jsonwebtoken');
 var async = require('async');
 var app = express();
-
-var apiRoutes = express.Router();
-
-mongoose.connect(config.database);
 
 app.set('superSecret', config.secret); // secret variable
 app.use(bodyParser.json()); // for parsing application/json
@@ -24,15 +23,12 @@ app.use(bodyParser.urlencoded({
     extended: true
 })); // for parsing application/x-www-form-urlencoded
 
-app.use(express.static(__dirname + '../../client'));
-
+app.use(express.static(path.resolve(__dirname, '../client')))
 
 var UserSchema = new mongoose.Schema({
     "user": String,
     'password': String
 })
-
-
 
 var User = mongoose.model('users', UserSchema);
 
@@ -64,7 +60,7 @@ app.post('/login', function(req, res) {
                 // if user is found and password is right
                 // create a token
                 var token = jwt.sign(user, app.get('superSecret'), {
-                    expiresInMinutes: 1440 // expires in 24 hours
+                    expiresIn: 86400 // expires in 24 hours
                 });
 
                 // return the information including token as JSON
@@ -119,7 +115,7 @@ function isLoggedIn(req, res, next) {
 
 var unless = function(path, middleware) {
     return function(req, res, next) {
-        console.log(req.path)
+        
         if (path === req.path) {
             return next();
         } else {
@@ -127,9 +123,6 @@ var unless = function(path, middleware) {
         }
     };
 };
-
-//app.use(unless('/setup', apiRoutes));//'/api', apiRoutes);
-//app.use(unless('/products/addCategory', apiRoutes));//'/api', apiRoutes);
 
 
 app.get('/setup', function(req, res) {
@@ -160,10 +153,6 @@ app.get('/setup', function(req, res) {
     });
 });
 
-
-//app.set('dbConnection',dbConnection);
-//console.log(dbConnection);
-//console.log(dbConnection.bookshelf);
 
 app.use('/products', isLoggedIn, productsRoutes);
 app.use('/categories', isLoggedIn, categoriesRoutes);
