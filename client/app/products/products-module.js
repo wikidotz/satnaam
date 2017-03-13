@@ -119,10 +119,10 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
 
     function init() {
 
-        if (ProductService.productEdit == null) {
+        /*if (ProductService.productEdit == null) {
             $location.path('/products/list');
             return
-        }
+        }*/
 
         if (($scope.mode == 'edit' || $scope.mode == 'view') && ProductService.productEdit) {
             $scope.product = angular.copy(ProductService.productEdit);
@@ -145,7 +145,7 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
 
         ProductService.getCategories().then(function(data){
             $scope.categories = data;
-            if($scope.category){
+            if(!!$scope.category === false){
                 $scope.category = {
                     category_name: 'Select Category',
                     category_id: -1
