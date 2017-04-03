@@ -35,8 +35,9 @@ angular.module('hotelApp', [
         .state('createOrder', {
             url: '/create-order',
             templateUrl: 'app/create-order/create-order.html',
-            controller: 'OrderCtrl',
-            resolve:{loggedIn:onlyLoggedIn}
+            controller: 'OrderCtrl'
+            // ,
+            // resolve:{loggedIn:onlyLoggedIn}
         })
 
         .state('editOrder', {
@@ -63,7 +64,7 @@ angular.module('hotelApp', [
             controller: 'PhoneLoginCtrl'
         });
 
-    
+
     $locationProvider.hashPrefix('');
     //$httpProvider.interceptors.push('TokenInterceptor');
     $httpProvider.interceptors.push(['$q', '$location', '$window', function($q, $location, $window) {
@@ -82,9 +83,9 @@ angular.module('hotelApp', [
                 }
             };
         }]);
-    
+
     $urlRouterProvider.otherwise('/create-order');
-    
+
 }])
 
 .run(['$location', '$window', function($location, $window){
@@ -94,4 +95,3 @@ angular.module('hotelApp', [
         $location.path('/login');
     }
 }])
-
