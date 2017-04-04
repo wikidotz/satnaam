@@ -8,9 +8,10 @@ var logger = require('../logger');
 var mongoose = require('mongoose');
 var sampleCat = require('../data/samplecategories.json');
 var sampleItems = require('../data/sampleproducts_v2.json');
-
-autoIncrement = require('mongoose-auto-increment');
+var autoIncrement = require('mongoose-auto-increment');
+mongoose.Promise = require('bluebird');
 var db = mongoose.connection;
+
 autoIncrement.initialize(db);
 
 var ItemSchema = new mongoose.Schema({
@@ -29,33 +30,26 @@ var ItemSchema = new mongoose.Schema({
     prod_pre_max_time_sec: Number
 });
 
-
-var Item = mongoose.model('items', ItemSchema);
-
 ItemSchema.plugin(autoIncrement.plugin, { 
 	model: 'items', 
 	field: 'prod_id', 
 	startAt:1,
 	incrementBy:1
 });
-
+var Item = mongoose.model('items', ItemSchema);
 
 var ItemCategorySchema = new mongoose.Schema({
 	category_id: {type:Number},
     category_name: String
 });
-
-var ItemCategory = mongoose.model('itemcategories', ItemCategorySchema);
-
-
 ItemCategorySchema.plugin(autoIncrement.plugin, { 
 	model: 'itemcategories', 
 	field: 'category_id', 
 	startAt:1,
 	incrementBy:1
 });
-
-
+var ItemCategory = mongoose.model('itemcategories', ItemCategorySchema);
+console.log(db);
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
@@ -138,7 +132,7 @@ router.get('/:id/addItem', function(req, res, next){
 
 function addItem(){
   var item = new Item(sampleItems[indexItem]);
-  //console.log("new item to add ["+JSON.parse(item)+"]");//pass item to add
+  console.log("new item to add ["+JSON.parse(item)+"]");//pass item to add
   item.save(function(err,res1){
     if(err) return console.error(err);
     console.log('item saved['+indexItem+']');
@@ -169,7 +163,9 @@ router.put('/product/:id', function(req, res) {
 
 router.post('/product', function(req, res) {
 	
+	console.log('Saving product...');
 	var item = new Item(req.body.product);
+	console.log(item);
 	item.save(function(err, itemRes){
 		if(err) {
 			res.status(500).send(err.message)

@@ -57,6 +57,7 @@ angular.module('hotelApp')
     $scope.showOrderDetail = true;
     $scope.sideBarOrderDetailOpen = false;
     $scope.editMode = $stateParams.hasOwnProperty('id');
+    $scope.parcelMode = 'HOME_DEL';
 
     if($scope.editMode && !OrderService.isOrderEdit()){
         $location.path('/create-order')
@@ -69,6 +70,7 @@ angular.module('hotelApp')
 
 
     $scope.catid = 2;
+    $scope.selectedCat = undefined;
 
     function init() {
         $('#orderDateTime').datetimepicker();
@@ -118,8 +120,10 @@ angular.module('hotelApp')
 
     $scope.isItemSelected = false;
 
-    $scope.changeCategory = function(id) {
-        $scope.catid = id
+    $scope.changeCategory = function(id, cat) {
+        $scope.catid = id;
+        $scope.selectedCat = cat;
+        console.log(cat);
     }
 
     $scope.getSelectedCat = function(id) {
@@ -314,7 +318,6 @@ angular.module('hotelApp')
             status: 1
 
         }));
-
         var p = angular.copy(product);
         p.prod_qty = 1;
         $scope.order.itemsInOrder.push(p);
@@ -466,10 +469,22 @@ angular.module('hotelApp')
     $scope.order.customer = response;
     });
     }*/
-
     $scope.parcelOrder = function() {
-        $scope.order.delivery_mode = 'PARCEL';
-        $scope.order.tableNo = selectedTableObj.no;
+        if ($scope.order.parcelMode === 'PARCEL_TO_CUST') {
+            $scope.homeDelivery();
+        } else {
+            $scope.parcelToCust();
+        }
+        
+        $scope.order.tableNo = 0;
+    }
+     
+    $scope.parcelToCust = function() {
+        $scope.order.delivery_mode = $scope.order.parcelMode = 'PARCEL_TO_CUST';
+    }
+
+    $scope.homeDelivery = function() {
+        $scope.order.delivery_mode =  $scope.order.parcelMode = 'HOME_DEL';
     }
 
     $scope.dinningOrder = function() {
@@ -541,6 +556,7 @@ angular.module('hotelApp')
         $scope.order.modified_by = 'admin';
         $scope.order.last_modified_date_time = new Date();
         $scope.order.delivery_mode = 'DINE';
+        $scope.order.parcelMode = 'HOME_DEL';
         $scope.order.is_scheduled = 0;
         var dt = new Date();
         dt.setMinutes((Math.round(dt.getMinutes()/5) * 5) % 60);
@@ -621,6 +637,7 @@ angular.module('hotelApp')
       //  $scope.order.tableNo= 1;//hard code table no
         $scope.order.tableNo = selectedTableObj.no;
         $scope.showDinningTableSetter();
+        $scope.order.parcelMode = 'HOME_DEL';
     }
 
     //hard code tables list

@@ -140,7 +140,6 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
         /*ProductService.getAllBldgs().then(function(data){
             $scope.allBldgs = data;
         });*/
-        console.log()
         $scope.product.prod_available = true;
 
         ProductService.getCategories().then(function(data){
@@ -180,7 +179,7 @@ angular.module('productsmgmnt', ['ui.router', 'ui.bootstrap'])
     $scope.addProduct = function(product) {
         product.prod_category_name = $scope.category.category_name;
         product.prod_category_id = $scope.category.category_id;
-        
+        //product.prod_id= 0;
 
         ProductService.addProduct(angular.copy(product)).then(function(response) {
             $scope.product = {};

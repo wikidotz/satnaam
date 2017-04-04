@@ -17,7 +17,10 @@
 
 
 		<div class="buttons btn-group">
-		    <button type="button" class="btn btn-default" ng-click="parcelOrder()"><i class="fa fa-gift"></i></button>
+		    <button type="button" class="btn btn-default" ng-click="parcelOrder()" title="{{order.parcelMode}}">
+		    	<i class="fa fa-bicycle" ng-show="order.parcelMode == 'HOME_DEL'"></i>
+		    	<i class="fa fa-hand-grab-o" ng-show="order.parcelMode == 'PARCEL_TO_CUST'"></i>
+		    </button>
 			<button type="button" class="btn btn-default" ng-class="(showDinningTableElement==true)?'active':''" ng-click="assignDiningTableNo($event)"><i class="fa fa-table"></i></button>
 			<button type="button" class="btn btn-default" ng-class="(showSchedulerElement==true)?'active':''"
 					ng-click="showScheduler($event)"><i class="fa fa-clock-o"></i></button>
